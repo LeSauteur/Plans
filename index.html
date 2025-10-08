@@ -45,10 +45,16 @@
         .neutral {
             background-color: #ffffcc;
         }
-        input {
-            width: 90%;
-            padding: 5px;
-            text-align: center;
+        .office-name {
+            text-align: left;
+            font-weight: bold;
+        }
+        .plan-cell {
+            background-color: #f0f0f0;
+        }
+        .readonly-cell {
+            background-color: #f9f9f9;
+            color: #555;
         }
         .quarter-summary {
             font-weight: bold;
@@ -57,18 +63,6 @@
         .half-year-summary {
             font-weight: bold;
             background-color: #d0d0ff;
-        }
-        .percentage {
-            font-size: 0.9em;
-            display: block;
-            color: #555;
-        }
-        .office-name {
-            text-align: left;
-            font-weight: bold;
-        }
-        .plan-cell {
-            background-color: #f0f0f0;
         }
         .action-buttons {
             display: flex;
@@ -92,25 +86,6 @@
         .btn-print:hover {
             background-color: #0056b3;
         }
-        .btn-export {
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-export:hover {
-            background-color: #1e7e34;
-        }
-        .btn-import {
-            background-color: #ffc107;
-            color: black;
-        }
-        .btn-import:hover {
-            background-color: #e0a800;
-        }
-        .readonly-cell {
-            background-color: #f9f9f9;
-            font-style: italic;
-            color: #555;
-        }
         @media print {
             .action-buttons {
                 display: none;
@@ -127,13 +102,10 @@
 </head>
 <body>
     <h1>План продаж по кварталам (Апрель 2025 - Сентябрь 2025)</h1>
-    <p><strong>Инструкция:</strong> Данные за июль и август зафиксированы. Сентябрь временно заблокирован для редактирования.</p>
+    <p><strong>Инструкция:</strong> Данные за июль, август и сентябрь зафиксированы. Все расчёты автоматические.</p>
     
     <div class="action-buttons">
         <button class="btn btn-print" onclick="window.print()">🖨️ Распечатать таблицу</button>
-        <button class="btn btn-export" onclick="exportData()">📤 Экспортировать данные</button>
-        <button class="btn btn-import" onclick="document.getElementById('fileInput').click()">📥 Импортировать данные</button>
-        <input type="file" id="fileInput" accept=".json" style="display: none;" onchange="importData(this.files[0])">
     </div>
 
     <table id="salesTable">
@@ -185,47 +157,45 @@
     </table>
 
     <script>
-        // Данные из первого листа Excel за первый квартал + июль/август
         const quarterlyData = [
-            { id: 1, name: "Панасенко", offices: "Премьер, Батайск 1, Западный 2", planQ1: 3457237, apr: 1352753, may: 1626616, jun: 1412350, totalQ1: 4391719, perfQ1: 934482, jul: 1004894, aug: 386542, sep: 0 },
-            { id: 2, name: "Кивва", offices: "Сев 3", planQ1: 1755701, apr: 1034500, may: 463000, jun: 882000, totalQ1: 2379500, perfQ1: 623799, jul: 798000, aug: 948000, sep: 0 },
-            { id: 3, name: "Чуносов", offices: "Зап 5", planQ1: 1000000, apr: 364250, may: 0, jun: 170000, totalQ1: 534250, perfQ1: -465750, jul: 651490, aug: 640682, sep: 0 },
-            { id: 4, name: "Теркин", offices: "Западный Олимп, Волгоднск", planQ1: 8648704, apr: 5786215, may: 1949366, jun: 5237950, totalQ1: 12973531, perfQ1: 4324827, jul: 3447725, aug: 4861040, sep: 0 },
-            { id: 5, name: "Уваров", offices: "Домиан Комарова, Домиан Стачки", planQ1: 3019166, apr: 2029200, may: 4982000, jun: 6733285, totalQ1: 13744485, perfQ1: 10725319, jul: 3559969, aug: 1037350, sep: 0 },
-            { id: 6, name: "Яцык", offices: "Восточный", planQ1: 1000000, apr: 177400, may: 594000, jun: 399000, totalQ1: 1170400, perfQ1: 170400, jul: 255000, aug: 394000, sep: 0 },
-            { id: 7, name: "Баранова", offices: "Шолохова", planQ1: 1014438, apr: 32200, may: 156500, jun: 624346, totalQ1: 813046, perfQ1: -201392, jul: 286000, aug: 270582, sep: 0 },
-            { id: 8, name: "Гуков", offices: "Нариманова, Аксай Центральный", planQ1: 3375064, apr: 564000, may: 1276239, jun: 347000, totalQ1: 2187239, perfQ1: -1187825, jul: 1846000, aug: 1668500, sep: 0 },
+            { id: 1, name: "Панасенко", offices: "Премьер, Батайск 1, Западный 2", planQ1: 3457237, apr: 1352753, may: 1626616, jun: 1412350, totalQ1: 4391719, perfQ1: 934482, jul: 1004894, aug: 386542, sep: 793759 },
+            { id: 2, name: "Кивва", offices: "Сев 3", planQ1: 1755701, apr: 1034500, may: 463000, jun: 882000, totalQ1: 2379500, perfQ1: 623799, jul: 798000, aug: 948000, sep: 1106820 },
+            { id: 3, name: "Чуносов", offices: "Зап 5", planQ1: 1000000, apr: 364250, may: 0, jun: 170000, totalQ1: 534250, perfQ1: -465750, jul: 651490, aug: 640682, sep: 1128640 },
+            { id: 4, name: "Теркин", offices: "Западный Олимп, Волгоднск", planQ1: 8648704, apr: 5786215, may: 1949366, jun: 5237950, totalQ1: 12973531, perfQ1: 4324827, jul: 3447725, aug: 4861040, sep: 5378949 },
+            { id: 5, name: "Уваров", offices: "Домиан Комарова, Домиан Стачки", planQ1: 3019166, apr: 2029200, may: 4982000, jun: 6733285, totalQ1: 13744485, perfQ1: 10725319, jul: 3559969, aug: 1037350, sep: 1741190 },
+            { id: 6, name: "Яцык", offices: "Восточный", planQ1: 1000000, apr: 177400, may: 594000, jun: 399000, totalQ1: 1170400, perfQ1: 170400, jul: 255000, aug: 394000, sep: 349500 },
+            { id: 7, name: "Баранова", offices: "Шолохова", planQ1: 1014438, apr: 32200, may: 156500, jun: 624346, totalQ1: 813046, perfQ1: -201392, jul: 286000, aug: 270582, sep: 864557 },
+            { id: 8, name: "Гуков", offices: "Нариманова, Аксай Центральный", planQ1: 3375064, apr: 564000, may: 1276239, jun: 347000, totalQ1: 2187239, perfQ1: -1187825, jul: 1846000, aug: 1668500, sep: 1193500 },
             { id: 9, name: "Скворцова", offices: "Первомайский", planQ1: 3439756, apr: 414500, may: 331200, jun: 376820, totalQ1: 1122520, perfQ1: -2317236, jul: 46250, aug: 0, sep: 0 },
-            { id: 10, name: "Червоный", offices: "Соловушки", planQ1: 2728496, apr: 946212, may: 543300, jun: 1623000, totalQ1: 3112512, perfQ1: 384016, jul: 3136089, aug: 2920400, sep: 0 },
-            { id: 11, name: "Шиянова", offices: "Западный 11", planQ1: 1000000, apr: 0, may: 0, jun: 0, totalQ1: 0, perfQ1: -1000000, jul: 0, aug: 106000, sep: 0 },
-            { id: 12, name: "Межов", offices: "Янтарный, Аксай, Ленинаван, Легеартис", planQ1: 1648394, apr: 1360000, may: 615575, jun: 192000, totalQ1: 2167575, perfQ1: 519181, jul: 1777300, aug: 2635250, sep: 0 },
-            { id: 13, name: "Чуприна", offices: "Горизонт", planQ1: 4081605, apr: 2304300, may: 701750, jun: 387000, totalQ1: 3393050, perfQ1: -688555, jul: 2966016, aug: 938000, sep: 0 },
+            { id: 10, name: "Червоный", offices: "Соловушки", planQ1: 2728496, apr: 946212, may: 543300, jun: 1623000, totalQ1: 3112512, perfQ1: 384016, jul: 3136089, aug: 2920400, sep: 1935660 },
+            { id: 11, name: "Шиянова", offices: "Западный 11", planQ1: 1000000, apr: 0, may: 0, jun: 0, totalQ1: 0, perfQ1: -1000000, jul: 0, aug: 106000, sep: 150000 },
+            { id: 12, name: "Межов", offices: "Янтарный, Аксай, Ленинаван, Легеартис", planQ1: 1648394, apr: 1360000, may: 615575, jun: 192000, totalQ1: 2167575, perfQ1: 519181, jul: 1777300, aug: 2635250, sep: 634604 },
+            { id: 13, name: "Чуприна", offices: "Горизонт", planQ1: 4081605, apr: 2304300, may: 701750, jun: 387000, totalQ1: 3393050, perfQ1: -688555, jul: 2966016, aug: 938000, sep: 3504707 },
             { id: 14, name: "Пирогова", offices: "Династия", planQ1: 1000000, apr: 0, may: 0, jun: 146000, totalQ1: 146000, perfQ1: -854000, jul: 0, aug: 202000, sep: 0 },
-            { id: 15, name: "Смехнова", offices: "Пушкинский", planQ1: 1695078, apr: 727875, may: 875500, jun: 684750, totalQ1: 2288125, perfQ1: 593047, jul: 1208000, aug: 1115280, sep: 0 },
-            { id: 16, name: "Грибенюк С.", offices: "Гвардейский", planQ1: 1000000, apr: 0, may: 512000, jun: 0, totalQ1: 512000, perfQ1: -488000, jul: 92880, aug: 311500, sep: 0 },
-            { id: 17, name: "Лебедев", offices: "Новочеркасск-1", planQ1: 17288268, apr: 3886106, may: 4453800, jun: 7822564, totalQ1: 16162470, perfQ1: -1125798, jul: 3941232, aug: 4928528, sep: 0 },
-            { id: 18, name: "Зеленьков", offices: "Новочеркасск-2", planQ1: 13702894, apr: 8098293, may: 4197618, jun: 8106403, totalQ1: 20402314, perfQ1: 6699420, jul: 9832435, aug: 5709512, sep: 0 },
+            { id: 15, name: "Смехнова", offices: "Пушкинский", planQ1: 1695078, apr: 727875, may: 875500, jun: 684750, totalQ1: 2288125, perfQ1: 593047, jul: 1208000, aug: 1115280, sep: 249800 },
+            { id: 16, name: "Грибенюк С.", offices: "Гвардейский", planQ1: 1000000, apr: 0, may: 512000, jun: 0, totalQ1: 512000, perfQ1: -488000, jul: 92880, aug: 311500, sep: 441500 },
+            { id: 17, name: "Лебедев", offices: "Новочеркасск-1, Новочеркасск Октябрьский", planQ1: 17288268, apr: 3886106, may: 4453800, jun: 7822564, totalQ1: 16162470, perfQ1: -1125798, jul: 3941232, aug: 4928528, sep: 6946650 },
+            { id: 18, name: "Зеленьков", offices: "Новочеркасск-2, Домиан Сельмаш", planQ1: 13702894, apr: 8098293, may: 4197618, jun: 8106403, totalQ1: 20402314, perfQ1: 6699420, jul: 9832435, aug: 5709512, sep: 8448418 },
             { id: 19, name: "Петровская", offices: "Майский", planQ1: 1000000, apr: 150000, may: 0, jun: 0, totalQ1: 150000, perfQ1: -850000, jul: 0, aug: 0, sep: 0 },
-            { id: 20, name: "Залещенко", offices: "ВектоР Домиан", planQ1: 1589806, apr: 810245, may: 850500, jun: 1066205, totalQ1: 2726950, perfQ1: 1137144, jul: 996500, aug: 724000, sep: 0 },
-            { id: 21, name: "Брагин", offices: "Батайск-2", planQ1: 1332214, apr: 705000, may: 304410, jun: 92500, totalQ1: 1101910, perfQ1: -230304, jul: 205000, aug: 260000, sep: 0 },
-            { id: 22, name: "Немченко", offices: "Азов Первый, Золотой Квадрат", planQ1: 1000000, apr: 273167, may: 85000, jun: 146750, totalQ1: 504917, perfQ1: -495083, jul: 396600, aug: 628069, sep: 0 },
-            { id: 23, name: "Князев", offices: "Суворовский-2", planQ1: 1332214, apr: 716000, may: 663625, jun: 562700, totalQ1: 1942325, perfQ1: 610111, jul: 1298500, aug: 847415, sep: 0 },
+            { id: 20, name: "Залещенко", offices: "ВектоР Домиан", planQ1: 1589806, apr: 810245, may: 850500, jun: 1066205, totalQ1: 2726950, perfQ1: 1137144, jul: 996500, aug: 724000, sep: 532000 },
+            { id: 21, name: "Брагин", offices: "Батайск-2", planQ1: 1332214, apr: 705000, may: 304410, jun: 92500, totalQ1: 1101910, perfQ1: -230304, jul: 205000, aug: 260000, sep: 671000 },
+            { id: 22, name: "Немченко", offices: "Азов Первый, Золотой Квадрат", planQ1: 1000000, apr: 273167, may: 85000, jun: 146750, totalQ1: 504917, perfQ1: -495083, jul: 396600, aug: 628069, sep: 649479 },
+            { id: 23, name: "Князев", offices: "Суворовский-2", planQ1: 1332214, apr: 716000, may: 663625, jun: 562700, totalQ1: 1942325, perfQ1: 610111, jul: 1298500, aug: 847415, sep: 824118 },
             { id: 24, name: "Данилова О.", offices: "офис Даниловых", planQ1: 3015870, apr: 227400, may: 0, jun: 150000, totalQ1: 377400, perfQ1: -2638470, jul: 0, aug: 766000, sep: 0 },
-            { id: 25, name: "Козлова", offices: "ЛеМар Вересаево", planQ1: 1038158, apr: 1713576, may: 376500, jun: 575000, totalQ1: 2665076, perfQ1: 1626918, jul: 427350, aug: 1022156, sep: 0 },
-            { id: 26, name: "Кравцов", offices: "Рантье", planQ1: 2076800, apr: 132000, may: 91000, jun: 0, totalQ1: 223000, perfQ1: -1853800, jul: 0, aug: 432000, sep: 0 },
-            { id: 27, name: "Молчанов", offices: "Риелт", planQ1: 1000000, apr: 282000, may: 401000, jun: 422446, totalQ1: 1105446, perfQ1: 105446, jul: 194692, aug: 507000, sep: 0 }
+            { id: 25, name: "Козлова", offices: "ЛеМар Вересаево", planQ1: 1038158, apr: 1713576, may: 376500, jun: 575000, totalQ1: 2665076, perfQ1: 1626918, jul: 427350, aug: 1022156, sep: 521880 },
+            { id: 26, name: "Кравцов", offices: "Рантье", planQ1: 2076800, apr: 132000, may: 91000, jun: 0, totalQ1: 223000, perfQ1: -1853800, jul: 0, aug: 432000, sep: 182000 },
+            { id: 27, name: "Молчанов", offices: "Риелт", planQ1: 1000000, apr: 282000, may: 401000, jun: 422446, totalQ1: 1105446, perfQ1: 105446, jul: 194692, aug: 507000, sep: 883000 }
         ];
 
         const tableBody = document.querySelector('#salesTable tbody');
-        const STORAGE_KEY = 'salesPlanDataQ2_2025';
 
         function formatNumber(num) {
-            return new Intl.NumberFormat('ru-RU').format(num);
+            return new Intl.NumberFormat('ru-RU').format(Math.round(num));
         }
 
         function calculatePercentage(actual, plan) {
             if (plan === 0) return "0.00";
-            return ((actual - plan) / plan * 100).toFixed(2);
+            return (((actual / plan) - 1) * 100).toFixed(2);
         }
 
         function getPerformanceClass(value) {
@@ -234,171 +204,56 @@
             return 'neutral';
         }
 
-        function createRow(data, savedData = {}) {
+        function createRow(data) {
+            const planQ1 = data.planQ1;
+            const planQ2 = data.planQ1; // План 2 квартала = план 1 квартала
+
+            const totalQ2 = data.jul + data.aug + data.sep;
+            const perfQ2 = totalQ2 - planQ2;
+            const percentQ2 = calculatePercentage(totalQ2, planQ2);
+
+            const totalHalfYear = data.totalQ1 + totalQ2;
+            const planHalfYear = planQ1 + planQ2;
+            const perfHalfYear = totalHalfYear - planHalfYear;
+            const percentHalfYear = calculatePercentage(totalHalfYear, planHalfYear);
+
             const row = document.createElement('tr');
-            
-            let html = `
+            row.innerHTML = `
                 <td>${data.id}</td>
                 <td class="office-name">${data.name}</td>
                 <td class="office-name">${data.offices}</td>
-                <td class="plan-cell">${formatNumber(data.planQ1)}</td>
+                <td class="plan-cell">${formatNumber(planQ1)}</td>
                 <td>${formatNumber(data.apr)}</td>
                 <td>${formatNumber(data.may)}</td>
                 <td>${formatNumber(data.jun)}</td>
                 <td>${formatNumber(data.totalQ1)}</td>
                 <td class="${getPerformanceClass(data.perfQ1)}">${formatNumber(data.perfQ1)}</td>
-                <td>${calculatePercentage(data.totalQ1, data.planQ1)}%</td>
-            `;
-            
-            const planQ2 = data.planQ1;
-            const savedValues = savedData[data.name] || { sep: 0 };
-            
-            // --- ВАЖНО ---
-            // Июль и Август теперь просто отображаются как текст, а не как инпуты.
-            // Сентябрь тоже read-only, но его можно легко сделать редактируемым (см. инструкцию ниже).
-            html += `
+                <td>${calculatePercentage(data.totalQ1, planQ1)}%</td>
+                
                 <td class="plan-cell">${formatNumber(planQ2)}</td>
                 <td class="readonly-cell">${formatNumber(data.jul)}</td>
                 <td class="readonly-cell">${formatNumber(data.aug)}</td>
-                <td class="readonly-cell">${formatNumber(savedValues.sep)}</td>
-                <td class="quarter-summary">0</td>
-                <td class="quarter-summary">0</td>
-                <td class="quarter-summary">0%</td>
-                <td class="half-year-summary">0</td>
-                <td class="half-year-summary">0</td>
-                <td class="half-year-summary">0%</td>
+                <td class="readonly-cell">${formatNumber(data.sep)}</td>
+                <td class="quarter-summary">${formatNumber(totalQ2)}</td>
+                <td class="${getPerformanceClass(perfQ2)}">${formatNumber(perfQ2)}</td>
+                <td>${percentQ2}%</td>
+                <td class="half-year-summary">${formatNumber(totalHalfYear)}</td>
+                <td class="${getPerformanceClass(perfHalfYear)}">${formatNumber(perfHalfYear)}</td>
+                <td>${percentHalfYear}%</td>
             `;
-            
-            row.innerHTML = html;
             return row;
         }
 
-        // ЭКСПОРТ ДАННЫХ
-        function exportData() {
-            const dataToExport = {};
-            // Так как сентябрь теперь не инпут, мы экспортируем его из localStorage
-            const saved = loadSavedData();
-            for (const key in saved) {
-                if (saved[key].sep !== undefined) {
-                    dataToExport[key] = { sep: saved[key].sep };
-                }
-            }
-
-            const dataStr = JSON.stringify(dataToExport, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `plan_data_${new Date().toISOString().slice(0,10)}.json`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-
-            alert('Данные успешно экспортированы!');
-        }
-
-        // ИМПОРТ ДАННЫХ
-        function importData(file) {
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const importedData = JSON.parse(e.target.result);
-                    saveData(importedData); // Сохраняем импортированные данные
-                    
-                    // Обновляем отображение в таблице
-                    populateTable(importedData);
-                    
-                    alert('Данные успешно импортированы!');
-                } catch (error) {
-                    alert('Ошибка при импорте данных: ' + error.message);
-                    console.error(error);
-                }
-            };
-            reader.readAsText(file);
-            document.getElementById('fileInput').value = '';
-        }
-
-        // Загружаем сохранённые данные из localStorage
-        function loadSavedData() {
-            try {
-                const saved = localStorage.getItem(STORAGE_KEY);
-                return saved ? JSON.parse(saved) : {};
-            } catch (e) {
-                console.error("Ошибка при загрузке сохранённых данных:", e);
-                return {};
-            }
-        }
-
-        // Сохраняем данные в localStorage
-        function saveData(dataToSave = null) {
-            if (!dataToSave) {
-                // Если данные не переданы, собираем текущие значения сентября
-                dataToSave = {};
-                document.querySelectorAll('td[data-name]').forEach(cell => {
-                    const name = cell.getAttribute('data-name');
-                    const sepText = cell.textContent.replace(/\s/g, '');
-                    if (!dataToSave[name]) {
-                        dataToSave[name] = {};
-                    }
-                    dataToSave[name].sep = parseFloat(sepText) || 0;
-                });
-            }
-            
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
-            } catch (e) {
-                console.error("Ошибка при сохранении данных:", e);
-            }
-        }
-
-        // Заполняем таблицу данными
-        function populateTable(savedData = {}) {
+        function populateTable() {
             tableBody.innerHTML = '';
             quarterlyData.forEach(data => {
-                const row = createRow(data, savedData);
+                const row = createRow(data);
                 tableBody.appendChild(row);
-                
-                // Принудительно обновляем расчеты для строки
-                updateCalculationsForRow(row, data, savedData);
             });
         }
 
-        // Функция для обновления расчетов по строке
-        function updateCalculationsForRow(row, data, savedData) {
-            const savedValues = savedData[data.name] || { sep: 0 };
-            const sep = parseFloat(savedValues.sep) || 0;
-            
-            const planQ1 = data.planQ1;
-            const planQ2 = data.planQ1;
-            
-            const totalQ2 = data.jul + data.aug + sep;
-            const perfQ2 = totalQ2 - planQ2;
-            const percentQ2 = calculatePercentage(totalQ2, planQ2);
-            
-            // Находим ячейки по индексу
-            row.cells[14].textContent = formatNumber(totalQ2);
-            row.cells[15].textContent = formatNumber(perfQ2);
-            row.cells[15].className = getPerformanceClass(perfQ2);
-            row.cells[16].textContent = percentQ2 + '%';
-            
-            const totalHalfYear = data.totalQ1 + totalQ2;
-            const planHalfYear = planQ1 + planQ2;
-            const perfHalfYear = totalHalfYear - planHalfYear;
-            const percentHalfYear = calculatePercentage(totalHalfYear, planHalfYear);
-            
-            row.cells[17].textContent = formatNumber(totalHalfYear);
-            row.cells[18].textContent = formatNumber(perfHalfYear);
-            row.cells[18].className = getPerformanceClass(perfHalfYear);
-            row.cells[19].textContent = percentHalfYear + '%';
-        }
-
-        // Инициализация
         document.addEventListener('DOMContentLoaded', () => {
-            const savedData = loadSavedData();
-            populateTable(savedData);
+            populateTable();
         });
     </script>
 </body>
