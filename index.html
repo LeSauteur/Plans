@@ -1,11 +1,9 @@
-А вот я делал сам. Проверь пожалуйста правильно или нет? 
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>План продаж по периодам</title>
+    <title>План продаж по кварталам</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,20 +19,17 @@
             margin-bottom: 30px;
             background-color: white;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            table-layout: fixed;
         }
         th, td {
-            padding: 10px 8px;
+            padding: 12px;
             text-align: center;
             border: 1px solid #ddd;
-            word-wrap: break-word;
         }
         th {
             background-color: #4CAF50;
             color: white;
             position: sticky;
             top: 0;
-            font-weight: bold;
         }
         tr:nth-child(even) {
             background-color: #f2f2f2;
@@ -69,8 +64,9 @@
             font-weight: bold;
             background-color: #d0d0ff;
         }
-        .third-quarter {
-            background-color: #ffebcc;
+        .third-quarter-summary {
+            font-weight: bold;
+            background-color: #ffd0d0;
         }
         .action-buttons {
             display: flex;
@@ -104,25 +100,13 @@
             }
             table {
                 box-shadow: none;
-                font-size: 0.8em;
-            }
-            th, td {
-                padding: 6px 4px;
-            }
-        }
-        @media (max-width: 1200px) {
-            table {
-                font-size: 0.9em;
-            }
-            th, td {
-                padding: 8px 4px;
             }
         }
     </style>
 </head>
 <body>
-    <h1>План продаж по периодам (Апрель 2025 - Октябрь 2025)</h1>
-    <p><strong>Инструкция:</strong> Данные за июль, август, сентябрь и октябрь зафиксированы. Все расчёты автоматические.</p>
+    <h1>План продаж по кварталам (Апрель 2025 - Ноябрь 2025)</h1>
+    <p><strong>Инструкция:</strong> Данные за июль, август, сентябрь, октябрь и ноябрь зафиксированы. Все расчёты автоматические.</p>
     
     <div class="action-buttons">
         <button class="btn btn-print" onclick="window.print()">🖨️ Распечатать таблицу</button>
@@ -131,35 +115,55 @@
     <table id="salesTable">
         <thead>
             <tr>
-                <th rowspan="2">№</th>
-                <th rowspan="2">ФИО</th>
-                <th rowspan="2">Офисы</th>
-                <th rowspan="2">План 1 периода</th>
-                <th colspan="3">1 период (Апрель-Июнь)</th>
-                <th rowspan="2">Итого 1 период</th>
-                <th rowspan="2">Выполнение 1 периода</th>
-                <th rowspan="2">% Выполнения 1 периода</th>
-                <th rowspan="2">План 2 периода</th>
-                <th colspan="3">2 период (Июль-Сентябрь)</th>
-                <th rowspan="2">Итого 2 периода</th>
-                <th rowspan="2">Выполнение 2 периода</th>
-                <th rowspan="2">% Выполнения 2 периода</th>
-                <th rowspan="2">План 3 периода</th>
-                <th rowspan="2">Октябрь</th>
-                <th rowspan="2">Итого 3 периода</th>
-                <th rowspan="2">Выполнение 3 периода</th>
-                <th rowspan="2">% Выполнения 3 периода</th>
-                <th rowspan="2">Итого за период</th>
-                <th rowspan="2">Выполнение за период</th>
-                <th rowspan="2">% за период</th>
+                <th>№</th>
+                <th>ФИО</th>
+                <th>Офисы</th>
+                <th>План 1 Квартал</th>
+                <th colspan="3">1 Квартал (Апрель-Июнь)</th>
+                <th>Итого 1 Квартал</th>
+                <th>Выполнение 1 Квартал</th>
+                <th>% Выполнения 1 Квартал</th>
+                <th>План 2 Квартал</th>
+                <th colspan="3">2 Квартал (Июль-Сентябрь)</th>
+                <th>Итого 2 Квартал</th>
+                <th>Выполнение 2 Квартал</th>
+                <th>% Выполнения 2 квартал</th>
+                <th>План 3 Квартал</th>
+                <th colspan="2">3 Квартал (Октябрь-Ноябрь)</th>
+                <th>Итого 3 Квартал</th>
+                <th>Выполнение 3 Квартал</th>
+                <th>% Выполнения 3 квартал</th>
+                <th>Итого за 8 месяцев</th>
+                <th>Выполнение за 8 месяцев</th>
+                <th>% за 8 месяцев</th>
             </tr>
             <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
                 <th>Апрель</th>
                 <th>Май</th>
                 <th>Июнь</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
                 <th>Июль</th>
                 <th>Август</th>
                 <th>Сентябрь</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>Октябрь</th>
+                <th>Ноябрь</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -169,66 +173,36 @@
 
     <script>
         const quarterlyData = [
-            { id: 1, name: "Панасенко", offices: "Премьер, Батайск 1, Западный 2", planQ1: 3457237, apr: 1352753, may: 1626616, jun: 1412350, totalQ1: 4391719, perfQ1: 934482, jul: 1004894, aug: 386542, sep: 793759 },
-            { id: 2, name: "Кивва", offices: "Сев 3", planQ1: 1755701, apr: 1034500, may: 463000, jun: 882000, totalQ1: 2379500, perfQ1: 623799, jul: 798000, aug: 948000, sep: 1106820 },
-            { id: 3, name: "Чуносов", offices: "Зап 5", planQ1: 1000000, apr: 364250, may: 0, jun: 170000, totalQ1: 534250, perfQ1: -465750, jul: 651490, aug: 640682, sep: 1128640 },
-            { id: 4, name: "Теркин", offices: "Западный Олимп, Волгоднск", planQ1: 8648704, apr: 5786215, may: 1949366, jun: 5237950, totalQ1: 12973531, perfQ1: 4324827, jul: 3447725, aug: 4861040, sep: 5378949 },
-            { id: 5, name: "Уваров", offices: "Домиан Комарова, Домиан Стачки", planQ1: 3019166, apr: 2029200, may: 4982000, jun: 6733285, totalQ1: 13744485, perfQ1: 10725319, jul: 3559969, aug: 1037350, sep: 1741190 },
-            { id: 6, name: "Яцык", offices: "Восточный", planQ1: 1000000, apr: 177400, may: 594000, jun: 399000, totalQ1: 1170400, perfQ1: 170400, jul: 255000, aug: 394000, sep: 349500 },
-            { id: 7, name: "Баранова", offices: "Шолохова", planQ1: 1014438, apr: 32200, may: 156500, jun: 624346, totalQ1: 813046, perfQ1: -201392, jul: 286000, aug: 270582, sep: 864557 },
-            { id: 8, name: "Гуков", offices: "Нариманова, Аксай Центральный", planQ1: 3375064, apr: 564000, may: 1276239, jun: 347000, totalQ1: 2187239, perfQ1: -1187825, jul: 1846000, aug: 1668500, sep: 1193500 },
-            { id: 9, name: "Скворцова", offices: "Первомайский", planQ1: 3439756, apr: 414500, may: 331200, jun: 376820, totalQ1: 1122520, perfQ1: -2317236, jul: 46250, aug: 0, sep: 0 },
-            { id: 10, name: "Червоный", offices: "Соловушки", planQ1: 2728496, apr: 946212, may: 543300, jun: 1623000, totalQ1: 3112512, perfQ1: 384016, jul: 3136089, aug: 2920400, sep: 1935660 },
-            { id: 11, name: "Шиянова", offices: "Западный 11", planQ1: 1000000, apr: 0, may: 0, jun: 0, totalQ1: 0, perfQ1: -1000000, jul: 0, aug: 106000, sep: 150000 },
-            { id: 12, name: "Межов", offices: "Янтарный, Аксай, Ленинаван, Легеартис", planQ1: 1648394, apr: 1360000, may: 615575, jun: 192000, totalQ1: 2167575, perfQ1: 519181, jul: 1777300, aug: 2635250, sep: 634604 },
-            { id: 13, name: "Чуприна", offices: "Горизонт", planQ1: 4081605, apr: 2304300, may: 701750, jun: 387000, totalQ1: 3393050, perfQ1: -688555, jul: 2966016, aug: 938000, sep: 3504707 },
-            { id: 14, name: "Пирогова", offices: "Династия", planQ1: 1000000, apr: 0, may: 0, jun: 146000, totalQ1: 146000, perfQ1: -854000, jul: 0, aug: 202000, sep: 0 },
-            { id: 15, name: "Смехнова", offices: "Пушкинский", planQ1: 1695078, apr: 727875, may: 875500, jun: 684750, totalQ1: 2288125, perfQ1: 593047, jul: 1208000, aug: 1115280, sep: 249800 },
-            { id: 16, name: "Грибенюк С.", offices: "Гвардейский", planQ1: 1000000, apr: 0, may: 512000, jun: 0, totalQ1: 512000, perfQ1: -488000, jul: 92880, aug: 311500, sep: 441500 },
-            { id: 17, name: "Лебедев", offices: "Новочеркасск-1, Новочеркасск Октябрьский", planQ1: 17288268, apr: 3886106, may: 4453800, jun: 7822564, totalQ1: 16162470, perfQ1: -1125798, jul: 3941232, aug: 4928528, sep: 6946650 },
-            { id: 18, name: "Зеленьков", offices: "Новочеркасск-2, Домиан Сельмаш", planQ1: 13702894, apr: 8098293, may: 4197618, jun: 8106403, totalQ1: 20402314, perfQ1: 6699420, jul: 9832435, aug: 5709512, sep: 8448418 },
-            { id: 19, name: "Петровская", offices: "Майский", planQ1: 1000000, apr: 150000, may: 0, jun: 0, totalQ1: 150000, perfQ1: -850000, jul: 0, aug: 0, sep: 0 },
-            { id: 20, name: "Залещенко", offices: "ВектоР Домиан", planQ1: 1589806, apr: 810245, may: 850500, jun: 1066205, totalQ1: 2726950, perfQ1: 1137144, jul: 996500, aug: 724000, sep: 532000 },
-            { id: 21, name: "Брагин", offices: "Батайск-2", planQ1: 1332214, apr: 705000, may: 304410, jun: 92500, totalQ1: 1101910, perfQ1: -230304, jul: 205000, aug: 260000, sep: 671000 },
-            { id: 22, name: "Немченко", offices: "Азов Первый, Золотой Квадрат", planQ1: 1000000, apr: 273167, may: 85000, jun: 146750, totalQ1: 504917, perfQ1: -495083, jul: 396600, aug: 628069, sep: 649479 },
-            { id: 23, name: "Князев", offices: "Суворовский-2", planQ1: 1332214, apr: 716000, may: 663625, jun: 562700, totalQ1: 1942325, perfQ1: 610111, jul: 1298500, aug: 847415, sep: 824118 },
-            { id: 24, name: "Данилова О.", offices: "офис Даниловых", planQ1: 3015870, apr: 227400, may: 0, jun: 150000, totalQ1: 377400, perfQ1: -2638470, jul: 0, aug: 766000, sep: 0 },
-            { id: 25, name: "Козлова", offices: "ЛеМар Вересаево", planQ1: 1038158, apr: 1713576, may: 376500, jun: 575000, totalQ1: 2665076, perfQ1: 1626918, jul: 427350, aug: 1022156, sep: 521880 },
-            { id: 26, name: "Кравцов", offices: "Рантье", planQ1: 2076800, apr: 132000, may: 91000, jun: 0, totalQ1: 223000, perfQ1: -1853800, jul: 0, aug: 432000, sep: 182000 },
-            { id: 27, name: "Молчанов", offices: "Риелт", planQ1: 1000000, apr: 282000, may: 401000, jun: 422446, totalQ1: 1105446, perfQ1: 105446, jul: 194692, aug: 507000, sep: 883000 }
+            // Заменяем Уварова на Андрееву с сохранением всех предыдущих данных
+            { id: 1, name: "Панасенко", offices: "Премьер, Батайск 1, Западный 2", planQ1: 3457237, apr: 1352753, may: 1626616, jun: 1412350, totalQ1: 4391719, perfQ1: 934482, jul: 1004894, aug: 386542, sep: 793759, oct: 1464783, nov: 1142566 },
+            { id: 2, name: "Кивва", offices: "Сев 3", planQ1: 1755701, apr: 1034500, may: 463000, jun: 882000, totalQ1: 2379500, perfQ1: 623799, jul: 798000, aug: 948000, sep: 1106820, oct: 1558000, nov: 798320 },
+            { id: 3, name: "Чуносов", offices: "Зап 5", planQ1: 1000000, apr: 364250, may: 0, jun: 170000, totalQ1: 534250, perfQ1: -465750, jul: 651490, aug: 640682, sep: 1128640, oct: 611900, nov: 191500 },
+            { id: 4, name: "Теркин", offices: "Западный Олимп, Волгоднск", planQ1: 8648704, apr: 5786215, may: 1949366, jun: 5237950, totalQ1: 12973531, perfQ1: 4324827, jul: 3447725, aug: 4861040, sep: 5378949, oct: 5623669, nov: 6710809 },
+            // Заменяем Уварова на Андрееву с сохранением всех предыдущих данных Уварова
+            { id: 5, name: "Андреева", offices: "Домиан Комарова, Домиан Стачки", planQ1: 3019166, apr: 2029200, may: 4982000, jun: 6733285, totalQ1: 13744485, perfQ1: 10725319, jul: 3559969, aug: 1037350, sep: 1741190, oct: 1037200, nov: 2310731 },
+            { id: 6, name: "Яцык", offices: "Восточный", planQ1: 1000000, apr: 177400, may: 594000, jun: 399000, totalQ1: 1170400, perfQ1: 170400, jul: 255000, aug: 394000, sep: 349500, oct: 358000, nov: 568000 },
+            { id: 7, name: "Баранова", offices: "Шолохова", planQ1: 1014438, apr: 32200, may: 156500, jun: 624346, totalQ1: 813046, perfQ1: -201392, jul: 286000, aug: 270582, sep: 864557, oct: 365965, nov: 614357 },
+            { id: 8, name: "Гуков", offices: "Нариманова, Аксай Центральный", planQ1: 3375064, apr: 564000, may: 1276239, jun: 347000, totalQ1: 2187239, perfQ1: -1187825, jul: 1846000, aug: 1668500, sep: 1193500, oct: 1714000, nov: 1114000 },
+            { id: 9, name: "Скворцова", offices: "Первомайский", planQ1: 3439756, apr: 414500, may: 331200, jun: 376820, totalQ1: 1122520, perfQ1: -2317236, jul: 46250, aug: 0, sep: 0, oct: 0, nov: 0 },
+            { id: 10, name: "Червоный", offices: "Соловушки", planQ1: 2728496, apr: 946212, may: 543300, jun: 1623000, totalQ1: 3112512, perfQ1: 384016, jul: 3136089, aug: 2920400, sep: 1935660, oct: 3446331, nov: 3068550 },
+            { id: 11, name: "Шиянова", offices: "Западный 11", planQ1: 1000000, apr: 0, may: 0, jun: 0, totalQ1: 0, perfQ1: -1000000, jul: 0, aug: 106000, sep: 150000, oct: 400000, nov: 90000 },
+            { id: 12, name: "Межов", offices: "Янтарный, Аксай, Ленинаван, Легеартис", planQ1: 1648394, apr: 1360000, may: 615575, jun: 192000, totalQ1: 2167575, perfQ1: 519181, jul: 1777300, aug: 2635250, sep: 634604, oct: 1001720, nov: 642750 },
+            { id: 13, name: "Чуприна", offices: "Горизонт", planQ1: 4081605, apr: 2304300, may: 701750, jun: 387000, totalQ1: 3393050, perfQ1: -688555, jul: 2966016, aug: 938000, sep: 3504707, oct: 1103000, nov: 1356100 },
+            { id: 14, name: "Пирогова", offices: "Династия", planQ1: 1000000, apr: 0, may: 0, jun: 146000, totalQ1: 146000, perfQ1: -854000, jul: 0, aug: 202000, sep: 0, oct: 0, nov: 0 },
+            { id: 15, name: "Смехнова", offices: "Пушкинский", planQ1: 1695078, apr: 727875, may: 875500, jun: 684750, totalQ1: 2288125, perfQ1: 593047, jul: 1208000, aug: 1115280, sep: 249800, oct: 404000, nov: 574000 },
+            { id: 16, name: "Грибенюк С.", offices: "Гвардейский", planQ1: 1000000, apr: 0, may: 512000, jun: 0, totalQ1: 512000, perfQ1: -488000, jul: 92880, aug: 311500, sep: 441500, oct: 732500, nov: 103750 },
+            { id: 17, name: "Лебедев", offices: "Новочеркасск-1, Новочеркасск Октябрьский", planQ1: 17288268, apr: 3886106, may: 4453800, jun: 7822564, totalQ1: 16162470, perfQ1: -1125798, jul: 3941232, aug: 4928528, sep: 6946650, oct: 7495236, nov: 9560576 },
+            { id: 18, name: "Зеленьков", offices: "Новочеркасск-2, Домиан Сельмаш", planQ1: 13702894, apr: 8098293, may: 4197618, jun: 8106403, totalQ1: 20402314, perfQ1: 6699420, jul: 9832435, aug: 5709512, sep: 8448418, oct: 9287696, nov: 5313782 },
+            { id: 19, name: "Петровская", offices: "Майский", planQ1: 1000000, apr: 150000, may: 0, jun: 0, totalQ1: 150000, perfQ1: -850000, jul: 0, aug: 0, sep: 0, oct: 0, nov: 0 },
+            { id: 20, name: "Залещенко", offices: "ВектоР Домиан", planQ1: 1589806, apr: 810245, may: 850500, jun: 1066205, totalQ1: 2726950, perfQ1: 1137144, jul: 996500, aug: 724000, sep: 532000, oct: 1067118, nov: 666000 },
+            { id: 21, name: "Брагин", offices: "Батайск-2", planQ1: 1332214, apr: 705000, may: 304410, jun: 92500, totalQ1: 1101910, perfQ1: -230304, jul: 205000, aug: 260000, sep: 671000, oct: 418800, nov: 782000 },
+            { id: 22, name: "Немченко", offices: "Азов Первый, Золотой Квадрат", planQ1: 1000000, apr: 273167, may: 85000, jun: 146750, totalQ1: 504917, perfQ1: -495083, jul: 396600, aug: 628069, sep: 649479, oct: 946656, nov: 1482322 },
+            { id: 23, name: "Князев", offices: "Суворовский-2", planQ1: 1332214, apr: 716000, may: 663625, jun: 562700, totalQ1: 1942325, perfQ1: 610111, jul: 1298500, aug: 847415, sep: 824118, oct: 340000, nov: 161000 },
+            { id: 24, name: "Данилова О.", offices: "офис Даниловых", planQ1: 3015870, apr: 227400, may: 0, jun: 150000, totalQ1: 377400, perfQ1: -2638470, jul: 0, aug: 766000, sep: 0, oct: 809360, nov: 0 },
+            { id: 25, name: "Козлова", offices: "ЛеМар Вересаево", planQ1: 1038158, apr: 1713576, may: 376500, jun: 575000, totalQ1: 2665076, perfQ1: 1626918, jul: 427350, aug: 1022156, sep: 521880, oct: 874260, nov: 1416618 },
+            { id: 26, name: "Кравцов", offices: "Рантье", planQ1: 2076800, apr: 132000, may: 91000, jun: 0, totalQ1: 223000, perfQ1: -1853800, jul: 0, aug: 432000, sep: 182000, oct: 330000, nov: 0 },
+            { id: 27, name: "Молчанов", offices: "Риелт", planQ1: 1000000, apr: 282000, may: 401000, jun: 422446, totalQ1: 1105446, perfQ1: 105446, jul: 194692, aug: 507000, sep: 883000, oct: 409000, nov: 0 }
         ];
-
-        // Данные за октябрь с суммированием по офисам для указанных агентов
-        const octoberData = {
-            "Панасенко": 914783 + 400000 + 150000, // Премьер + Зап 2 + Батайск 1
-            "Кивва": 1558000,
-            "Чуносов": 611900,
-            "Теркин": 5623669,
-            "Уваров": 1037200,
-            "Яцык": 358000,
-            "Баранова": 365965,
-            "Гуков": 1714000,
-            "Червоный": 3446331,
-            "Шиянова": 400000,
-            "Межов": 1001720,
-            "Чуприна": 1103000,
-            "Смехнова": 404000,
-            "Грибенюк С.": 732500,
-            "Лебедев": 5847236 + 1648000, // Новочеркасск-1 + Новочеркасск Октябрьский
-            "Зеленьков": 3900000 + 5387696, // Новочеркасск-2 + Домиан Сельмаш
-            "Залещенко": 1067118,
-            "Брагин": 418800,
-            "Немченко": 946656,
-            "Князев": 340000,
-            "Данилова О.": 809360,
-            "Козлова": 874260,
-            "Кравцов": 330000,
-            "Молчанов": 409000,
-            // Для остальных агентов данные за октябрь отсутствуют
-            "Скворцова": 0,
-            "Пирогова": 0,
-            "Петровская": 0
-        };
 
         const tableBody = document.querySelector('#salesTable tbody');
 
@@ -248,63 +222,54 @@
         }
 
         function createRow(data) {
-            // Планы для каждого периода
-            const planPeriod1 = data.planQ1;
-            const planPeriod2 = data.planQ1; // План 2 периода = план 1 периода
-            const planPeriod3 = data.planQ1; // План 3 периода = план 1 периода
-            
-            // Итоги за периоды
-            const totalPeriod1 = data.totalQ1;
-            const totalPeriod2 = data.jul + data.aug + data.sep;
-            const oct = octoberData[data.name] || 0;
-            const totalPeriod3 = oct;
-            
-            // Выполнение планов
-            const perfPeriod1 = data.perfQ1;
-            const perfPeriod2 = totalPeriod2 - planPeriod2;
-            const perfPeriod3 = totalPeriod3 - planPeriod3;
-            
-            // Проценты выполнения
-            const percentPeriod1 = calculatePercentage(totalPeriod1, planPeriod1);
-            const percentPeriod2 = calculatePercentage(totalPeriod2, planPeriod2);
-            const percentPeriod3 = calculatePercentage(totalPeriod3, planPeriod3);
-            
-            // Итоги за весь период
-            const totalOverall = totalPeriod1 + totalPeriod2 + totalPeriod3;
-            const planOverall = planPeriod1 + planPeriod2 + planPeriod3;
-            const perfOverall = totalOverall - planOverall;
-            const percentOverall = calculatePercentage(totalOverall, planOverall);
+            const planQ1 = data.planQ1;
+            const planQ2 = data.planQ1; // План 2 квартала = план 1 квартала
+            const planQ3 = data.planQ1; // План 3 квартала = план 1 квартала
+
+            const totalQ2 = data.jul + data.aug + data.sep;
+            const perfQ2 = totalQ2 - planQ2;
+            const percentQ2 = calculatePercentage(totalQ2, planQ2);
+
+            const totalQ3 = data.oct + data.nov; // Октябрь и Ноябрь как 3 квартал
+            const perfQ3 = totalQ3 - planQ3;
+            const percentQ3 = calculatePercentage(totalQ3, planQ3);
+
+            const totalEightMonths = data.totalQ1 + totalQ2 + totalQ3;
+            const planEightMonths = planQ1 + planQ2 + planQ3;
+            const perfEightMonths = totalEightMonths - planEightMonths;
+            const percentEightMonths = calculatePercentage(totalEightMonths, planEightMonths);
 
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${data.id}</td>
                 <td class="office-name">${data.name}</td>
                 <td class="office-name">${data.offices}</td>
-                <td class="plan-cell">${formatNumber(planPeriod1)}</td>
+                <td class="plan-cell">${formatNumber(planQ1)}</td>
                 <td>${formatNumber(data.apr)}</td>
                 <td>${formatNumber(data.may)}</td>
                 <td>${formatNumber(data.jun)}</td>
-                <td>${formatNumber(totalPeriod1)}</td>
-                <td class="${getPerformanceClass(perfPeriod1)}">${formatNumber(perfPeriod1)}</td>
-                <td>${percentPeriod1}%</td>
+                <td>${formatNumber(data.totalQ1)}</td>
+                <td class="${getPerformanceClass(data.perfQ1)}">${formatNumber(data.perfQ1)}</td>
+                <td>${calculatePercentage(data.totalQ1, planQ1)}%</td>
                 
-                <td class="plan-cell">${formatNumber(planPeriod2)}</td>
+                <td class="plan-cell">${formatNumber(planQ2)}</td>
                 <td class="readonly-cell">${formatNumber(data.jul)}</td>
                 <td class="readonly-cell">${formatNumber(data.aug)}</td>
                 <td class="readonly-cell">${formatNumber(data.sep)}</td>
-                <td class="quarter-summary">${formatNumber(totalPeriod2)}</td>
-                <td class="${getPerformanceClass(perfPeriod2)}">${formatNumber(perfPeriod2)}</td>
-                <td>${percentPeriod2}%</td>
+                <td class="quarter-summary">${formatNumber(totalQ2)}</td>
+                <td class="${getPerformanceClass(perfQ2)}">${formatNumber(perfQ2)}</td>
+                <td>${percentQ2}%</td>
                 
-                <td class="plan-cell">${formatNumber(planPeriod3)}</td>
-                <td class="readonly-cell">${formatNumber(oct)}</td>
-                <td class="third-quarter">${formatNumber(totalPeriod3)}</td>
-                <td class="${getPerformanceClass(perfPeriod3)}">${formatNumber(perfPeriod3)}</td>
-                <td>${percentPeriod3}%</td>
+                <td class="plan-cell">${formatNumber(planQ3)}</td>
+                <td class="readonly-cell">${formatNumber(data.oct)}</td>
+                <td class="readonly-cell">${formatNumber(data.nov)}</td>
+                <td class="third-quarter-summary">${formatNumber(totalQ3)}</td>
+                <td class="${getPerformanceClass(perfQ3)}">${formatNumber(perfQ3)}</td>
+                <td>${percentQ3}%</td>
                 
-                <td class="half-year-summary">${formatNumber(totalOverall)}</td>
-                <td class="${getPerformanceClass(perfOverall)}">${formatNumber(perfOverall)}</td>
-                <td>${percentOverall}%</td>
+                <td class="third-quarter-summary">${formatNumber(totalEightMonths)}</td>
+                <td class="${getPerformanceClass(perfEightMonths)}">${formatNumber(perfEightMonths)}</td>
+                <td>${percentEightMonths}%</td>
             `;
             return row;
         }
