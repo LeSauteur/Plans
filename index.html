@@ -98,6 +98,94 @@
         .btn-chart:hover {
             background-color: #218838;
         }
+        .btn-report {
+            background-color: #ff6b35;
+            color: white;
+        }
+        .btn-report:hover {
+            background-color: #e55a2b;
+        }
+        
+        /* Стили для текстового отчета */
+        .text-report-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            display: none;
+        }
+        .report-section {
+            margin-bottom: 40px;
+            page-break-inside: avoid;
+        }
+        .report-section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .report-list {
+            list-style: none;
+            padding: 0;
+        }
+        .report-list li {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border-left: 4px solid #4CAF50;
+            background-color: #f8f9fa;
+        }
+        .report-list .negative-item {
+            border-left-color: #dc3545;
+            background-color: #fff5f5;
+        }
+        .report-list .positive-item {
+            border-left-color: #28a745;
+            background-color: #f0fff4;
+        }
+        .report-list .mixed-item {
+            border-left-color: #ffc107;
+            background-color: #fffdf5;
+        }
+        .employee-name {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-right: 10px;
+        }
+        .performance-details {
+            color: #666;
+            font-size: 0.95em;
+            margin-top: 5px;
+        }
+        .performance-positive {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .performance-negative {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .performance-mixed {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        .quarter-status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+        .quarter-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .quarter-fail {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
         
         /* Стили для визуализации */
         .visualization-container {
@@ -180,6 +268,11 @@
             .action-buttons, .visualization-container, .stats-summary {
                 display: none;
             }
+            .text-report-container {
+                display: block !important;
+                box-shadow: none;
+                padding: 0;
+            }
             body {
                 background-color: white;
                 margin: 0;
@@ -189,36 +282,38 @@
             }
         }
         .year-btn {
-    display: inline-block;
-    padding: 12px 22px;
-    background: #28a745;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 6px;
-    transition: 0.2s;
-}
+            display: inline-block;
+            padding: 12px 22px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
 
-.year-btn:hover {
-    background: #218838;
-}
+        .year-btn:hover {
+            background: #218838;
+        }
     </style>
 </head>
 <body>
-    <h1>План продаж по кварталам (Апрель 2025 - Ноябрь 2025)</h1>
-    <p><strong>Инструкция:</strong> Данные за июль, август, сентябрь, октябрь и ноябрь зафиксированы. Все расчёты автоматические.</p>
+    <h1>План продаж по кварталам (Апрель 2025 - Декабрь 2025)</h1>
+    <p><strong>Инструкция:</strong> Данные за июль, август, сентябрь, октябрь, ноябрь и декабрь зафиксированы. Все расчёты автоматические.</p>
     
     <div class="action-buttons">
         <button class="btn btn-print" onclick="window.print()">🖨️ Распечатать таблицу</button>
         <button class="btn btn-chart" onclick="toggleVisualization()">📊 Показать/скрыть визуализацию</button>
+        <button class="btn btn-report" onclick="toggleTextReport()">📋 Текстовый отчет</button>
     </div>
-<a href="2026.html" class="year-btn">План продаж 2026</a>
+    <a href="2026.html" class="year-btn">План продаж 2026</a>
+    
     <!-- Статистика -->
     <div id="statsContainer" class="stats-summary" style="display: none;">
         <div class="stat-card">
             <h3>Среднее выполнение плана</h3>
             <div class="stat-value" id="avgPerformance">0%</div>
-            <p>по всем сотрудникам за 8 месяцев</p>
+            <p>по всем сотрудникам за 9 месяцев</p>
         </div>
         <div class="stat-card">
             <h3>Выполняют план стабильно</h3>
@@ -254,13 +349,13 @@
                 <th>Выполнение 2 Квартал</th>
                 <th>% Выполнения 2 квартал</th>
                 <th>План 3 Квартал</th>
-                <th colspan="2">3 Квартал (Октябрь-Ноябрь)</th>
+                <th colspan="3">3 Квартал (Октябрь-Декабрь)</th>
                 <th>Итого 3 Квартал</th>
                 <th>Выполнение 3 Квартал</th>
                 <th>% Выполнения 3 квартал</th>
-                <th>Итого за 8 месяцев</th>
-                <th>Выполнение за 8 месяцев</th>
-                <th>% за 8 месяцев</th>
+                <th>Итого за 9 месяцев</th>
+                <th>Выполнение за 9 месяцев</th>
+                <th>% за 9 месяцев</th>
                 <th>Статус</th>
             </tr>
             <tr>
@@ -284,6 +379,7 @@
                 <th></th>
                 <th>Октябрь</th>
                 <th>Ноябрь</th>
+                <th>Декабрь</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -297,6 +393,11 @@
             <!-- Данные будут вставлены сюда JavaScript -->
         </tbody>
     </table>
+
+    <!-- Текстовый отчет -->
+    <div id="textReportContainer" class="text-report-container">
+        <!-- Отчет будет сгенерирован здесь -->
+    </div>
 
     <!-- Визуализация -->
     <div id="visualizationContainer" class="visualization-container" style="display: none;">
@@ -316,43 +417,44 @@
         </div>
         
         <div class="chart-container">
-            <h3 class="chart-title">Динамика выполнения за 8 месяцев</h3>
+            <h3 class="chart-title">Динамика выполнения за 9 месяцев</h3>
             <canvas id="monthlyTrendChart"></canvas>
         </div>
     </div>
 
     <script>
         const quarterlyData = [
-            { id: 1, name: "Панасенко", offices: "Премьер, Батайск 1, Западный 2", planQ1: 3457237, apr: 1352753, may: 1626616, jun: 1412350, totalQ1: 4391719, perfQ1: 934482, jul: 1004894, aug: 386542, sep: 793759, oct: 1464783, nov: 1142566 },
-            { id: 2, name: "Кивва", offices: "Сев 3", planQ1: 1755701, apr: 1034500, may: 463000, jun: 882000, totalQ1: 2379500, perfQ1: 623799, jul: 798000, aug: 948000, sep: 1106820, oct: 1558000, nov: 798320 },
-            { id: 3, name: "Чуносов", offices: "Зап 5", planQ1: 1000000, apr: 364250, may: 0, jun: 170000, totalQ1: 534250, perfQ1: -465750, jul: 651490, aug: 640682, sep: 1128640, oct: 611900, nov: 191500 },
-            { id: 4, name: "Теркин", offices: "Западный Олимп, Волгоднск", planQ1: 8648704, apr: 5786215, may: 1949366, jun: 5237950, totalQ1: 12973531, perfQ1: 4324827, jul: 3447725, aug: 4861040, sep: 5378949, oct: 5623669, nov: 6710809 },
-            { id: 5, name: "Андреева", offices: "Домиан Комарова, Домиан Стачки", planQ1: 3019166, apr: 2029200, may: 4982000, jun: 6733285, totalQ1: 13744485, perfQ1: 10725319, jul: 3559969, aug: 1037350, sep: 1741190, oct: 1037200, nov: 2310731 },
-            { id: 6, name: "Яцык", offices: "Восточный", planQ1: 1000000, apr: 177400, may: 594000, jun: 399000, totalQ1: 1170400, perfQ1: 170400, jul: 255000, aug: 394000, sep: 349500, oct: 358000, nov: 568000 },
-            { id: 7, name: "Баранова", offices: "Шолохова", planQ1: 1014438, apr: 32200, may: 156500, jun: 624346, totalQ1: 813046, perfQ1: -201392, jul: 286000, aug: 270582, sep: 864557, oct: 365965, nov: 614357 },
-            { id: 8, name: "Гуков", offices: "Нариманова, Аксай Центральный", planQ1: 3375064, apr: 564000, may: 1276239, jun: 347000, totalQ1: 2187239, perfQ1: -1187825, jul: 1846000, aug: 1668500, sep: 1193500, oct: 1714000, nov: 1114000 },
-            { id: 9, name: "Скворцова", offices: "Первомайский", planQ1: 3439756, apr: 414500, may: 331200, jun: 376820, totalQ1: 1122520, perfQ1: -2317236, jul: 46250, aug: 0, sep: 0, oct: 0, nov: 0 },
-            { id: 10, name: "Червоный", offices: "Соловушки", planQ1: 2728496, apr: 946212, may: 543300, jun: 1623000, totalQ1: 3112512, perfQ1: 384016, jul: 3136089, aug: 2920400, sep: 1935660, oct: 3446331, nov: 3068550 },
-            { id: 11, name: "Шиянова", offices: "Западный 11", planQ1: 1000000, apr: 0, may: 0, jun: 0, totalQ1: 0, perfQ1: -1000000, jul: 0, aug: 106000, sep: 150000, oct: 400000, nov: 90000 },
-            { id: 12, name: "Межов", offices: "Янтарный, Аксай, Ленинаван, Легеартис", planQ1: 1648394, apr: 1360000, may: 615575, jun: 192000, totalQ1: 2167575, perfQ1: 519181, jul: 1777300, aug: 2635250, sep: 634604, oct: 1001720, nov: 642750 },
-            { id: 13, name: "Чуприна", offices: "Горизонт", planQ1: 4081605, apr: 2304300, may: 701750, jun: 387000, totalQ1: 3393050, perfQ1: -688555, jul: 2966016, aug: 938000, sep: 3504707, oct: 1103000, nov: 1356100 },
-            { id: 14, name: "Пирогова", offices: "Династия", planQ1: 1000000, apr: 0, may: 0, jun: 146000, totalQ1: 146000, perfQ1: -854000, jul: 0, aug: 202000, sep: 0, oct: 0, nov: 0 },
-            { id: 15, name: "Смехнова", offices: "Пушкинский", planQ1: 1695078, apr: 727875, may: 875500, jun: 684750, totalQ1: 2288125, perfQ1: 593047, jul: 1208000, aug: 1115280, sep: 249800, oct: 404000, nov: 574000 },
-            { id: 16, name: "Грибенюк С.", offices: "Гвардейский", planQ1: 1000000, apr: 0, may: 512000, jun: 0, totalQ1: 512000, perfQ1: -488000, jul: 92880, aug: 311500, sep: 441500, oct: 732500, nov: 103750 },
-            { id: 17, name: "Лебедев", offices: "Новочеркасск-1, Новочеркасск Октябрьский", planQ1: 17288268, apr: 3886106, may: 4453800, jun: 7822564, totalQ1: 16162470, perfQ1: -1125798, jul: 3941232, aug: 4928528, sep: 6946650, oct: 7495236, nov: 9560576 },
-            { id: 18, name: "Зеленьков", offices: "Новочеркасск-2, Домиан Сельмаш", planQ1: 13702894, apr: 8098293, may: 4197618, jun: 8106403, totalQ1: 20402314, perfQ1: 6699420, jul: 9832435, aug: 5709512, sep: 8448418, oct: 9287696, nov: 5313782 },
-            { id: 19, name: "Петровская", offices: "Майский", planQ1: 1000000, apr: 150000, may: 0, jun: 0, totalQ1: 150000, perfQ1: -850000, jul: 0, aug: 0, sep: 0, oct: 0, nov: 0 },
-            { id: 20, name: "Залещенко", offices: "ВектоР Домиан", planQ1: 1589806, apr: 810245, may: 850500, jun: 1066205, totalQ1: 2726950, perfQ1: 1137144, jul: 996500, aug: 724000, sep: 532000, oct: 1067118, nov: 666000 },
-            { id: 21, name: "Брагин", offices: "Батайск-2", planQ1: 1332214, apr: 705000, may: 304410, jun: 92500, totalQ1: 1101910, perfQ1: -230304, jul: 205000, aug: 260000, sep: 671000, oct: 418800, nov: 782000 },
-            { id: 22, name: "Немченко", offices: "Азов Первый, Золотой Квадрат", planQ1: 1000000, apr: 273167, may: 85000, jun: 146750, totalQ1: 504917, perfQ1: -495083, jul: 396600, aug: 628069, sep: 649479, oct: 946656, nov: 1482322 },
-            { id: 23, name: "Князев", offices: "Суворовский-2", planQ1: 1332214, apr: 716000, may: 663625, jun: 562700, totalQ1: 1942325, perfQ1: 610111, jul: 1298500, aug: 847415, sep: 824118, oct: 340000, nov: 161000 },
-            { id: 24, name: "Данилова О.", offices: "офис Даниловых", planQ1: 3015870, apr: 227400, may: 0, jun: 150000, totalQ1: 377400, perfQ1: -2638470, jul: 0, aug: 766000, sep: 0, oct: 809360, nov: 0 },
-            { id: 25, name: "Козлова", offices: "ЛеМар Вересаево", planQ1: 1038158, apr: 1713576, may: 376500, jun: 575000, totalQ1: 2665076, perfQ1: 1626918, jul: 427350, aug: 1022156, sep: 521880, oct: 874260, nov: 1416618 },
-            { id: 26, name: "Кравцов", offices: "Рантье", planQ1: 2076800, apr: 132000, may: 91000, jun: 0, totalQ1: 223000, perfQ1: -1853800, jul: 0, aug: 432000, sep: 182000, oct: 330000, nov: 0 },
-            { id: 27, name: "Молчанов", offices: "Риелт", planQ1: 1000000, apr: 282000, may: 401000, jun: 422446, totalQ1: 1105446, perfQ1: 105446, jul: 194692, aug: 507000, sep: 883000, oct: 409000, nov: 0 }
+            { id: 1, name: "Панасенко", offices: "Премьер, Батайск 1, Западный 2", planQ1: 3457237, apr: 1352753, may: 1626616, jun: 1412350, totalQ1: 4391719, perfQ1: 934482, jul: 1004894, aug: 386542, sep: 793759, oct: 1464783, nov: 1142566, dec: 1659509 },
+            { id: 2, name: "Кивва", offices: "Сев 3", planQ1: 1755701, apr: 1034500, may: 463000, jun: 882000, totalQ1: 2379500, perfQ1: 623799, jul: 798000, aug: 948000, sep: 1106820, oct: 1558000, nov: 798320, dec: 1006500 },
+            { id: 3, name: "Чуносов", offices: "Зап 5", planQ1: 1000000, apr: 364250, may: 0, jun: 170000, totalQ1: 534250, perfQ1: -465750, jul: 651490, aug: 640682, sep: 1128640, oct: 611900, nov: 191500, dec: 1216413 },
+            { id: 4, name: "Теркин", offices: "Западный Олимп, Волгоднск", planQ1: 8648704, apr: 5786215, may: 1949366, jun: 5237950, totalQ1: 12973531, perfQ1: 4324827, jul: 3447725, aug: 4861040, sep: 5378949, oct: 5623669, nov: 6710809, dec: 6495825 },
+            { id: 5, name: "Андреева", offices: "Домиан Комарова, Домиан Стачки", planQ1: 3019166, apr: 2029200, may: 4982000, jun: 6733285, totalQ1: 13744485, perfQ1: 10725319, jul: 3559969, aug: 1037350, sep: 1741190, oct: 1037200, nov: 2310731, dec: 8343568 },
+            { id: 6, name: "Яцык", offices: "Восточный", planQ1: 1000000, apr: 177400, may: 594000, jun: 399000, totalQ1: 1170400, perfQ1: 170400, jul: 255000, aug: 394000, sep: 349500, oct: 358000, nov: 568000, dec: 0 },
+            { id: 7, name: "Баранова", offices: "Шолохова", planQ1: 1014438, apr: 32200, may: 156500, jun: 624346, totalQ1: 813046, perfQ1: -201392, jul: 286000, aug: 270582, sep: 864557, oct: 365965, nov: 614357, dec: 934037 },
+            { id: 8, name: "Гуков", offices: "Нариманова, Аксай Центральный", planQ1: 3375064, apr: 564000, may: 1276239, jun: 347000, totalQ1: 2187239, perfQ1: -1187825, jul: 1846000, aug: 1668500, sep: 1193500, oct: 1714000, nov: 1114000, dec: 2310532 },
+            { id: 9, name: "Скворцова", offices: "Первомайский", planQ1: 3439756, apr: 414500, may: 331200, jun: 376820, totalQ1: 1122520, perfQ1: -2317236, jul: 46250, aug: 0, sep: 0, oct: 0, nov: 0, dec: 0 },
+            { id: 10, name: "Червоный", offices: "Соловушки", planQ1: 2728496, apr: 946212, may: 543300, jun: 1623000, totalQ1: 3112512, perfQ1: 384016, jul: 3136089, aug: 2920400, sep: 1935660, oct: 3446331, nov: 3068550, dec: 2862472 },
+            { id: 11, name: "Шиянова", offices: "Западный 11", planQ1: 1000000, apr: 0, may: 0, jun: 0, totalQ1: 0, perfQ1: -1000000, jul: 0, aug: 106000, sep: 150000, oct: 400000, nov: 90000, dec: 60000 },
+            { id: 12, name: "Межов", offices: "Янтарный, Аксай, Ленинаван, Легеартис", planQ1: 1648394, apr: 1360000, may: 615575, jun: 192000, totalQ1: 2167575, perfQ1: 519181, jul: 1777300, aug: 2635250, sep: 634604, oct: 1001720, nov: 642750, dec: 2001378 },
+            { id: 13, name: "Чуприна", offices: "Горизонт", planQ1: 4081605, apr: 2304300, may: 701750, jun: 387000, totalQ1: 3393050, perfQ1: -688555, jul: 2966016, aug: 938000, sep: 3504707, oct: 1103000, nov: 1356100, dec: 3777086 },
+            { id: 14, name: "Пирогова", offices: "Династия", planQ1: 1000000, apr: 0, may: 0, jun: 146000, totalQ1: 146000, perfQ1: -854000, jul: 0, aug: 202000, sep: 0, oct: 0, nov: 0, dec: 0 },
+            { id: 15, name: "Смехнова", offices: "Пушкинский", planQ1: 1695078, apr: 727875, may: 875500, jun: 684750, totalQ1: 2288125, perfQ1: 593047, jul: 1208000, aug: 1115280, sep: 249800, oct: 404000, nov: 574000, dec: 2027332 },
+            { id: 16, name: "Грибенюк С.", offices: "Гвардейский", planQ1: 1000000, apr: 0, may: 512000, jun: 0, totalQ1: 512000, perfQ1: -488000, jul: 92880, aug: 311500, sep: 441500, oct: 732500, nov: 103750, dec: 661714 },
+            { id: 17, name: "Лебедев", offices: "Новочеркасск-1, Новочеркасск Октябрьский", planQ1: 17288268, apr: 3886106, may: 4453800, jun: 7822564, totalQ1: 16162470, perfQ1: -1125798, jul: 3941232, aug: 4928528, sep: 6946650, oct: 7495236, nov: 9560576, dec: 11127296 },
+            { id: 18, name: "Зеленьков", offices: "Новочеркасск-2, Домиан Сельмаш", planQ1: 13702894, apr: 8098293, may: 4197618, jun: 8106403, totalQ1: 20402314, perfQ1: 6699420, jul: 9832435, aug: 5709512, sep: 8448418, oct: 9287696, nov: 5313782, dec: 15734637 },
+            { id: 19, name: "Петровская", offices: "Майский", planQ1: 1000000, apr: 150000, may: 0, jun: 0, totalQ1: 150000, perfQ1: -850000, jul: 0, aug: 0, sep: 0, oct: 0, nov: 0, dec: 0 },
+            { id: 20, name: "Залещенко", offices: "ВектоР Домиан", planQ1: 1589806, apr: 810245, may: 850500, jun: 1066205, totalQ1: 2726950, perfQ1: 1137144, jul: 996500, aug: 724000, sep: 532000, oct: 1067118, nov: 666000, dec: 320700 },
+            { id: 21, name: "Брагин", offices: "Батайск-2", planQ1: 1332214, apr: 705000, may: 304410, jun: 92500, totalQ1: 1101910, perfQ1: -230304, jul: 205000, aug: 260000, sep: 671000, oct: 418800, nov: 782000, dec: 667112 },
+            { id: 22, name: "Немченко", offices: "Азов Первый, Золотой Квадрат", planQ1: 1000000, apr: 273167, may: 85000, jun: 146750, totalQ1: 504917, perfQ1: -495083, jul: 396600, aug: 628069, sep: 649479, oct: 946656, nov: 1482322, dec: 0 },
+            { id: 23, name: "Князев", offices: "Суворовский-2", planQ1: 1332214, apr: 716000, may: 663625, jun: 562700, totalQ1: 1942325, perfQ1: 610111, jul: 1298500, aug: 847415, sep: 824118, oct: 340000, nov: 161000, dec: 159060 },
+            { id: 24, name: "Данилова О.", offices: "офис Даниловых", planQ1: 3015870, apr: 227400, may: 0, jun: 150000, totalQ1: 377400, perfQ1: -2638470, jul: 0, aug: 766000, sep: 0, oct: 809360, nov: 0, dec: 725811 },
+            { id: 25, name: "Козлова", offices: "ЛеМар Вересаево", planQ1: 1038158, apr: 1713576, may: 376500, jun: 575000, totalQ1: 2665076, perfQ1: 1626918, jul: 427350, aug: 1022156, sep: 521880, oct: 874260, nov: 1416618, dec: 2300466 },
+            { id: 26, name: "Кравцов", offices: "Рантье", planQ1: 2076800, apr: 132000, may: 91000, jun: 0, totalQ1: 223000, perfQ1: -1853800, jul: 0, aug: 432000, sep: 182000, oct: 330000, nov: 0, dec: 428600 },
+            { id: 27, name: "Молчанов", offices: "Риелт", planQ1: 1000000, apr: 282000, may: 401000, jun: 422446, totalQ1: 1105446, perfQ1: 105446, jul: 194692, aug: 507000, sep: 883000, oct: 409000, nov: 0, dec: 500000 }
         ];
 
         const tableBody = document.querySelector('#salesTable tbody');
+        const reportContainer = document.getElementById('textReportContainer');
         let allEmployeeData = [];
 
         function formatNumber(num) {
@@ -379,26 +481,34 @@
                 return {
                     text: 'Стабильно выполняет',
                     class: 'category-always',
-                    badge: '<span class="category-badge" style="background-color: #28a745; color: white;">✓✓✓</span>'
+                    badge: '<span class="category-badge" style="background-color: #28a745; color: white;">✓✓✓</span>',
+                    category: 'always'
                 };
             } else if (!q1Positive && !q2Positive && !q3Positive) {
                 return {
                     text: 'Ни разу не выполнил',
                     class: 'category-never',
-                    badge: '<span class="category-badge" style="background-color: #dc3545; color: white;">✗✗✗</span>'
+                    badge: '<span class="category-badge" style="background-color: #dc3545; color: white;">✗✗✗</span>',
+                    category: 'never'
                 };
             } else if (overallPercent >= 100) {
                 return {
                     text: 'Выполняет план',
                     class: 'category-improving',
-                    badge: '<span class="category-badge" style="background-color: #007bff; color: white;">↑↑↑</span>'
+                    badge: '<span class="category-badge" style="background-color: #007bff; color: white;">↑↑↑</span>',
+                    category: 'improving'
                 };
             } else {
                 const positiveCount = [q1Positive, q2Positive, q3Positive].filter(Boolean).length;
                 return {
                     text: `Выполнил ${positiveCount} из 3 кварталов`,
                     class: 'category-mixed',
-                    badge: `<span class="category-badge" style="background-color: #ffc107; color: black;">${positiveCount}/3</span>`
+                    badge: `<span class="category-badge" style="background-color: #ffc107; color: black;">${positiveCount}/3</span>`,
+                    category: 'mixed',
+                    positiveCount: positiveCount,
+                    q1Positive: q1Positive,
+                    q2Positive: q2Positive,
+                    q3Positive: q3Positive
                 };
             }
         }
@@ -412,27 +522,42 @@
             const perfQ2 = totalQ2 - planQ2;
             const percentQ2 = calculatePercentage(totalQ2, planQ2);
 
-            const totalQ3 = data.oct + data.nov;
+            const totalQ3 = data.oct + data.nov + data.dec;
             const perfQ3 = totalQ3 - planQ3;
             const percentQ3 = calculatePercentage(totalQ3, planQ3);
 
-            const totalEightMonths = data.totalQ1 + totalQ2 + totalQ3;
-            const planEightMonths = planQ1 + planQ2 + planQ3;
-            const perfEightMonths = totalEightMonths - planEightMonths;
+            const totalNineMonths = data.totalQ1 + totalQ2 + totalQ3;
+            const planNineMonths = planQ1 + planQ2 + planQ3;
+            const perfNineMonths = totalNineMonths - planNineMonths;
             const percentQ1 = calculatePercentage(data.totalQ1, planQ1);
-            const percentEightMonths = calculatePercentage(totalEightMonths, planEightMonths);
+            const percentNineMonths = calculatePercentage(totalNineMonths, planNineMonths);
             
-            const status = determineStatus(percentQ1, percentQ2, percentQ3, percentEightMonths);
+            const status = determineStatus(percentQ1, percentQ2, percentQ3, percentNineMonths);
 
-            // Сохраняем данные для графиков
+            // Сохраняем расширенные данные для отчета
             allEmployeeData.push({
                 name: data.name,
+                offices: data.offices,
                 q1Percent: percentQ1,
                 q2Percent: percentQ2,
                 q3Percent: percentQ3,
-                overallPercent: percentEightMonths,
+                overallPercent: percentNineMonths,
                 status: status,
-                totalEightMonths: totalEightMonths
+                totalNineMonths: totalNineMonths,
+                planQ1: planQ1,
+                planQ2: planQ2,
+                planQ3: planQ3,
+                totalQ1: data.totalQ1,
+                totalQ2: totalQ2,
+                totalQ3: totalQ3,
+                perfQ1: data.perfQ1,
+                perfQ2: perfQ2,
+                perfQ3: perfQ3,
+                perfNineMonths: perfNineMonths,
+                q1Positive: status.q1Positive || (percentQ1 >= 100),
+                q2Positive: status.q2Positive || (percentQ2 >= 100),
+                q3Positive: status.q3Positive || (percentQ3 >= 100),
+                positiveCount: status.positiveCount || [percentQ1 >= 100, percentQ2 >= 100, percentQ3 >= 100].filter(Boolean).length
             });
 
             const row = document.createElement('tr');
@@ -460,13 +585,14 @@
                 <td class="plan-cell">${formatNumber(planQ3)}</td>
                 <td class="readonly-cell">${formatNumber(data.oct)}</td>
                 <td class="readonly-cell">${formatNumber(data.nov)}</td>
+                <td class="readonly-cell">${formatNumber(data.dec)}</td>
                 <td class="third-quarter-summary">${formatNumber(totalQ3)}</td>
                 <td class="${getPerformanceClass(perfQ3)}">${formatNumber(perfQ3)}</td>
                 <td>${percentQ3.toFixed(2)}%</td>
                 
-                <td class="third-quarter-summary">${formatNumber(totalEightMonths)}</td>
-                <td class="${getPerformanceClass(perfEightMonths)}">${formatNumber(perfEightMonths)}</td>
-                <td>${percentEightMonths.toFixed(2)}%</td>
+                <td class="third-quarter-summary">${formatNumber(totalNineMonths)}</td>
+                <td class="${getPerformanceClass(perfNineMonths)}">${formatNumber(perfNineMonths)}</td>
+                <td>${percentNineMonths.toFixed(2)}%</td>
                 <td>${status.text}</td>
             `;
             return row;
@@ -481,6 +607,225 @@
             });
         }
 
+        function generateTextReport() {
+            // Сортируем сотрудников по алфавиту для отчета
+            const sortedEmployees = [...allEmployeeData].sort((a, b) => a.name.localeCompare(b.name));
+            
+            // 1. Кто выполнил план в 3-м квартале
+            const q3Positive = sortedEmployees.filter(emp => emp.q3Positive);
+            
+            // 2. Кто не выполнил план в 3-м квартале
+            const q3Negative = sortedEmployees.filter(emp => !emp.q3Positive);
+            
+            // 3. Кто выполнил план в каждом квартале (стабильно выполняет)
+            const alwaysPositive = sortedEmployees.filter(emp => 
+                emp.q1Positive && emp.q2Positive && emp.q3Positive
+            );
+            
+            // 4. Кто выполнил 1 или 2 раза
+            const mixedPositive = sortedEmployees.filter(emp => 
+                emp.positiveCount > 0 && emp.positiveCount < 3
+            );
+            
+            // 5. Кто не выполнил ни в одном квартале
+            const neverPositive = sortedEmployees.filter(emp => 
+                !emp.q1Positive && !emp.q2Positive && !emp.q3Positive
+            );
+            
+            // Генерация HTML отчета
+            let reportHTML = `
+                <h2>Текстовый отчет по выполнению плана продаж за 2025 год</h2>
+                <p><strong>Общая информация:</strong> Всего сотрудников: ${sortedEmployees.length}. Период: Апрель 2025 - Декабрь 2025.</p>
+                
+                <div class="report-section">
+                    <h3>1. Выполнившие план в 3-м квартале (Октябрь-Декабрь 2025)</h3>
+                    <p>Количество: ${q3Positive.length} сотрудников</p>
+                    <ul class="report-list">
+            `;
+            
+            q3Positive.forEach(emp => {
+                const percentOver = (emp.q3Percent - 100).toFixed(2);
+                reportHTML += `
+                    <li class="positive-item">
+                        <span class="employee-name">${emp.name}</span>
+                        <div class="performance-details">
+                            План: ${formatNumber(emp.planQ3)} руб. | Факт: ${formatNumber(emp.totalQ3)} руб. | 
+                            Выполнение: <span class="performance-positive">${emp.q3Percent.toFixed(2)}%</span> |
+                            Перевыполнение: <span class="performance-positive">+${percentOver}% (${formatNumber(emp.perfQ3)} руб.)</span>
+                        </div>
+                    </li>
+                `;
+            });
+            
+            reportHTML += `
+                    </ul>
+                </div>
+                
+                <div class="report-section">
+                    <h3>2. Не выполнившие план в 3-м квартале (Октябрь-Декабрь 2025)</h3>
+                    <p>Количество: ${q3Negative.length} сотрудников</p>
+                    <ul class="report-list">
+            `;
+            
+            q3Negative.forEach(emp => {
+                const percentUnder = (100 - emp.q3Percent).toFixed(2);
+                reportHTML += `
+                    <li class="negative-item">
+                        <span class="employee-name">${emp.name}</span>
+                        <div class="performance-details">
+                            План: ${formatNumber(emp.planQ3)} руб. | Факт: ${formatNumber(emp.totalQ3)} руб. | 
+                            Выполнение: <span class="performance-negative">${emp.q3Percent.toFixed(2)}%</span> |
+                            Недовыполнение: <span class="performance-negative">-${percentUnder}% (${formatNumber(Math.abs(emp.perfQ3))} руб.)</span>
+                        </div>
+                    </li>
+                `;
+            });
+            
+            reportHTML += `
+                    </ul>
+                </div>
+                
+                <div class="report-section">
+                    <h3>3. Стабильно выполняющие план во всех трех кварталах</h3>
+                    <p>Количество: ${alwaysPositive.length} сотрудников</p>
+                    <ul class="report-list">
+            `;
+            
+            alwaysPositive.forEach(emp => {
+                const avgPercent = ((emp.q1Percent + emp.q2Percent + emp.q3Percent) / 3).toFixed(2);
+                const totalOver = emp.perfQ1 + emp.perfQ2 + emp.perfQ3;
+                reportHTML += `
+                    <li class="positive-item">
+                        <span class="employee-name">${emp.name}</span>
+                        <div class="performance-details">
+                            Среднее выполнение: <span class="performance-positive">${avgPercent}%</span> |
+                            Общее перевыполнение: <span class="performance-positive">${formatNumber(totalOver)} руб.</span>
+                            <div>
+                                <span class="quarter-status quarter-success">1К: ${emp.q1Percent.toFixed(2)}%</span>
+                                <span class="quarter-status quarter-success">2К: ${emp.q2Percent.toFixed(2)}%</span>
+                                <span class="quarter-status quarter-success">3К: ${emp.q3Percent.toFixed(2)}%</span>
+                            </div>
+                        </div>
+                    </li>
+                `;
+            });
+            
+            reportHTML += `
+                    </ul>
+                </div>
+                
+                <div class="report-section">
+                    <h3>4. Выполнившие план в 1 или 2 кварталах</h3>
+                    <p>Количество: ${mixedPositive.length} сотрудников</p>
+                    <ul class="report-list">
+            `;
+            
+            mixedPositive.forEach(emp => {
+                const quarters = [];
+                if (emp.q1Positive) quarters.push('1К');
+                if (emp.q2Positive) quarters.push('2К');
+                if (emp.q3Positive) quarters.push('3К');
+                
+                const quartersText = quarters.join(', ');
+                const failedQuarters = [];
+                if (!emp.q1Positive) failedQuarters.push('1К');
+                if (!emp.q2Positive) failedQuarters.push('2К');
+                if (!emp.q3Positive) failedQuarters.push('3К');
+                
+                const failedQuartersText = failedQuarters.join(', ');
+                
+                reportHTML += `
+                    <li class="mixed-item">
+                        <span class="employee-name">${emp.name}</span>
+                        <div class="performance-details">
+                            Выполнил в: <span class="performance-mixed">${quartersText}</span> |
+                            Не выполнил в: <span class="performance-negative">${failedQuartersText}</span>
+                            <div>
+                                ${emp.q1Positive ? 
+                                    `<span class="quarter-status quarter-success">1К: ${emp.q1Percent.toFixed(2)}%</span>` : 
+                                    `<span class="quarter-status quarter-fail">1К: ${emp.q1Percent.toFixed(2)}%</span>`}
+                                ${emp.q2Positive ? 
+                                    `<span class="quarter-status quarter-success">2К: ${emp.q2Percent.toFixed(2)}%</span>` : 
+                                    `<span class="quarter-status quarter-fail">2К: ${emp.q2Percent.toFixed(2)}%</span>`}
+                                ${emp.q3Positive ? 
+                                    `<span class="quarter-status quarter-success">3К: ${emp.q3Percent.toFixed(2)}%</span>` : 
+                                    `<span class="quarter-status quarter-fail">3К: ${emp.q3Percent.toFixed(2)}%</span>`}
+                            </div>
+                        </div>
+                    </li>
+                `;
+            });
+            
+            reportHTML += `
+                    </ul>
+                </div>
+                
+                <div class="report-section">
+                    <h3>5. Не выполнившие план ни в одном квартале</h3>
+                    <p>Количество: ${neverPositive.length} сотрудников</p>
+                    <ul class="report-list">
+            `;
+            
+            neverPositive.forEach(emp => {
+                const avgPercent = ((emp.q1Percent + emp.q2Percent + emp.q3Percent) / 3).toFixed(2);
+                const totalUnder = Math.abs(emp.perfQ1 + emp.perfQ2 + emp.perfQ3);
+                reportHTML += `
+                    <li class="negative-item">
+                        <span class="employee-name">${emp.name}</span>
+                        <div class="performance-details">
+                            Среднее выполнение: <span class="performance-negative">${avgPercent}%</span> |
+                            Общее недовыполнение: <span class="performance-negative">${formatNumber(totalUnder)} руб.</span>
+                            <div>
+                                <span class="quarter-status quarter-fail">1К: ${emp.q1Percent.toFixed(2)}%</span>
+                                <span class="quarter-status quarter-fail">2К: ${emp.q2Percent.toFixed(2)}%</span>
+                                <span class="quarter-status quarter-fail">3К: ${emp.q3Percent.toFixed(2)}%</span>
+                            </div>
+                        </div>
+                    </li>
+                `;
+            });
+            
+            reportHTML += `
+                    </ul>
+                </div>
+                
+                <div class="report-section">
+                    <h3>Общая статистика</h3>
+                    <ul class="report-list">
+                        <li>Всего сотрудников: ${sortedEmployees.length}</li>
+                        <li>Стабильно выполняют план: ${alwaysPositive.length} (${((alwaysPositive.length / sortedEmployees.length) * 100).toFixed(1)}%)</li>
+                        <li>Выполняют план в 3-м квартале: ${q3Positive.length} (${((q3Positive.length / sortedEmployees.length) * 100).toFixed(1)}%)</li>
+                        <li>Не выполнили ни разу: ${neverPositive.length} (${((neverPositive.length / sortedEmployees.length) * 100).toFixed(1)}%)</li>
+                        <li>С переменным успехом: ${mixedPositive.length} (${((mixedPositive.length / sortedEmployees.length) * 100).toFixed(1)}%)</li>
+                    </ul>
+                </div>
+                
+                <p><em>Отчет сгенерирован: ${new Date().toLocaleDateString('ru-RU', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })}</em></p>
+            `;
+            
+            reportContainer.innerHTML = reportHTML;
+        }
+
+        function toggleTextReport() {
+            const reportContainer = document.getElementById('textReportContainer');
+            
+            if (reportContainer.style.display === 'none' || reportContainer.style.display === '') {
+                generateTextReport();
+                reportContainer.style.display = 'block';
+                
+                // Прокручиваем к отчету
+                reportContainer.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                reportContainer.style.display = 'none';
+            }
+        }
+
         function updateStatistics() {
             if (allEmployeeData.length === 0) return;
             
@@ -488,12 +833,12 @@
             document.getElementById('avgPerformance').textContent = avgPerformance.toFixed(1) + '%';
             
             const alwaysPositive = allEmployeeData.filter(emp => 
-                emp.q1Percent >= 100 && emp.q2Percent >= 100 && emp.q3Percent >= 100
+                emp.q1Positive && emp.q2Positive && emp.q3Positive
             ).length;
             document.getElementById('alwaysPositive').textContent = alwaysPositive;
             
             const alwaysNegative = allEmployeeData.filter(emp => 
-                emp.q1Percent < 100 && emp.q2Percent < 100 && emp.q3Percent < 100
+                !emp.q1Positive && !emp.q2Positive && !emp.q3Positive
             ).length;
             document.getElementById('alwaysNegative').textContent = alwaysNegative;
             
@@ -548,7 +893,7 @@
                 data: {
                     labels: topPerformers.map(emp => emp.name),
                     datasets: [{
-                        label: 'Выполнение плана за 8 месяцев, %',
+                        label: 'Выполнение плана за 9 месяцев, %',
                         data: topPerformers.map(emp => emp.overallPercent),
                         backgroundColor: topPerformers.map(emp => 
                             emp.overallPercent >= 100 ? '#4CAF50' : '#FF9800'
@@ -573,16 +918,16 @@
             // 3. Распределение по статусам выполнения
             const statusCounts = {
                 'Стабильно выполняет': allEmployeeData.filter(emp => 
-                    emp.q1Percent >= 100 && emp.q2Percent >= 100 && emp.q3Percent >= 100
+                    emp.q1Positive && emp.q2Positive && emp.q3Positive
                 ).length,
                 'Ни разу не выполнил': allEmployeeData.filter(emp => 
-                    emp.q1Percent < 100 && emp.q2Percent < 100 && emp.q3Percent < 100
+                    !emp.q1Positive && !emp.q2Positive && !emp.q3Positive
                 ).length,
                 'Выполняет план': allEmployeeData.filter(emp => 
-                    emp.overallPercent >= 100 && !(emp.q1Percent >= 100 && emp.q2Percent >= 100 && emp.q3Percent >= 100)
+                    emp.overallPercent >= 100 && !(emp.q1Positive && emp.q2Positive && emp.q3Positive)
                 ).length,
                 'Не выполняет план': allEmployeeData.filter(emp => 
-                    emp.overallPercent < 100 && !(emp.q1Percent < 100 && emp.q2Percent < 100 && emp.q3Percent < 100)
+                    emp.overallPercent < 100 && !(!emp.q1Positive && !emp.q2Positive && !emp.q3Positive)
                 ).length
             };
 
@@ -619,7 +964,8 @@
                 'Авг': quarterlyData.reduce((sum, emp) => sum + emp.aug, 0),
                 'Сен': quarterlyData.reduce((sum, emp) => sum + emp.sep, 0),
                 'Окт': quarterlyData.reduce((sum, emp) => sum + emp.oct, 0),
-                'Ноя': quarterlyData.reduce((sum, emp) => sum + emp.nov, 0)
+                'Ноя': quarterlyData.reduce((sum, emp) => sum + emp.nov, 0),
+                'Дек': quarterlyData.reduce((sum, emp) => sum + emp.dec, 0)
             };
 
             new Chart(monthlyTrendCtx, {
