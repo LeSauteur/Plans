@@ -35,16 +35,31 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-        .negative {
-            background-color: #ffcccc;
+        /* 5-уровневый цветовой градиент */
+        .perf-excellent {
+            background-color: #1b5e20;
+            color: white;
             font-weight: bold;
         }
-        .positive {
-            background-color: #ccffcc;
+        .perf-good {
+            background-color: #4CAF50;
+            color: white;
             font-weight: bold;
         }
-        .neutral {
-            background-color: #ffffcc;
+        .perf-warning {
+            background-color: #ffc107;
+            color: black;
+            font-weight: bold;
+        }
+        .perf-danger {
+            background-color: #ff9800;
+            color: black;
+            font-weight: bold;
+        }
+        .perf-critical {
+            background-color: #f44336;
+            color: white;
+            font-weight: bold;
         }
         .office-name {
             text-align: left;
@@ -61,13 +76,25 @@
             font-weight: bold;
             background-color: #e0e0e0;
         }
-        .half-year-summary {
+        .remaining-positive {
+            background-color: #c8e6c9;
+            color: #2e7d32;
             font-weight: bold;
-            background-color: #d0d0ff;
         }
-        .third-quarter-summary {
+        .remaining-negative {
+            background-color: #ffcdd2;
+            color: #c62828;
             font-weight: bold;
-            background-color: #ffd0d0;
+        }
+        .overplan-cell {
+            background-color: #b2dfdb;
+            color: #00695c;
+            font-weight: bold;
+        }
+        .required-march {
+            background-color: #fff3e0;
+            color: #e65100;
+            font-weight: bold;
         }
         .action-buttons {
             display: flex;
@@ -98,6 +125,20 @@
         .btn-chart:hover {
             background-color: #218838;
         }
+        .btn-problem {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-problem:hover {
+            background-color: #c82333;
+        }
+        .btn-early {
+            background-color: #17a2b8;
+            color: white;
+        }
+        .btn-early:hover {
+            background-color: #138496;
+        }
         
         /* Стили для визуализации */
         .visualization-container {
@@ -119,7 +160,7 @@
         }
         .stats-summary {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             margin-bottom: 30px;
         }
@@ -143,6 +184,45 @@
         }
         .stat-neutral {
             color: #ffc107;
+        }
+        
+        /* KPI сети */
+        .kpi-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .kpi-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .kpi-card.green {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        .kpi-card.red {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+        .kpi-card.blue {
+            background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+        }
+        .kpi-title {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+        .kpi-value {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+        .kpi-growth {
+            font-size: 16px;
+            font-weight: bold;
         }
         
         /* Категории выполнения плана */
@@ -176,8 +256,47 @@
             margin-left: 10px;
         }
         
+        /* Список досрочного выполнения */
+        .early-completers {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: none;
+        }
+        .early-completers h3 {
+            color: #28a745;
+            margin-top: 0;
+        }
+        .early-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .early-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #28a745;
+        }
+        
+        /* Проблемные офисы */
+        .problem-offices {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: none;
+        }
+        .problem-offices h3 {
+            color: #dc3545;
+            margin-top: 0;
+        }
+        
         @media print {
-            .action-buttons, .visualization-container, .stats-summary {
+            .action-buttons, .visualization-container, .stats-summary, .kpi-container, .early-completers, .problem-offices {
                 display: none;
             }
             body {
@@ -195,9 +314,55 @@
     <p><strong>Инструкция:</strong> Данные за май, июнь, июль и август зафиксированы. Все расчёты автоматические.</p>
     <p><strong>Изменения:</strong> Планы увеличены на 10% по сравнению с 2025 годом. Удалены уволенные сотрудники.</p>
     
+    <!-- KPI Сети -->
+    <div id="kpiContainer" class="kpi-container">
+        <div class="kpi-card green">
+            <div class="kpi-title">📊 Оборот сети — Январь</div>
+            <div class="kpi-value" id="kpiJan">0 ₽</div>
+        </div>
+        <div class="kpi-card green">
+            <div class="kpi-title">📊 Оборот сети — Февраль</div>
+            <div class="kpi-value" id="kpiFeb">0 ₽</div>
+        </div>
+        <div class="kpi-card" id="kpiGrowthCard">
+            <div class="kpi-title">📈 Рост к февралю</div>
+            <div class="kpi-value" id="kpiGrowth">0%</div>
+            <div id="kpiGrowthText">-</div>
+        </div>
+        <div class="kpi-card blue">
+            <div class="kpi-title">🎯 Факт Q1 (Янв+Фев)</div>
+            <div class="kpi-value" id="kpiQ1Actual">0 ₽</div>
+            <div id="kpiQ1ActualPercent">0%</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-title">🔮 Прогноз Q1</div>
+            <div class="kpi-value" id="kpiQ1Forecast">0 ₽</div>
+            <div id="kpiQ1ForecastPercent">0%</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-title">📋 План Q1 (на сотр.)</div>
+            <div class="kpi-value" id="kpiPlanQ1">0 ₽</div>
+            <div>в среднем</div>
+        </div>
+    </div>
+    
     <div class="action-buttons">
         <button class="btn btn-print" onclick="window.print()">🖨️ Распечатать таблицу</button>
         <button class="btn btn-chart" onclick="toggleVisualization()">📊 Показать/скрыть визуализацию</button>
+        <button class="btn btn-problem" onclick="toggleProblemOffices()">⚠️ Проблемные офисы</button>
+        <button class="btn btn-early" onclick="toggleEarlyCompleters()">🏆 Досрочно выполнили</button>
+    </div>
+
+    <!-- Досрочно выполнили план -->
+    <div id="earlyCompleters" class="early-completers">
+        <h3>🏆 Досрочно выполнили план Q1 (Янв+Фев > План)</h3>
+        <div class="early-list" id="earlyList"></div>
+    </div>
+
+    <!-- Проблемные офисы -->
+    <div id="problemOffices" class="problem-offices">
+        <h3>⚠️ Проблемные офисы (прогноз выполнения < 80%)</h3>
+        <div id="problemList"></div>
     </div>
 
     <!-- Статистика -->
@@ -230,12 +395,13 @@
                 <th>№</th>
                 <th>ФИО</th>
                 <th>Офисы</th>
-                <th>План 1 Квартал</th>
+                <th>План Q1</th>
                 <th colspan="3">1 Квартал (Январь-Март)</th>
-                <th>Итого 1 Квартал</th>
-                <th>Выполнение 1 Квартал</th>
-                <th>% Выполнения 1 Квартал</th>
-                <th>План 2 Квартал</th>
+                <th>Итого факт</th>
+                <th>Нужно в марте</th>
+                <th>Осталось / Перевып.</th>
+                <th>% Выполнения Q1</th>
+                <th>План Q2</th>
                 <th colspan="3">2 Квартал (Апрель-Июнь)</th>
                 <th>Итого 2 Квартал</th>
                 <th>Выполнение 2 Квартал</th>
@@ -258,6 +424,7 @@
                 <th>Январь</th>
                 <th>Февраль</th>
                 <th>Март</th>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -295,6 +462,11 @@
         <div class="chart-container">
             <h3 class="chart-title">Топ-10 сотрудников по выполнению плана</h3>
             <canvas id="topPerformersChart"></canvas>
+        </div>
+        
+        <div class="chart-container">
+            <h3 class="chart-title">ТОП-10 оборотов за квартал</h3>
+            <canvas id="topTurnoverChart"></canvas>
         </div>
         
         <div class="chart-container">
@@ -340,9 +512,15 @@
 
         const tableBody = document.querySelector('#salesTable tbody');
         let allEmployeeData = [];
+        let problemOfficesData = [];
+        let earlyCompletersData = [];
 
         function formatNumber(num) {
             return new Intl.NumberFormat('ru-RU').format(Math.round(num));
+        }
+
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 }).format(num);
         }
 
         function calculatePercentage(actual, plan) {
@@ -350,10 +528,13 @@
             return ((actual / plan) * 100);
         }
 
+        // 5-уровневый цветовой градиент
         function getPerformanceClass(value) {
-            if (value > 0) return 'positive';
-            if (value < 0) return 'negative';
-            return 'neutral';
+            if (value >= 120) return 'perf-excellent';
+            if (value >= 100) return 'perf-good';
+            if (value >= 80) return 'perf-warning';
+            if (value >= 60) return 'perf-danger';
+            return 'perf-critical';
         }
 
         function determineStatus(q1Percent, q2Percent, q3Percent, overallPercent) {
@@ -398,6 +579,20 @@
             const perfQ1 = totalQ1 - planQ1;
             const percentQ1 = calculatePercentage(totalQ1, planQ1);
 
+            // Улучшенный прогноз марта: февраль * 1.15 (коэффициент роста)
+            const forecastMarch = data.feb * 1.15;
+            const forecastQ1 = data.jan + data.feb + forecastMarch;
+            const forecastPercent = calculatePercentage(forecastQ1, planQ1);
+
+            // Минимальный март для выполнения плана
+            const requiredMarch = Math.max(0, planQ1 - (data.jan + data.feb));
+
+            // Остаток до плана (не отрицательный)
+            const remaining = Math.max(0, planQ1 - (data.jan + data.feb));
+            
+            // Перевыполнение плана
+            const overPlan = Math.max(0, (data.jan + data.feb) - planQ1);
+
             const totalQ2 = data.apr + data.may + data.jun;
             const perfQ2 = totalQ2 - planQ2;
             const percentQ2 = calculatePercentage(totalQ2, planQ2);
@@ -413,20 +608,59 @@
             
             const status = determineStatus(percentQ1, percentQ2, percentQ3, percentEightMonths);
 
-            // Сохраняем данные для графиков
-            allEmployeeData.push({
+            // Сохраняем данные для графиков и фильтров
+            const empData = {
                 name: data.name,
+                offices: data.offices,
                 q1Percent: percentQ1,
                 q2Percent: percentQ2,
                 q3Percent: percentQ3,
                 overallPercent: percentEightMonths,
                 status: status,
                 totalEightMonths: totalEightMonths,
+                forecastQ1: forecastQ1,
+                forecastPercent: forecastPercent,
+                remaining: remaining,
+                overPlan: overPlan,
+                requiredMarch: requiredMarch,
+                totalQ1: totalQ1,
                 monthlyData: [data.jan, data.feb, data.mar, data.apr, data.may, data.jun, data.jul, data.aug]
-            });
+            };
+            allEmployeeData.push(empData);
+
+            // Проверка на досрочное выполнение
+            if (data.jan + data.feb >= planQ1) {
+                earlyCompletersData.push({
+                    name: data.name,
+                    offices: data.offices,
+                    total: data.jan + data.feb,
+                    plan: planQ1,
+                    percent: calculatePercentage(data.jan + data.feb, planQ1)
+                });
+            }
+
+            // Проверка на проблемные офисы (прогноз < 80%)
+            if (forecastPercent < 80) {
+                problemOfficesData.push({
+                    name: data.name,
+                    offices: data.offices,
+                    forecastPercent: forecastPercent,
+                    requiredMarch: requiredMarch,
+                    plan: planQ1
+                });
+            }
 
             const row = document.createElement('tr');
             row.className = status.class;
+            
+            // Формирование ячейки "Осталось / Перевып."
+            let remainingCell = '';
+            if (overPlan > 0) {
+                remainingCell = `<td class="overplan-cell">+${formatNumber(overPlan)}</td>`;
+            } else {
+                remainingCell = `<td class="remaining-negative">${formatNumber(remaining)}</td>`;
+            }
+
             row.innerHTML = `
                 <td>${data.id}</td>
                 <td class="office-name">${data.name} ${status.badge}</td>
@@ -436,27 +670,28 @@
                 <td>${formatNumber(data.feb)}</td>
                 <td>${formatNumber(data.mar)}</td>
                 <td class="quarter-summary">${formatNumber(totalQ1)}</td>
-                <td class="${getPerformanceClass(perfQ1)}">${formatNumber(perfQ1)}</td>
-                <td>${percentQ1.toFixed(2)}%</td>
+                <td class="required-march">${formatNumber(requiredMarch)}</td>
+                ${remainingCell}
+                <td class="${getPerformanceClass(percentQ1)}">${percentQ1.toFixed(1)}%</td>
                 
                 <td class="plan-cell">${formatNumber(planQ2)}</td>
                 <td>${formatNumber(data.apr)}</td>
                 <td class="readonly-cell">${formatNumber(data.may)}</td>
                 <td class="readonly-cell">${formatNumber(data.jun)}</td>
                 <td class="quarter-summary">${formatNumber(totalQ2)}</td>
-                <td class="${getPerformanceClass(perfQ2)}">${formatNumber(perfQ2)}</td>
-                <td>${percentQ2.toFixed(2)}%</td>
+                <td class="${getPerformanceClass(percentQ2)}">${percentQ2.toFixed(1)}%</td>
+                <td>${percentQ2.toFixed(1)}%</td>
                 
                 <td class="plan-cell">${formatNumber(planQ3)}</td>
                 <td class="readonly-cell">${formatNumber(data.jul)}</td>
                 <td class="readonly-cell">${formatNumber(data.aug)}</td>
                 <td class="third-quarter-summary">${formatNumber(totalQ3)}</td>
-                <td class="${getPerformanceClass(perfQ3)}">${formatNumber(perfQ3)}</td>
-                <td>${percentQ3.toFixed(2)}%</td>
+                <td class="${getPerformanceClass(percentQ3)}">${percentQ3.toFixed(1)}%</td>
+                <td>${percentQ3.toFixed(1)}%</td>
                 
                 <td class="third-quarter-summary">${formatNumber(totalEightMonths)}</td>
-                <td class="${getPerformanceClass(perfEightMonths)}">${formatNumber(perfEightMonths)}</td>
-                <td>${percentEightMonths.toFixed(2)}%</td>
+                <td class="${getPerformanceClass(percentEightMonths)}">${formatNumber(perfEightMonths)}</td>
+                <td class="${getPerformanceClass(percentEightMonths)}">${percentEightMonths.toFixed(1)}%</td>
                 <td>${status.text}</td>
             `;
             return row;
@@ -465,10 +700,58 @@
         function populateTable() {
             tableBody.innerHTML = '';
             allEmployeeData = [];
+            problemOfficesData = [];
+            earlyCompletersData = [];
             quarterlyData.forEach(data => {
                 const row = createRow(data);
                 tableBody.appendChild(row);
             });
+        }
+
+        function updateKPI() {
+            const totalJan = quarterlyData.reduce((sum, emp) => sum + emp.jan, 0);
+            const totalFeb = quarterlyData.reduce((sum, emp) => sum + emp.feb, 0);
+            const growth = totalJan > 0 ? ((totalFeb - totalJan) / totalJan * 100) : 0;
+            const avgPlanQ1 = quarterlyData.reduce((sum, emp) => sum + emp.planQ1, 0) / quarterlyData.length;
+            
+            // Q1 факт и прогноз
+            const totalQ1Actual = totalJan + totalFeb;
+            const totalPlanQ1 = quarterlyData.reduce((sum, emp) => sum + emp.planQ1, 0);
+            const totalForecastQ1 = quarterlyData.reduce((sum, emp) => {
+                const forecastMarch = emp.feb * 1.15;
+                return sum + emp.jan + emp.feb + forecastMarch;
+            }, 0);
+
+            document.getElementById('kpiJan').textContent = formatCurrency(totalJan);
+            document.getElementById('kpiFeb').textContent = formatCurrency(totalFeb);
+            
+            const growthCard = document.getElementById('kpiGrowthCard');
+            const growthEl = document.getElementById('kpiGrowth');
+            const growthText = document.getElementById('kpiGrowthText');
+            
+            growthEl.textContent = (growth >= 0 ? '+' : '') + growth.toFixed(1) + '%';
+            
+            if (growth > 0) {
+                growthCard.className = 'kpi-card green';
+                growthText.textContent = '📈 Рост оборота';
+            } else if (growth < 0) {
+                growthCard.className = 'kpi-card red';
+                growthText.textContent = '📉 Падение оборота';
+            } else {
+                growthCard.className = 'kpi-card';
+                growthText.textContent = '➡️ Без изменений';
+            }
+            
+            document.getElementById('kpiPlanQ1').textContent = formatCurrency(avgPlanQ1);
+            
+            // Новые KPI Q1
+            document.getElementById('kpiQ1Actual').textContent = formatCurrency(totalQ1Actual);
+            document.getElementById('kpiQ1ActualPercent').textContent = 
+                calculatePercentage(totalQ1Actual, totalPlanQ1 * 2/3).toFixed(1) + '% от 2/3 плана';
+            
+            document.getElementById('kpiQ1Forecast').textContent = formatCurrency(totalForecastQ1);
+            document.getElementById('kpiQ1ForecastPercent').textContent = 
+                calculatePercentage(totalForecastQ1, totalPlanQ1).toFixed(1) + '% от плана Q1';
         }
 
         function updateStatistics() {
@@ -492,6 +775,65 @@
             );
             document.getElementById('bestPerformance').textContent = bestPerformer.overallPercent.toFixed(1) + '%';
             document.getElementById('bestPerformer').textContent = bestPerformer.name;
+        }
+
+        function toggleEarlyCompleters() {
+            const container = document.getElementById('earlyCompleters');
+            const list = document.getElementById('earlyList');
+            
+            if (container.style.display === 'block') {
+                container.style.display = 'none';
+            } else {
+                container.style.display = 'block';
+                if (earlyCompletersData.length === 0) {
+                    list.innerHTML = '<p>На данный момент нет сотрудников, досрочно выполнивших план Q1</p>';
+                } else {
+                    list.innerHTML = earlyCompletersData.map(emp => `
+                        <div class="early-item">
+                            <strong>${emp.name}</strong><br>
+                            <small>${emp.offices}</small><br>
+                            <span style="color: #28a745; font-weight: bold;">${formatCurrency(emp.total)} / ${formatCurrency(emp.plan)} (${emp.percent.toFixed(1)}%)</span>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+
+        function toggleProblemOffices() {
+            const container = document.getElementById('problemOffices');
+            const list = document.getElementById('problemList');
+            
+            if (container.style.display === 'block') {
+                container.style.display = 'none';
+            } else {
+                container.style.display = 'block';
+                if (problemOfficesData.length === 0) {
+                    list.innerHTML = '<p>Все офисы работают в нормальном режиме (прогноз ≥ 80%)</p>';
+                } else {
+                    list.innerHTML = `
+                        <table style="width: 100%; font-size: 14px;">
+                            <thead>
+                                <tr>
+                                    <th>Сотрудник</th>
+                                    <th>Офисы</th>
+                                    <th>Прогноз выполнения Q1</th>
+                                    <th>Нужно в марте</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${problemOfficesData.map(emp => `
+                                    <tr>
+                                        <td>${emp.name}</td>
+                                        <td>${emp.offices}</td>
+                                        <td class="${getPerformanceClass(emp.forecastPercent)}">${emp.forecastPercent.toFixed(1)}%</td>
+                                        <td class="required-march">${formatCurrency(emp.requiredMarch)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                }
+            }
         }
 
         function createCharts() {
@@ -560,7 +902,47 @@
                 }
             });
 
-            // 3. Распределение по статусам выполнения
+            // 3. ТОП-10 оборотов за квартал
+            const topTurnover = [...quarterlyData]
+                .map(emp => ({
+                    name: emp.name,
+                    turnover: emp.jan + emp.feb + emp.mar
+                }))
+                .sort((a, b) => b.turnover - a.turnover)
+                .slice(0, 10);
+            
+            const topTurnoverChartCtx = document.getElementById('topTurnoverChart').getContext('2d');
+            new Chart(topTurnoverChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: topTurnover.map(emp => emp.name),
+                    datasets: [{
+                        label: 'Оборот за Q1 2026, руб',
+                        data: topTurnover.map(emp => emp.turnover),
+                        backgroundColor: '#667eea'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Оборот, руб'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return (value / 1000000).toFixed(1) + ' млн';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 4. Распределение по статусам выполнения
             const statusCounts = {
                 'Стабильно выполняет': allEmployeeData.filter(emp => 
                     emp.q1Percent >= 100 && emp.q2Percent >= 100 && emp.q3Percent >= 100
@@ -597,10 +979,9 @@
                 }
             });
 
-            // 4. Динамика выполнения по месяцам 2026 (средние значения)
+            // 5. Динамика выполнения по месяцам 2026
             const monthlyTrendCtx = document.getElementById('monthlyTrendChart').getContext('2d');
             
-            // Суммируем продажи по месяцам 2026
             const monthlyTotals2026 = {
                 'Янв': quarterlyData.reduce((sum, emp) => sum + emp.jan, 0),
                 'Фев': quarterlyData.reduce((sum, emp) => sum + emp.feb, 0),
@@ -657,6 +1038,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             populateTable();
+            updateKPI();
         });
     </script>
 </body>
