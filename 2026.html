@@ -310,31 +310,32 @@
 
     <script>
         // Исходные данные с удалением Петровская, Скворцова, Пирогова и увеличением плана на 10%
+        // Данные за Январь и Февраль 2026 внесены из Excel файлов "Роялти в кассу"
         const quarterlyData = [
-            { id: 1, name: "Панасенко", offices: "Премьер, Батайск 1, Западный 2", planQ1: 3802961, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 2, name: "Кивва", offices: "Сев 3", planQ1: 1931271, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 3, name: "Чуносов", offices: "Зап 5", planQ1: 1100000, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 4, name: "Теркин", offices: "Западный Олимп, Волгоднск", planQ1: 9513574, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 5, name: "Андреева", offices: "Домиан Комарова, Домиан Стачки", planQ1: 3321083, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 6, name: "Яцык", offices: "Восточный", planQ1: 1100000, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 7, name: "Баранова", offices: "Шолохова", planQ1: 1115882, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 8, name: "Гуков", offices: "Нариманова, Аксай Центральный", planQ1: 3712570, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 9, name: "Червоный", offices: "Соловушки", planQ1: 3001346, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 1, name: "Панасенко", offices: "Премьер, Батайск 1, Западный 2", planQ1: 3802961, jan: 1602029, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 2, name: "Кивва", offices: "Сев 3", planQ1: 1931271, jan: 803200, feb: 1580000, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 3, name: "Чуносов", offices: "Зап 5", planQ1: 1100000, jan: 204000, feb: 575535, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 4, name: "Теркин", offices: "Западный Олимп, Волгоднск", planQ1: 9513574, jan: 1929617, feb: 4790009.90, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 5, name: "Андреева", offices: "Домиан Комарова, Домиан Стачки", planQ1: 3321083, jan: 668000, feb: 480407, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 6, name: "Яцык", offices: "Восточный", planQ1: 1100000, jan: 163000, feb: 283929, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 7, name: "Баранова", offices: "Шолохова", planQ1: 1115882, jan: 880833, feb: 254423.17, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 8, name: "Гуков", offices: "Нариманова, Аксай Центральный", planQ1: 3712570, jan: 1195407, feb: 1506473, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 9, name: "Червоный", offices: "Соловушки", planQ1: 3001346, jan: 1610413, feb: 1547338, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
             { id: 10, name: "Шиянова", offices: "Западный 11", planQ1: 1100000, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 11, name: "Межов", offices: "Янтарный, Аксай, Ленинаван, Легеартис", planQ1: 1813233, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 12, name: "Чуприна", offices: "Горизонт", planQ1: 4489766, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 13, name: "Смехнова", offices: "Пушкинский", planQ1: 1864586, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 11, name: "Межов", offices: "Янтарный, Аксай, Ленинаван, Легеартис", planQ1: 1813233, jan: 354000, feb: 2445000, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 12, name: "Чуприна", offices: "Горизонт", planQ1: 4489766, jan: 813022, feb: 1153820, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 13, name: "Смехнова", offices: "Пушкинский", planQ1: 1864586, jan: 237500, feb: 593540, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
             { id: 14, name: "Грибенюк С.", offices: "Гвардейский", planQ1: 1100000, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 15, name: "Лебедев", offices: "Новочеркасск-1, Новочеркасск Октябрьский", planQ1: 19017095, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 16, name: "Зеленьков", offices: "Новочеркасск-2, Домиан Сельмаш", planQ1: 15073183, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 17, name: "Залещенко", offices: "ВектоР Домиан", planQ1: 1748787, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 18, name: "Брагин", offices: "Батайск-2", planQ1: 1465435, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 19, name: "Немченко", offices: "Азов Первый, Золотой Квадрат", planQ1: 1100000, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 20, name: "Князев", offices: "Суворовский-2", planQ1: 1465435, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 21, name: "Данилова О.", offices: "офис Даниловых", planQ1: 3317457, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 22, name: "Козлова", offices: "ЛеМар Вересаево", planQ1: 1141974, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 23, name: "Кравцов", offices: "Рантье", planQ1: 2284480, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 24, name: "Молчанов", offices: "Риелт", planQ1: 1100000, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 }
+            { id: 15, name: "Лебедев", offices: "Новочеркасск-1, Новочеркасск Октябрьский", planQ1: 19017095, jan: 4280741, feb: 7759146.04, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 16, name: "Зеленьков", offices: "Новочеркасск-2, Домиан Сельмаш", planQ1: 15073183, jan: 5065639, feb: 10113749, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 17, name: "Залещенко", offices: "ВектоР Домиан", planQ1: 1748787, jan: 461000, feb: 290000, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 18, name: "Брагин", offices: "Батайск-2", planQ1: 1465435, jan: 727685, feb: 567348, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 19, name: "Немченко", offices: "Азов Первый, Золотой Квадрат", planQ1: 1100000, jan: 995841, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 20, name: "Князев", offices: "Суворовский-2", planQ1: 1465435, jan: 489130, feb: 378500, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 21, name: "Данилова О.", offices: "офис Даниловых", planQ1: 3317457, jan: 130000, feb: 205000, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 22, name: "Козлова", offices: "ЛеМар Вересаево", planQ1: 1141974, jan: 743200, feb: 416400, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 23, name: "Кравцов", offices: "Рантье", planQ1: 2284480, jan: 118000, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
+            { id: 24, name: "Молчанов", offices: "Риелт", planQ1: 1100000, jan: 319500, feb: 492000, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 }
         ];
 
         const tableBody = document.querySelector('#salesTable tbody');
