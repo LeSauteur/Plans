@@ -1,1045 +1,734 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>План продаж по кварталам 2026 с визуализацией</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f5f5f5;
-        }
-        h1, h2, h3 {
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-            position: sticky;
-            top: 0;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        /* 5-уровневый цветовой градиент */
-        .perf-excellent {
-            background-color: #1b5e20;
-            color: white;
-            font-weight: bold;
-        }
-        .perf-good {
-            background-color: #4CAF50;
-            color: white;
-            font-weight: bold;
-        }
-        .perf-warning {
-            background-color: #ffc107;
-            color: black;
-            font-weight: bold;
-        }
-        .perf-danger {
-            background-color: #ff9800;
-            color: black;
-            font-weight: bold;
-        }
-        .perf-critical {
-            background-color: #f44336;
-            color: white;
-            font-weight: bold;
-        }
-        .office-name {
-            text-align: left;
-            font-weight: bold;
-        }
-        .plan-cell {
-            background-color: #f0f0f0;
-        }
-        .readonly-cell {
-            background-color: #f9f9f9;
-            color: #555;
-        }
-        .quarter-summary {
-            font-weight: bold;
-            background-color: #e0e0e0;
-        }
-        .remaining-positive {
-            background-color: #c8e6c9;
-            color: #2e7d32;
-            font-weight: bold;
-        }
-        .remaining-negative {
-            background-color: #ffcdd2;
-            color: #c62828;
-            font-weight: bold;
-        }
-        .overplan-cell {
-            background-color: #b2dfdb;
-            color: #00695c;
-            font-weight: bold;
-        }
-        .required-march {
-            background-color: #fff3e0;
-            color: #e65100;
-            font-weight: bold;
-        }
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-        .btn-print {
-            background-color: #007BFF;
-            color: white;
-        }
-        .btn-print:hover {
-            background-color: #0056b3;
-        }
-        .btn-chart {
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-chart:hover {
-            background-color: #218838;
-        }
-        .btn-problem {
-            background-color: #dc3545;
-            color: white;
-        }
-        .btn-problem:hover {
-            background-color: #c82333;
-        }
-        .btn-early {
-            background-color: #17a2b8;
-            color: white;
-        }
-        .btn-early:hover {
-            background-color: #138496;
-        }
-        
-        /* Стили для визуализации */
-        .visualization-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-        .chart-container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .chart-title {
-            margin-top: 0;
-            color: #333;
-            text-align: center;
-        }
-        .stats-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-        .stat-positive {
-            color: #28a745;
-        }
-        .stat-negative {
-            color: #dc3545;
-        }
-        .stat-neutral {
-            color: #ffc107;
-        }
-        
-        /* KPI сети */
-        .kpi-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        .kpi-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            text-align: center;
-        }
-        .kpi-card.green {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        }
-        .kpi-card.red {
-            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
-        }
-        .kpi-card.blue {
-            background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
-        }
-        .kpi-title {
-            font-size: 13px;
-            opacity: 0.9;
-            margin-bottom: 8px;
-        }
-        .kpi-value {
-            font-size: 22px;
-            font-weight: bold;
-            margin: 8px 0;
-        }
-        .kpi-growth {
-            font-size: 16px;
-            font-weight: bold;
-        }
-        
-        /* Категории выполнения плана */
-        .category-always {
-            background-color: #d4edda;
-            border-left: 4px solid #28a745;
-        }
-        .category-never {
-            background-color: #f8d7da;
-            border-left: 4px solid #dc3545;
-        }
-        .category-mixed {
-            background-color: #fff3cd;
-            border-left: 4px solid #ffc107;
-        }
-        .category-improving {
-            background-color: #cce5ff;
-            border-left: 4px solid #007bff;
-        }
-        .category-declining {
-            background-color: #e2e3e5;
-            border-left: 4px solid #6c757d;
-        }
-        
-        .category-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-left: 10px;
-        }
-        
-        /* Список досрочного выполнения */
-        .early-completers {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            display: none;
-        }
-        .early-completers h3 {
-            color: #28a745;
-            margin-top: 0;
-        }
-        .early-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-        }
-        .early-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 6px;
-            border-left: 4px solid #28a745;
-        }
-        
-        /* Проблемные офисы */
-        .problem-offices {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            display: none;
-        }
-        .problem-offices h3 {
-            color: #dc3545;
-            margin-top: 0;
-        }
-        
-        @media print {
-            .action-buttons, .visualization-container, .stats-summary, .kpi-container, .early-completers, .problem-offices {
-                display: none;
-            }
-            body {
-                background-color: white;
-                margin: 0;
-            }
-            table {
-                box-shadow: none;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>План продаж 2026 — выполнение Q2</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #f3f5f7;
+      --card: #ffffff;
+      --text: #182230;
+      --muted: #667085;
+      --line: #d0d5dd;
+      --head: #14532d;
+      --head2: #166534;
+      --green: #16a34a;
+      --green-bg: #dcfce7;
+      --yellow: #f59e0b;
+      --yellow-bg: #fef3c7;
+      --orange: #ea580c;
+      --orange-bg: #ffedd5;
+      --red: #dc2626;
+      --red-bg: #fee2e2;
+      --blue: #2563eb;
+      --blue-bg: #dbeafe;
+      --dark: #0f172a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 22px;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .page {
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0f172a, #166534);
+      color: white;
+      padding: 24px;
+      border-radius: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, .16);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    h2, h3 { margin: 0 0 12px; }
+
+    .subtitle {
+      margin: 0;
+      color: #d1fae5;
+      max-width: 1100px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    button, .link-btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary { background: var(--blue); color: white; }
+    .btn-green { background: var(--green); color: white; }
+    .btn-dark { background: var(--dark); color: white; }
+    .btn-light { background: white; color: var(--head); border: 1px solid var(--line); }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, .06);
+    }
+
+    .kpi-title {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .kpi-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .kpi-note {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .notice {
+      background: var(--blue-bg);
+      border: 1px solid #93c5fd;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      color: #1e3a8a;
+    }
+
+    .table-wrap {
+      background: var(--card);
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      overflow: auto;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, .08);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1600px;
+      background: white;
+    }
+
+    th, td {
+      padding: 9px 10px;
+      border: 1px solid #d7dce3;
+      text-align: right;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    th {
+      background: var(--head);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    tbody tr:nth-child(even) { background: #f9fafb; }
+    tbody tr:hover { background: #eef6ff; }
+
+    td.left, th.left { text-align: left; }
+    td.center { text-align: center; }
+
+    .owner {
+      font-weight: 800;
+      color: #101828;
+    }
+
+    .office {
+      color: #344054;
+      max-width: 330px;
+      white-space: normal;
+      line-height: 1.25;
+    }
+
+    .money-plan { background: #f2f4f7; font-weight: 700; }
+    .sum { font-weight: 800; background: #f8fafc; }
+
+    .ok {
+      background: var(--green-bg) !important;
+      color: #14532d;
+      font-weight: 800;
+    }
+
+    .warn {
+      background: var(--yellow-bg) !important;
+      color: #713f12;
+      font-weight: 800;
+    }
+
+    .danger {
+      background: var(--red-bg) !important;
+      color: #7f1d1d;
+      font-weight: 800;
+    }
+
+    .bad {
+      background: var(--orange-bg) !important;
+      color: #7c2d12;
+      font-weight: 800;
+    }
+
+    .muted-cell {
+      color: var(--muted);
+      background: #f8fafc;
+    }
+
+    tfoot td {
+      background: #111827;
+      color: white;
+      font-weight: 800;
+      position: sticky;
+      bottom: 0;
+    }
+
+    .charts {
+      display: none;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .chart-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, .08);
+      min-height: 360px;
+    }
+
+    .report {
+      display: none;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      margin-top: 18px;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, .08);
+    }
+
+    .report-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 14px;
+    }
+
+    .report-box {
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      padding: 14px;
+      background: #f8fafc;
+    }
+
+    .report-box ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+    }
+
+    .report-box li { margin-bottom: 5px; }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .tag-ok { background: var(--green-bg); color: #14532d; }
+    .tag-warn { background: var(--yellow-bg); color: #713f12; }
+    .tag-danger { background: var(--red-bg); color: #7f1d1d; }
+
+    @media print {
+      body { background: white; padding: 0; }
+      .hero, .actions, .charts, .report, .notice { display: none !important; }
+      .table-wrap { box-shadow: none; border: 0; overflow: visible; }
+      table { min-width: 0; font-size: 8px; }
+      th, td { padding: 3px 4px; font-size: 8px; }
+      .office { max-width: 130px; }
+      @page { size: A4 landscape; margin: 7mm; }
+    }
+  </style>
 </head>
 <body>
-    <h1>План продаж по кварталам 2026 (Январь 2026 - Август 2026)</h1>
-    <p><strong>Инструкция:</strong> Данные за май, июнь, июль и август зафиксированы. Все расчёты автоматические.</p>
-    <p><strong>Изменения:</strong> Планы увеличены на 10% по сравнению с 2025 годом. Удалены уволенные сотрудники.</p>
-    
-    <!-- KPI Сети -->
-    <div id="kpiContainer" class="kpi-container">
-        <div class="kpi-card green">
-            <div class="kpi-title">📊 Оборот сети — Январь</div>
-            <div class="kpi-value" id="kpiJan">0 ₽</div>
-        </div>
-        <div class="kpi-card green">
-            <div class="kpi-title">📊 Оборот сети — Февраль</div>
-            <div class="kpi-value" id="kpiFeb">0 ₽</div>
-        </div>
-        <div class="kpi-card" id="kpiGrowthCard">
-            <div class="kpi-title">📈 Рост к февралю</div>
-            <div class="kpi-value" id="kpiGrowth">0%</div>
-            <div id="kpiGrowthText">-</div>
-        </div>
-        <div class="kpi-card blue">
-            <div class="kpi-title">🎯 Факт Q1 (Янв+Фев)</div>
-            <div class="kpi-value" id="kpiQ1Actual">0 ₽</div>
-            <div id="kpiQ1ActualPercent">0%</div>
-        </div>
-        <div class="kpi-card">
-            <div class="kpi-title">🔮 Прогноз Q1</div>
-            <div class="kpi-value" id="kpiQ1Forecast">0 ₽</div>
-            <div id="kpiQ1ForecastPercent">0%</div>
-        </div>
-        <div class="kpi-card">
-            <div class="kpi-title">📋 План Q1 (на сотр.)</div>
-            <div class="kpi-value" id="kpiPlanQ1">0 ₽</div>
-            <div>в среднем</div>
-        </div>
-    </div>
-    
-    <div class="action-buttons">
-        <button class="btn btn-print" onclick="window.print()">🖨️ Распечатать таблицу</button>
-        <button class="btn btn-chart" onclick="toggleVisualization()">📊 Показать/скрыть визуализацию</button>
-        <button class="btn btn-problem" onclick="toggleProblemOffices()">⚠️ Проблемные офисы</button>
-        <button class="btn btn-early" onclick="toggleEarlyCompleters()">🏆 Досрочно выполнили</button>
+  <div class="page">
+    <section class="hero">
+      <h1>План продаж 2026 — контроль выполнения</h1>
+      <p class="subtitle">
+        Период контроля: январь — июнь 2026. Q2 считается по апрелю и маю как текущий факт, июнь пока 0.
+        Основной управленческий показатель: выполнение апрель+май относительно плана за 2 месяца и остаток на июнь.
+      </p>
+    </section>
+
+    <div class="actions">
+      <button class="btn-primary" onclick="window.print()">🖨️ Печать</button>
+      <button class="btn-green" onclick="toggleCharts()">📊 Графики</button>
+      <button class="btn-dark" onclick="toggleReport()">📋 Краткий отчет</button>
+      <a class="link-btn btn-light" href="index.html">↩ Страница прошлого года</a>
     </div>
 
-    <!-- Досрочно выполнили план -->
-    <div id="earlyCompleters" class="early-completers">
-        <h3>🏆 Досрочно выполнили план Q1 (Янв+Фев > План)</h3>
-        <div class="early-list" id="earlyList"></div>
+    <div class="notice">
+      <strong>Логика:</strong> план Q2 равен плану собственника на квартал. Для текущего контроля апрель+май сравниваются с 2/3 квартального плана.
+      Колонка «Нужно в июне» показывает сумму, которую нужно добрать до полного Q2.
     </div>
 
-    <!-- Проблемные офисы -->
-    <div id="problemOffices" class="problem-offices">
-        <h3>⚠️ Проблемные офисы (прогноз выполнения < 80%)</h3>
-        <div id="problemList"></div>
-    </div>
+    <section class="kpi-grid" id="kpiGrid"></section>
 
-    <!-- Статистика -->
-    <div id="statsContainer" class="stats-summary" style="display: none;">
-        <div class="stat-card">
-            <h3>Среднее выполнение плана</h3>
-            <div class="stat-value" id="avgPerformance">0%</div>
-            <p>по всем сотрудникам за 8 месяцев</p>
-        </div>
-        <div class="stat-card">
-            <h3>Выполняют план стабильно</h3>
-            <div class="stat-value stat-positive" id="alwaysPositive">0</div>
-            <p>сотрудников</p>
-        </div>
-        <div class="stat-card">
-            <h3>Ни разу не выполнили план</h3>
-            <div class="stat-value stat-negative" id="alwaysNegative">0</div>
-            <p>сотрудников</p>
-        </div>
-        <div class="stat-card">
-            <h3>Лучший результат</h3>
-            <div class="stat-value stat-positive" id="bestPerformance">0%</div>
-            <p id="bestPerformer">-</p>
-        </div>
-    </div>
-
-    <table id="salesTable">
+    <section class="table-wrap">
+      <table id="salesTable">
         <thead>
-            <tr>
-                <th>№</th>
-                <th>ФИО</th>
-                <th>Офисы</th>
-                <th>План Q1</th>
-                <th colspan="3">1 Квартал (Январь-Март)</th>
-                <th>Итого факт</th>
-                <th>Нужно в марте</th>
-                <th>Осталось / Перевып.</th>
-                <th>% Выполнения Q1</th>
-                <th>План Q2</th>
-                <th colspan="3">2 Квартал (Апрель-Июнь)</th>
-                <th>Итого 2 Квартал</th>
-                <th>Выполнение 2 Квартал</th>
-                <th>% Выполнения 2 квартал</th>
-                <th>План 3 Квартал</th>
-                <th colspan="2">3 Квартал (Июль-Август)</th>
-                <th>Итого 3 Квартал</th>
-                <th>Выполнение 3 Квартал</th>
-                <th>% Выполнения 3 квартал</th>
-                <th>Итого за 8 месяцев</th>
-                <th>Выполнение за 8 месяцев</th>
-                <th>% за 8 месяцев</th>
-                <th>Статус</th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>Январь</th>
-                <th>Февраль</th>
-                <th>Март</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>Апрель</th>
-                <th>Май</th>
-                <th>Июнь</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>Июль</th>
-                <th>Август</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
+          <tr>
+            <th rowspan="2">№</th>
+            <th rowspan="2" class="left">Фамилия</th>
+            <th rowspan="2" class="left">Офисы</th>
+            <th colspan="5">Q1 2026</th>
+            <th colspan="8">Q2 2026</th>
+            <th colspan="3">Итого 2026 YTD</th>
+            <th rowspan="2">Статус</th>
+          </tr>
+          <tr>
+            <th>План Q1</th>
+            <th>Январь</th>
+            <th>Февраль</th>
+            <th>Март</th>
+            <th>% Q1</th>
+            <th>План Q2</th>
+            <th>План 2 мес.</th>
+            <th>Апрель</th>
+            <th>Май</th>
+            <th>Июнь</th>
+            <th>Факт апр+май</th>
+            <th>% 2 мес.</th>
+            <th>Нужно в июне</th>
+            <th>План YTD</th>
+            <th>Факт YTD</th>
+            <th>% YTD</th>
+          </tr>
         </thead>
-        <tbody>
-            <!-- Данные будут вставлены сюда JavaScript -->
-        </tbody>
-    </table>
+        <tbody></tbody>
+        <tfoot></tfoot>
+      </table>
+    </section>
 
-    <!-- Визуализация -->
-    <div id="visualizationContainer" class="visualization-container" style="display: none;">
-        <div class="chart-container">
-            <h3 class="chart-title">Выполнение плана по кварталам</h3>
-            <canvas id="quarterlyChart"></canvas>
+    <section id="report" class="report"></section>
+
+    <section id="charts" class="charts">
+      <div class="chart-card">
+        <h3>ТОП-10 по выполнению Q2 за апрель+май</h3>
+        <canvas id="q2PercentChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>ТОП-10 по обороту апрель+май</h3>
+        <canvas id="q2TurnoverChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Оборот сети по месяцам</h3>
+        <canvas id="monthlyChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Статусы Q2</h3>
+        <canvas id="statusChart"></canvas>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const quarterlyData = [
+      { id: 1, name: "Панасенко", offices: "Премьер, Батайск 1, Западный 2", planQ1: 3802961, jan: 1602029, feb: 0, mar: 0, apr: 1785045, may: 0, jun: 0 },
+      { id: 2, name: "Кивва", offices: "Сев 3", planQ1: 1931271, jan: 803200, feb: 1580000, mar: 0, apr: 653000, may: 851000, jun: 0 },
+      { id: 3, name: "Чуносов", offices: "Зап 5", planQ1: 1100000, jan: 204000, feb: 575535, mar: 0, apr: 2537253, may: 478974, jun: 0 },
+      { id: 4, name: "Теркин", offices: "Западный Олимп, Волгодонск", planQ1: 9513574, jan: 1929617, feb: 4790009.90, mar: 0, apr: 3799419, may: 3734152, jun: 0 },
+      { id: 5, name: "Андреева", offices: "Домиан Комарова, Домиан Стачки", planQ1: 3321083, jan: 668000, feb: 480407, mar: 0, apr: 1403000, may: 0, jun: 0 },
+      { id: 6, name: "Яцык", offices: "Восточный", planQ1: 1100000, jan: 163000, feb: 283929, mar: 0, apr: 594000, may: 0, jun: 0 },
+      { id: 7, name: "Баранова", offices: "Шолохова", planQ1: 1115882, jan: 880833, feb: 254423.17, mar: 0, apr: 665600, may: 537677, jun: 0 },
+      { id: 8, name: "Гуков", offices: "Нариманова, Аксай Центральный", planQ1: 3712570, jan: 1195407, feb: 1506473, mar: 0, apr: 1396332, may: 740000, jun: 0 },
+      { id: 9, name: "Червоный", offices: "Соловушки", planQ1: 3001346, jan: 1610413, feb: 1547338, mar: 0, apr: 851500, may: 1969838, jun: 0 },
+      { id: 10, name: "Шиянова", offices: "Западный 11", planQ1: 1100000, jan: 0, feb: 0, mar: 0, apr: 100000, may: 230000, jun: 0 },
+      { id: 11, name: "Межов", offices: "Янтарный, Аксай, Ленинаван, Легеартис", planQ1: 1813233, jan: 354000, feb: 2445000, mar: 0, apr: 1056875, may: 1933508, jun: 0 },
+      { id: 12, name: "Чуприна", offices: "Горизонт", planQ1: 4489766, jan: 813022, feb: 1153820, mar: 0, apr: 1254407, may: 1189000, jun: 0 },
+      { id: 13, name: "Смехнова", offices: "Пушкинский", planQ1: 1864586, jan: 237500, feb: 593540, mar: 0, apr: 1258855, may: 710754, jun: 0 },
+      { id: 14, name: "Грибенюк С.", offices: "Гвардейский", planQ1: 1100000, jan: 0, feb: 0, mar: 0, apr: 977000, may: 0, jun: 0 },
+      { id: 15, name: "Лебедев", offices: "Новочеркасск-1, Новочеркасск Октябрьский", planQ1: 19017095, jan: 4280741, feb: 7759146.04, mar: 0, apr: 8819186, may: 11792894, jun: 0 },
+      { id: 16, name: "Зеленьков", offices: "Новочеркасск-2, Домиан Сельмаш", planQ1: 15073183, jan: 5065639, feb: 10113749, mar: 0, apr: 10494141.40, may: 7359762, jun: 0 },
+      { id: 17, name: "Залещенко", offices: "ВектоР Домиан", planQ1: 1748787, jan: 461000, feb: 290000, mar: 0, apr: 400000, may: 432000, jun: 0 },
+      { id: 18, name: "Брагин", offices: "Батайск-2", planQ1: 1465435, jan: 727685, feb: 567348, mar: 0, apr: 1031416, may: 651537, jun: 0 },
+      { id: 19, name: "Немченко", offices: "Азов Первый, Золотой Квадрат", planQ1: 1100000, jan: 995841, feb: 0, mar: 0, apr: 963363.88, may: 262016, jun: 0 },
+      { id: 20, name: "Князев", offices: "Суворовский-2", planQ1: 1465435, jan: 489130, feb: 378500, mar: 0, apr: 600167, may: 232000, jun: 0 },
+      { id: 21, name: "Данилова О.", offices: "офис Даниловых", planQ1: 3317457, jan: 130000, feb: 205000, mar: 0, apr: 111250, may: 0, jun: 0 },
+      { id: 22, name: "Козлова", offices: "ЛеМар Вересаево", planQ1: 1141974, jan: 743200, feb: 416400, mar: 0, apr: 2103444.44, may: 770360, jun: 0 },
+      { id: 23, name: "Кравцов", offices: "Рантье", planQ1: 2284480, jan: 118000, feb: 0, mar: 0, apr: 142320, may: 200000, jun: 0 },
+      { id: 24, name: "Молчанов", offices: "Риелт", planQ1: 1100000, jan: 319500, feb: 492000, mar: 0, apr: 526472, may: 754907, jun: 0 },
+      { id: 25, name: "Геворкян", offices: "Домиан Лайф", planQ1: 2000000, jan: 0, feb: 0, mar: 0, apr: 807403.76, may: 882870, jun: 0 }
+    ];
+
+    const money = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 });
+    const money2 = new Intl.NumberFormat("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    let rows = [];
+    let chartsCreated = false;
+
+    function formatNumber(value) {
+      return money.format(Math.round(Number(value || 0)));
+    }
+
+    function percent(actual, plan) {
+      if (!plan) return 0;
+      return Number(actual || 0) / Number(plan || 0) * 100;
+    }
+
+    function cellClassByPercent(value) {
+      if (value >= 100) return "ok";
+      if (value >= 80) return "warn";
+      if (value >= 60) return "bad";
+      return "danger";
+    }
+
+    function statusByQ2Elapsed(value) {
+      if (value >= 100) return { text: "В норме по апрелю-маю", cls: "ok" };
+      if (value >= 80) return { text: "Близко к плану", cls: "warn" };
+      if (value >= 60) return { text: "Риск невыполнения", cls: "bad" };
+      return { text: "Критический риск", cls: "danger" };
+    }
+
+    function enrichData(item) {
+      const planQ1 = item.planQ1;
+      const planQ2 = item.planQ1;
+      const planTwoMonthsQ2 = planQ2 * 2 / 3;
+
+      const factQ1 = item.jan + item.feb + item.mar;
+      const factQ2Elapsed = item.apr + item.may;
+      const factQ2 = factQ2Elapsed + item.jun;
+      const needJune = Math.max(0, planQ2 - factQ2Elapsed);
+
+      const planYtd = planQ1 + planTwoMonthsQ2;
+      const factYtd = factQ1 + factQ2Elapsed;
+
+      const q1Percent = percent(factQ1, planQ1);
+      const q2ElapsedPercent = percent(factQ2Elapsed, planTwoMonthsQ2);
+      const q2FullPercent = percent(factQ2, planQ2);
+      const ytdPercent = percent(factYtd, planYtd);
+      const status = statusByQ2Elapsed(q2ElapsedPercent);
+
+      return {
+        ...item,
+        planQ1,
+        planQ2,
+        planTwoMonthsQ2,
+        factQ1,
+        factQ2Elapsed,
+        factQ2,
+        needJune,
+        planYtd,
+        factYtd,
+        q1Percent,
+        q2ElapsedPercent,
+        q2FullPercent,
+        ytdPercent,
+        status
+      };
+    }
+
+    function renderKpi() {
+      const totalPlanQ2 = rows.reduce((s, r) => s + r.planQ2, 0);
+      const totalPlanTwoMonths = rows.reduce((s, r) => s + r.planTwoMonthsQ2, 0);
+      const totalApr = rows.reduce((s, r) => s + r.apr, 0);
+      const totalMay = rows.reduce((s, r) => s + r.may, 0);
+      const totalFactTwoMonths = rows.reduce((s, r) => s + r.factQ2Elapsed, 0);
+      const totalNeedJune = rows.reduce((s, r) => s + r.needJune, 0);
+      const elapsedPercent = percent(totalFactTwoMonths, totalPlanTwoMonths);
+      const fullQ2Percent = percent(totalFactTwoMonths, totalPlanQ2);
+      const completedElapsed = rows.filter(r => r.q2ElapsedPercent >= 100).length;
+      const critical = rows.filter(r => r.q2ElapsedPercent < 60).length;
+
+      document.getElementById("kpiGrid").innerHTML = `
+        <div class="kpi-card">
+          <div class="kpi-title">План Q2 сети</div>
+          <div class="kpi-value">${formatNumber(totalPlanQ2)} ₽</div>
+          <div class="kpi-note">Полный квартальный план</div>
         </div>
-        
-        <div class="chart-container">
-            <h3 class="chart-title">Топ-10 сотрудников по выполнению плана</h3>
-            <canvas id="topPerformersChart"></canvas>
+        <div class="kpi-card">
+          <div class="kpi-title">Факт апрель + май</div>
+          <div class="kpi-value">${formatNumber(totalFactTwoMonths)} ₽</div>
+          <div class="kpi-note">Апрель: ${formatNumber(totalApr)} ₽ · Май: ${formatNumber(totalMay)} ₽</div>
         </div>
-        
-        <div class="chart-container">
-            <h3 class="chart-title">ТОП-10 оборотов за квартал</h3>
-            <canvas id="topTurnoverChart"></canvas>
+        <div class="kpi-card">
+          <div class="kpi-title">% от плана за 2 месяца</div>
+          <div class="kpi-value">${money2.format(elapsedPercent)}%</div>
+          <div class="kpi-note">План 2 месяцев: ${formatNumber(totalPlanTwoMonths)} ₽</div>
         </div>
-        
-        <div class="chart-container">
-            <h3 class="chart-title">Распределение по статусам выполнения</h3>
-            <canvas id="statusDistributionChart"></canvas>
+        <div class="kpi-card">
+          <div class="kpi-title">% от полного Q2</div>
+          <div class="kpi-value">${money2.format(fullQ2Percent)}%</div>
+          <div class="kpi-note">Июнь пока не внесен</div>
         </div>
-        
-        <div class="chart-container">
-            <h3 class="chart-title">Динамика выполнения за 8 месяцев</h3>
-            <canvas id="monthlyTrendChart"></canvas>
+        <div class="kpi-card">
+          <div class="kpi-title">Нужно добрать в июне</div>
+          <div class="kpi-value">${formatNumber(totalNeedJune)} ₽</div>
+          <div class="kpi-note">До полного плана Q2</div>
         </div>
-    </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Состояние офисов</div>
+          <div class="kpi-value">${completedElapsed} / ${rows.length}</div>
+          <div class="kpi-note">В норме по апрелю-маю · критичных: ${critical}</div>
+        </div>
+      `;
+    }
 
-    <script>
-        // Исходные данные с удалением Петровская, Скворцова, Пирогова и увеличением плана на 10%
-        // Данные за Январь и Февраль 2026 внесены из Excel файлов "Роялти в кассу"
-        const quarterlyData = [
-            { id: 1, name: "Панасенко", offices: "Премьер, Батайск 1, Западный 2", planQ1: 3802961, jan: 1602029, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 2, name: "Кивва", offices: "Сев 3", planQ1: 1931271, jan: 803200, feb: 1580000, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 3, name: "Чуносов", offices: "Зап 5", planQ1: 1100000, jan: 204000, feb: 575535, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 4, name: "Теркин", offices: "Западный Олимп, Волгоднск", planQ1: 9513574, jan: 1929617, feb: 4790009.90, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 5, name: "Андреева", offices: "Домиан Комарова, Домиан Стачки", planQ1: 3321083, jan: 668000, feb: 480407, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 6, name: "Яцык", offices: "Восточный", planQ1: 1100000, jan: 163000, feb: 283929, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 7, name: "Баранова", offices: "Шолохова", planQ1: 1115882, jan: 880833, feb: 254423.17, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 8, name: "Гуков", offices: "Нариманова, Аксай Центральный", planQ1: 3712570, jan: 1195407, feb: 1506473, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 9, name: "Червоный", offices: "Соловушки", planQ1: 3001346, jan: 1610413, feb: 1547338, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 10, name: "Шиянова", offices: "Западный 11", planQ1: 1100000, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 11, name: "Межов", offices: "Янтарный, Аксай, Ленинаван, Легеартис", planQ1: 1813233, jan: 354000, feb: 2445000, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 12, name: "Чуприна", offices: "Горизонт", planQ1: 4489766, jan: 813022, feb: 1153820, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 13, name: "Смехнова", offices: "Пушкинский", planQ1: 1864586, jan: 237500, feb: 593540, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 14, name: "Грибенюк С.", offices: "Гвардейский", planQ1: 1100000, jan: 0, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 15, name: "Лебедев", offices: "Новочеркасск-1, Новочеркасск Октябрьский", planQ1: 19017095, jan: 4280741, feb: 7759146.04, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 16, name: "Зеленьков", offices: "Новочеркасск-2, Домиан Сельмаш", planQ1: 15073183, jan: 5065639, feb: 10113749, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 17, name: "Залещенко", offices: "ВектоР Домиан", planQ1: 1748787, jan: 461000, feb: 290000, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 18, name: "Брагин", offices: "Батайск-2", planQ1: 1465435, jan: 727685, feb: 567348, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 19, name: "Немченко", offices: "Азов Первый, Золотой Квадрат", planQ1: 1100000, jan: 995841, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 20, name: "Князев", offices: "Суворовский-2", planQ1: 1465435, jan: 489130, feb: 378500, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 21, name: "Данилова О.", offices: "офис Даниловых", planQ1: 3317457, jan: 130000, feb: 205000, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 22, name: "Козлова", offices: "ЛеМар Вересаево", planQ1: 1141974, jan: 743200, feb: 416400, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 23, name: "Кравцов", offices: "Рантье", planQ1: 2284480, jan: 118000, feb: 0, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 },
-            { id: 24, name: "Молчанов", offices: "Риелт", planQ1: 1100000, jan: 319500, feb: 492000, mar: 0, apr: 0, may: 0, jun: 0, jul: 0, aug: 0 }
-        ];
+    function renderTable() {
+      const tbody = document.querySelector("#salesTable tbody");
+      const tfoot = document.querySelector("#salesTable tfoot");
+      tbody.innerHTML = "";
 
-        const tableBody = document.querySelector('#salesTable tbody');
-        let allEmployeeData = [];
-        let problemOfficesData = [];
-        let earlyCompletersData = [];
+      rows.forEach(r => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="center">${r.id}</td>
+          <td class="left owner">${r.name}</td>
+          <td class="left office">${r.offices}</td>
+          <td class="money-plan">${formatNumber(r.planQ1)}</td>
+          <td>${formatNumber(r.jan)}</td>
+          <td>${formatNumber(r.feb)}</td>
+          <td>${formatNumber(r.mar)}</td>
+          <td class="${cellClassByPercent(r.q1Percent)}">${money2.format(r.q1Percent)}%</td>
+          <td class="money-plan">${formatNumber(r.planQ2)}</td>
+          <td class="money-plan">${formatNumber(r.planTwoMonthsQ2)}</td>
+          <td>${formatNumber(r.apr)}</td>
+          <td>${formatNumber(r.may)}</td>
+          <td class="muted-cell">${formatNumber(r.jun)}</td>
+          <td class="sum">${formatNumber(r.factQ2Elapsed)}</td>
+          <td class="${cellClassByPercent(r.q2ElapsedPercent)}">${money2.format(r.q2ElapsedPercent)}%</td>
+          <td class="${r.needJune === 0 ? "ok" : ""}">${formatNumber(r.needJune)}</td>
+          <td class="money-plan">${formatNumber(r.planYtd)}</td>
+          <td class="sum">${formatNumber(r.factYtd)}</td>
+          <td class="${cellClassByPercent(r.ytdPercent)}">${money2.format(r.ytdPercent)}%</td>
+          <td class="${r.status.cls}">${r.status.text}</td>
+        `;
+        tbody.appendChild(tr);
+      });
 
-        function formatNumber(num) {
-            return new Intl.NumberFormat('ru-RU').format(Math.round(num));
-        }
+      const totals = rows.reduce((acc, r) => {
+        acc.planQ1 += r.planQ1;
+        acc.jan += r.jan;
+        acc.feb += r.feb;
+        acc.mar += r.mar;
+        acc.planQ2 += r.planQ2;
+        acc.planTwoMonthsQ2 += r.planTwoMonthsQ2;
+        acc.apr += r.apr;
+        acc.may += r.may;
+        acc.jun += r.jun;
+        acc.factQ2Elapsed += r.factQ2Elapsed;
+        acc.needJune += r.needJune;
+        acc.planYtd += r.planYtd;
+        acc.factYtd += r.factYtd;
+        return acc;
+      }, {
+        planQ1: 0, jan: 0, feb: 0, mar: 0,
+        planQ2: 0, planTwoMonthsQ2: 0, apr: 0, may: 0, jun: 0,
+        factQ2Elapsed: 0, needJune: 0, planYtd: 0, factYtd: 0
+      });
 
-        function formatCurrency(num) {
-            return new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 }).format(num);
-        }
+      const q1PercentTotal = percent(totals.jan + totals.feb + totals.mar, totals.planQ1);
+      const q2ElapsedPercentTotal = percent(totals.factQ2Elapsed, totals.planTwoMonthsQ2);
+      const ytdPercentTotal = percent(totals.factYtd, totals.planYtd);
 
-        function calculatePercentage(actual, plan) {
-            if (plan === 0) return 0;
-            return ((actual / plan) * 100);
-        }
+      tfoot.innerHTML = `
+        <tr>
+          <td colspan="3" class="left">ИТОГО</td>
+          <td>${formatNumber(totals.planQ1)}</td>
+          <td>${formatNumber(totals.jan)}</td>
+          <td>${formatNumber(totals.feb)}</td>
+          <td>${formatNumber(totals.mar)}</td>
+          <td>${money2.format(q1PercentTotal)}%</td>
+          <td>${formatNumber(totals.planQ2)}</td>
+          <td>${formatNumber(totals.planTwoMonthsQ2)}</td>
+          <td>${formatNumber(totals.apr)}</td>
+          <td>${formatNumber(totals.may)}</td>
+          <td>${formatNumber(totals.jun)}</td>
+          <td>${formatNumber(totals.factQ2Elapsed)}</td>
+          <td>${money2.format(q2ElapsedPercentTotal)}%</td>
+          <td>${formatNumber(totals.needJune)}</td>
+          <td>${formatNumber(totals.planYtd)}</td>
+          <td>${formatNumber(totals.factYtd)}</td>
+          <td>${money2.format(ytdPercentTotal)}%</td>
+          <td></td>
+        </tr>
+      `;
+    }
 
-        // 5-уровневый цветовой градиент
-        function getPerformanceClass(value) {
-            if (value >= 120) return 'perf-excellent';
-            if (value >= 100) return 'perf-good';
-            if (value >= 80) return 'perf-warning';
-            if (value >= 60) return 'perf-danger';
-            return 'perf-critical';
-        }
+    function renderReport() {
+      const report = document.getElementById("report");
+      const good = rows.filter(r => r.q2ElapsedPercent >= 100).sort((a, b) => b.q2ElapsedPercent - a.q2ElapsedPercent);
+      const risk = rows.filter(r => r.q2ElapsedPercent < 80).sort((a, b) => a.q2ElapsedPercent - b.q2ElapsedPercent);
+      const needTop = [...rows].sort((a, b) => b.needJune - a.needJune).slice(0, 10);
+      const top = [...rows].sort((a, b) => b.factQ2Elapsed - a.factQ2Elapsed).slice(0, 10);
 
-        function determineStatus(q1Percent, q2Percent, q3Percent, overallPercent) {
-            const q1Positive = q1Percent >= 100;
-            const q2Positive = q2Percent >= 100;
-            const q3Positive = q3Percent >= 100;
-            
-            if (q1Positive && q2Positive && q3Positive) {
-                return {
-                    text: 'Стабильно выполняет',
-                    class: 'category-always',
-                    badge: '<span class="category-badge" style="background-color: #28a745; color: white;">✓✓✓</span>'
-                };
-            } else if (!q1Positive && !q2Positive && !q3Positive) {
-                return {
-                    text: 'Ни разу не выполнил',
-                    class: 'category-never',
-                    badge: '<span class="category-badge" style="background-color: #dc3545; color: white;">✗✗✗</span>'
-                };
-            } else if (overallPercent >= 100) {
-                return {
-                    text: 'Выполняет план',
-                    class: 'category-improving',
-                    badge: '<span class="category-badge" style="background-color: #007bff; color: white;">↑↑↑</span>'
-                };
-            } else {
-                const positiveCount = [q1Positive, q2Positive, q3Positive].filter(Boolean).length;
-                return {
-                    text: `Выполнил ${positiveCount} из 3 кварталов`,
-                    class: 'category-mixed',
-                    badge: `<span class="category-badge" style="background-color: #ffc107; color: black;">${positiveCount}/3</span>`
-                };
-            }
-        }
+      function list(items, mapper) {
+        return items.length
+          ? `<ul>${items.map(mapper).join("")}</ul>`
+          : `<p>Нет данных.</p>`;
+      }
 
-        function createRow(data) {
-            const planQ1 = data.planQ1;
-            const planQ2 = data.planQ1;
-            const planQ3 = data.planQ1;
+      report.innerHTML = `
+        <h2>Краткий отчет по Q2</h2>
+        <div class="report-grid">
+          <div class="report-box">
+            <h3>В норме по апрелю-маю <span class="tag tag-ok">${good.length}</span></h3>
+            ${list(good, r => `<li><strong>${r.name}</strong>: ${formatNumber(r.factQ2Elapsed)} ₽ · ${money2.format(r.q2ElapsedPercent)}%</li>`)}
+          </div>
+          <div class="report-box">
+            <h3>Риск ниже 80% <span class="tag tag-danger">${risk.length}</span></h3>
+            ${list(risk, r => `<li><strong>${r.name}</strong>: ${money2.format(r.q2ElapsedPercent)}% · нужно в июне ${formatNumber(r.needJune)} ₽</li>`)}
+          </div>
+          <div class="report-box">
+            <h3>Крупнейший остаток на июнь</h3>
+            ${list(needTop, r => `<li><strong>${r.name}</strong>: ${formatNumber(r.needJune)} ₽</li>`)}
+          </div>
+          <div class="report-box">
+            <h3>ТОП по факту апрель+май</h3>
+            ${list(top, r => `<li><strong>${r.name}</strong>: ${formatNumber(r.factQ2Elapsed)} ₽</li>`)}
+          </div>
+        </div>
+      `;
+    }
 
-            const totalQ1 = data.jan + data.feb + data.mar;
-            const perfQ1 = totalQ1 - planQ1;
-            const percentQ1 = calculatePercentage(totalQ1, planQ1);
+    function toggleReport() {
+      const report = document.getElementById("report");
+      if (report.style.display === "block") {
+        report.style.display = "none";
+      } else {
+        renderReport();
+        report.style.display = "block";
+        report.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
 
-            // Улучшенный прогноз марта: февраль * 1.15 (коэффициент роста)
-            const forecastMarch = data.feb * 1.15;
-            const forecastQ1 = data.jan + data.feb + forecastMarch;
-            const forecastPercent = calculatePercentage(forecastQ1, planQ1);
+    function toggleCharts() {
+      const charts = document.getElementById("charts");
+      if (charts.style.display === "grid") {
+        charts.style.display = "none";
+        return;
+      }
+      charts.style.display = "grid";
+      if (!chartsCreated) {
+        createCharts();
+        chartsCreated = true;
+      }
+      charts.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
 
-            // Минимальный март для выполнения плана
-            const requiredMarch = Math.max(0, planQ1 - (data.jan + data.feb));
+    function createCharts() {
+      const topPercent = [...rows].sort((a, b) => b.q2ElapsedPercent - a.q2ElapsedPercent).slice(0, 10);
+      const topTurnover = [...rows].sort((a, b) => b.factQ2Elapsed - a.factQ2Elapsed).slice(0, 10);
 
-            // Остаток до плана (не отрицательный)
-            const remaining = Math.max(0, planQ1 - (data.jan + data.feb));
-            
-            // Перевыполнение плана
-            const overPlan = Math.max(0, (data.jan + data.feb) - planQ1);
+      const monthlyTotals = {
+        "Янв": rows.reduce((s, r) => s + r.jan, 0),
+        "Фев": rows.reduce((s, r) => s + r.feb, 0),
+        "Мар": rows.reduce((s, r) => s + r.mar, 0),
+        "Апр": rows.reduce((s, r) => s + r.apr, 0),
+        "Май": rows.reduce((s, r) => s + r.may, 0),
+        "Июн": rows.reduce((s, r) => s + r.jun, 0)
+      };
 
-            const totalQ2 = data.apr + data.may + data.jun;
-            const perfQ2 = totalQ2 - planQ2;
-            const percentQ2 = calculatePercentage(totalQ2, planQ2);
+      const statuses = {
+        "В норме": rows.filter(r => r.q2ElapsedPercent >= 100).length,
+        "80-99%": rows.filter(r => r.q2ElapsedPercent >= 80 && r.q2ElapsedPercent < 100).length,
+        "60-79%": rows.filter(r => r.q2ElapsedPercent >= 60 && r.q2ElapsedPercent < 80).length,
+        "до 60%": rows.filter(r => r.q2ElapsedPercent < 60).length
+      };
 
-            const totalQ3 = data.jul + data.aug;
-            const perfQ3 = totalQ3 - planQ3;
-            const percentQ3 = calculatePercentage(totalQ3, planQ3);
+      new Chart(document.getElementById("q2PercentChart"), {
+        type: "bar",
+        data: {
+          labels: topPercent.map(r => r.name),
+          datasets: [{
+            label: "% выполнения плана 2 месяцев",
+            data: topPercent.map(r => r.q2ElapsedPercent)
+          }]
+        },
+        options: { responsive: true, indexAxis: "y", scales: { x: { beginAtZero: true } } }
+      });
 
-            const totalEightMonths = totalQ1 + totalQ2 + totalQ3;
-            const planEightMonths = planQ1 + planQ2 + planQ3;
-            const perfEightMonths = totalEightMonths - planEightMonths;
-            const percentEightMonths = calculatePercentage(totalEightMonths, planEightMonths);
-            
-            const status = determineStatus(percentQ1, percentQ2, percentQ3, percentEightMonths);
+      new Chart(document.getElementById("q2TurnoverChart"), {
+        type: "bar",
+        data: {
+          labels: topTurnover.map(r => r.name),
+          datasets: [{
+            label: "Факт апрель+май, ₽",
+            data: topTurnover.map(r => r.factQ2Elapsed)
+          }]
+        },
+        options: { responsive: true, indexAxis: "y", scales: { x: { beginAtZero: true } } }
+      });
 
-            // Сохраняем данные для графиков и фильтров
-            const empData = {
-                name: data.name,
-                offices: data.offices,
-                q1Percent: percentQ1,
-                q2Percent: percentQ2,
-                q3Percent: percentQ3,
-                overallPercent: percentEightMonths,
-                status: status,
-                totalEightMonths: totalEightMonths,
-                forecastQ1: forecastQ1,
-                forecastPercent: forecastPercent,
-                remaining: remaining,
-                overPlan: overPlan,
-                requiredMarch: requiredMarch,
-                totalQ1: totalQ1,
-                monthlyData: [data.jan, data.feb, data.mar, data.apr, data.may, data.jun, data.jul, data.aug]
-            };
-            allEmployeeData.push(empData);
+      new Chart(document.getElementById("monthlyChart"), {
+        type: "line",
+        data: {
+          labels: Object.keys(monthlyTotals),
+          datasets: [{
+            label: "Оборот сети, ₽",
+            data: Object.values(monthlyTotals),
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: { responsive: true, scales: { y: { beginAtZero: true } } }
+      });
 
-            // Проверка на досрочное выполнение
-            if (data.jan + data.feb >= planQ1) {
-                earlyCompletersData.push({
-                    name: data.name,
-                    offices: data.offices,
-                    total: data.jan + data.feb,
-                    plan: planQ1,
-                    percent: calculatePercentage(data.jan + data.feb, planQ1)
-                });
-            }
+      new Chart(document.getElementById("statusChart"), {
+        type: "doughnut",
+        data: {
+          labels: Object.keys(statuses),
+          datasets: [{ data: Object.values(statuses) }]
+        },
+        options: { responsive: true }
+      });
+    }
 
-            // Проверка на проблемные офисы (прогноз < 80%)
-            if (forecastPercent < 80) {
-                problemOfficesData.push({
-                    name: data.name,
-                    offices: data.offices,
-                    forecastPercent: forecastPercent,
-                    requiredMarch: requiredMarch,
-                    plan: planQ1
-                });
-            }
-
-            const row = document.createElement('tr');
-            row.className = status.class;
-            
-            // Формирование ячейки "Осталось / Перевып."
-            let remainingCell = '';
-            if (overPlan > 0) {
-                remainingCell = `<td class="overplan-cell">+${formatNumber(overPlan)}</td>`;
-            } else {
-                remainingCell = `<td class="remaining-negative">${formatNumber(remaining)}</td>`;
-            }
-
-            row.innerHTML = `
-                <td>${data.id}</td>
-                <td class="office-name">${data.name} ${status.badge}</td>
-                <td class="office-name">${data.offices}</td>
-                <td class="plan-cell">${formatNumber(planQ1)}</td>
-                <td>${formatNumber(data.jan)}</td>
-                <td>${formatNumber(data.feb)}</td>
-                <td>${formatNumber(data.mar)}</td>
-                <td class="quarter-summary">${formatNumber(totalQ1)}</td>
-                <td class="required-march">${formatNumber(requiredMarch)}</td>
-                ${remainingCell}
-                <td class="${getPerformanceClass(percentQ1)}">${percentQ1.toFixed(1)}%</td>
-                
-                <td class="plan-cell">${formatNumber(planQ2)}</td>
-                <td>${formatNumber(data.apr)}</td>
-                <td class="readonly-cell">${formatNumber(data.may)}</td>
-                <td class="readonly-cell">${formatNumber(data.jun)}</td>
-                <td class="quarter-summary">${formatNumber(totalQ2)}</td>
-                <td class="${getPerformanceClass(percentQ2)}">${percentQ2.toFixed(1)}%</td>
-                <td>${percentQ2.toFixed(1)}%</td>
-                
-                <td class="plan-cell">${formatNumber(planQ3)}</td>
-                <td class="readonly-cell">${formatNumber(data.jul)}</td>
-                <td class="readonly-cell">${formatNumber(data.aug)}</td>
-                <td class="third-quarter-summary">${formatNumber(totalQ3)}</td>
-                <td class="${getPerformanceClass(percentQ3)}">${percentQ3.toFixed(1)}%</td>
-                <td>${percentQ3.toFixed(1)}%</td>
-                
-                <td class="third-quarter-summary">${formatNumber(totalEightMonths)}</td>
-                <td class="${getPerformanceClass(percentEightMonths)}">${formatNumber(perfEightMonths)}</td>
-                <td class="${getPerformanceClass(percentEightMonths)}">${percentEightMonths.toFixed(1)}%</td>
-                <td>${status.text}</td>
-            `;
-            return row;
-        }
-
-        function populateTable() {
-            tableBody.innerHTML = '';
-            allEmployeeData = [];
-            problemOfficesData = [];
-            earlyCompletersData = [];
-            quarterlyData.forEach(data => {
-                const row = createRow(data);
-                tableBody.appendChild(row);
-            });
-        }
-
-        function updateKPI() {
-            const totalJan = quarterlyData.reduce((sum, emp) => sum + emp.jan, 0);
-            const totalFeb = quarterlyData.reduce((sum, emp) => sum + emp.feb, 0);
-            const growth = totalJan > 0 ? ((totalFeb - totalJan) / totalJan * 100) : 0;
-            const avgPlanQ1 = quarterlyData.reduce((sum, emp) => sum + emp.planQ1, 0) / quarterlyData.length;
-            
-            // Q1 факт и прогноз
-            const totalQ1Actual = totalJan + totalFeb;
-            const totalPlanQ1 = quarterlyData.reduce((sum, emp) => sum + emp.planQ1, 0);
-            const totalForecastQ1 = quarterlyData.reduce((sum, emp) => {
-                const forecastMarch = emp.feb * 1.15;
-                return sum + emp.jan + emp.feb + forecastMarch;
-            }, 0);
-
-            document.getElementById('kpiJan').textContent = formatCurrency(totalJan);
-            document.getElementById('kpiFeb').textContent = formatCurrency(totalFeb);
-            
-            const growthCard = document.getElementById('kpiGrowthCard');
-            const growthEl = document.getElementById('kpiGrowth');
-            const growthText = document.getElementById('kpiGrowthText');
-            
-            growthEl.textContent = (growth >= 0 ? '+' : '') + growth.toFixed(1) + '%';
-            
-            if (growth > 0) {
-                growthCard.className = 'kpi-card green';
-                growthText.textContent = '📈 Рост оборота';
-            } else if (growth < 0) {
-                growthCard.className = 'kpi-card red';
-                growthText.textContent = '📉 Падение оборота';
-            } else {
-                growthCard.className = 'kpi-card';
-                growthText.textContent = '➡️ Без изменений';
-            }
-            
-            document.getElementById('kpiPlanQ1').textContent = formatCurrency(avgPlanQ1);
-            
-            // Новые KPI Q1
-            document.getElementById('kpiQ1Actual').textContent = formatCurrency(totalQ1Actual);
-            document.getElementById('kpiQ1ActualPercent').textContent = 
-                calculatePercentage(totalQ1Actual, totalPlanQ1 * 2/3).toFixed(1) + '% от 2/3 плана';
-            
-            document.getElementById('kpiQ1Forecast').textContent = formatCurrency(totalForecastQ1);
-            document.getElementById('kpiQ1ForecastPercent').textContent = 
-                calculatePercentage(totalForecastQ1, totalPlanQ1).toFixed(1) + '% от плана Q1';
-        }
-
-        function updateStatistics() {
-            if (allEmployeeData.length === 0) return;
-            
-            const avgPerformance = allEmployeeData.reduce((sum, emp) => sum + emp.overallPercent, 0) / allEmployeeData.length;
-            document.getElementById('avgPerformance').textContent = avgPerformance.toFixed(1) + '%';
-            
-            const alwaysPositive = allEmployeeData.filter(emp => 
-                emp.q1Percent >= 100 && emp.q2Percent >= 100 && emp.q3Percent >= 100
-            ).length;
-            document.getElementById('alwaysPositive').textContent = alwaysPositive;
-            
-            const alwaysNegative = allEmployeeData.filter(emp => 
-                emp.q1Percent < 100 && emp.q2Percent < 100 && emp.q3Percent < 100
-            ).length;
-            document.getElementById('alwaysNegative').textContent = alwaysNegative;
-            
-            const bestPerformer = allEmployeeData.reduce((best, emp) => 
-                emp.overallPercent > best.overallPercent ? emp : best
-            );
-            document.getElementById('bestPerformance').textContent = bestPerformer.overallPercent.toFixed(1) + '%';
-            document.getElementById('bestPerformer').textContent = bestPerformer.name;
-        }
-
-        function toggleEarlyCompleters() {
-            const container = document.getElementById('earlyCompleters');
-            const list = document.getElementById('earlyList');
-            
-            if (container.style.display === 'block') {
-                container.style.display = 'none';
-            } else {
-                container.style.display = 'block';
-                if (earlyCompletersData.length === 0) {
-                    list.innerHTML = '<p>На данный момент нет сотрудников, досрочно выполнивших план Q1</p>';
-                } else {
-                    list.innerHTML = earlyCompletersData.map(emp => `
-                        <div class="early-item">
-                            <strong>${emp.name}</strong><br>
-                            <small>${emp.offices}</small><br>
-                            <span style="color: #28a745; font-weight: bold;">${formatCurrency(emp.total)} / ${formatCurrency(emp.plan)} (${emp.percent.toFixed(1)}%)</span>
-                        </div>
-                    `).join('');
-                }
-            }
-        }
-
-        function toggleProblemOffices() {
-            const container = document.getElementById('problemOffices');
-            const list = document.getElementById('problemList');
-            
-            if (container.style.display === 'block') {
-                container.style.display = 'none';
-            } else {
-                container.style.display = 'block';
-                if (problemOfficesData.length === 0) {
-                    list.innerHTML = '<p>Все офисы работают в нормальном режиме (прогноз ≥ 80%)</p>';
-                } else {
-                    list.innerHTML = `
-                        <table style="width: 100%; font-size: 14px;">
-                            <thead>
-                                <tr>
-                                    <th>Сотрудник</th>
-                                    <th>Офисы</th>
-                                    <th>Прогноз выполнения Q1</th>
-                                    <th>Нужно в марте</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${problemOfficesData.map(emp => `
-                                    <tr>
-                                        <td>${emp.name}</td>
-                                        <td>${emp.offices}</td>
-                                        <td class="${getPerformanceClass(emp.forecastPercent)}">${emp.forecastPercent.toFixed(1)}%</td>
-                                        <td class="required-march">${formatCurrency(emp.requiredMarch)}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    `;
-                }
-            }
-        }
-
-        function createCharts() {
-            // 1. График выполнения плана по кварталам (средние значения)
-            const quarterlyChartCtx = document.getElementById('quarterlyChart').getContext('2d');
-            const avgQ1 = allEmployeeData.reduce((sum, emp) => sum + emp.q1Percent, 0) / allEmployeeData.length;
-            const avgQ2 = allEmployeeData.reduce((sum, emp) => sum + emp.q2Percent, 0) / allEmployeeData.length;
-            const avgQ3 = allEmployeeData.reduce((sum, emp) => sum + emp.q3Percent, 0) / allEmployeeData.length;
-            
-            new Chart(quarterlyChartCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['1 Квартал', '2 Квартал', '3 Квартал'],
-                    datasets: [{
-                        label: 'Среднее выполнение плана, %',
-                        data: [avgQ1, avgQ2, avgQ3],
-                        backgroundColor: ['#4CAF50', '#2196F3', '#FF9800'],
-                        borderColor: ['#388E3C', '#1976D2', '#F57C00'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Выполнение плана, %'
-                            }
-                        }
-                    }
-                }
-            });
-
-            // 2. Топ-10 сотрудников по выполнению плана
-            const topPerformers = [...allEmployeeData]
-                .sort((a, b) => b.overallPercent - a.overallPercent)
-                .slice(0, 10);
-            
-            const topPerformersChartCtx = document.getElementById('topPerformersChart').getContext('2d');
-            new Chart(topPerformersChartCtx, {
-                type: 'bar',
-                data: {
-                    labels: topPerformers.map(emp => emp.name),
-                    datasets: [{
-                        label: 'Выполнение плана за 8 месяцев, %',
-                        data: topPerformers.map(emp => emp.overallPercent),
-                        backgroundColor: topPerformers.map(emp => 
-                            emp.overallPercent >= 100 ? '#4CAF50' : '#FF9800'
-                        )
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    indexAxis: 'y',
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Выполнение плана, %'
-                            }
-                        }
-                    }
-                }
-            });
-
-            // 3. ТОП-10 оборотов за квартал
-            const topTurnover = [...quarterlyData]
-                .map(emp => ({
-                    name: emp.name,
-                    turnover: emp.jan + emp.feb + emp.mar
-                }))
-                .sort((a, b) => b.turnover - a.turnover)
-                .slice(0, 10);
-            
-            const topTurnoverChartCtx = document.getElementById('topTurnoverChart').getContext('2d');
-            new Chart(topTurnoverChartCtx, {
-                type: 'bar',
-                data: {
-                    labels: topTurnover.map(emp => emp.name),
-                    datasets: [{
-                        label: 'Оборот за Q1 2026, руб',
-                        data: topTurnover.map(emp => emp.turnover),
-                        backgroundColor: '#667eea'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    indexAxis: 'y',
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Оборот, руб'
-                            },
-                            ticks: {
-                                callback: function(value) {
-                                    return (value / 1000000).toFixed(1) + ' млн';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-
-            // 4. Распределение по статусам выполнения
-            const statusCounts = {
-                'Стабильно выполняет': allEmployeeData.filter(emp => 
-                    emp.q1Percent >= 100 && emp.q2Percent >= 100 && emp.q3Percent >= 100
-                ).length,
-                'Ни разу не выполнил': allEmployeeData.filter(emp => 
-                    emp.q1Percent < 100 && emp.q2Percent < 100 && emp.q3Percent < 100
-                ).length,
-                'Выполняет план': allEmployeeData.filter(emp => 
-                    emp.overallPercent >= 100 && !(emp.q1Percent >= 100 && emp.q2Percent >= 100 && emp.q3Percent >= 100)
-                ).length,
-                'Не выполняет план': allEmployeeData.filter(emp => 
-                    emp.overallPercent < 100 && !(emp.q1Percent < 100 && emp.q2Percent < 100 && emp.q3Percent < 100)
-                ).length
-            };
-
-            const statusDistributionCtx = document.getElementById('statusDistributionChart').getContext('2d');
-            new Chart(statusDistributionCtx, {
-                type: 'pie',
-                data: {
-                    labels: Object.keys(statusCounts),
-                    datasets: [{
-                        data: Object.values(statusCounts),
-                        backgroundColor: ['#4CAF50', '#F44336', '#2196F3', '#FF9800'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                        }
-                    }
-                }
-            });
-
-            // 5. Динамика выполнения по месяцам 2026
-            const monthlyTrendCtx = document.getElementById('monthlyTrendChart').getContext('2d');
-            
-            const monthlyTotals2026 = {
-                'Янв': quarterlyData.reduce((sum, emp) => sum + emp.jan, 0),
-                'Фев': quarterlyData.reduce((sum, emp) => sum + emp.feb, 0),
-                'Мар': quarterlyData.reduce((sum, emp) => sum + emp.mar, 0),
-                'Апр': quarterlyData.reduce((sum, emp) => sum + emp.apr, 0),
-                'Май': quarterlyData.reduce((sum, emp) => sum + emp.may, 0),
-                'Июн': quarterlyData.reduce((sum, emp) => sum + emp.jun, 0),
-                'Июл': quarterlyData.reduce((sum, emp) => sum + emp.jul, 0),
-                'Авг': quarterlyData.reduce((sum, emp) => sum + emp.aug, 0)
-            };
-
-            new Chart(monthlyTrendCtx, {
-                type: 'line',
-                data: {
-                    labels: Object.keys(monthlyTotals2026),
-                    datasets: [{
-                        label: 'Объем продаж 2026',
-                        data: Object.values(monthlyTotals2026),
-                        borderColor: '#4CAF50',
-                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Объем продаж, руб'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        function toggleVisualization() {
-            const statsContainer = document.getElementById('statsContainer');
-            const vizContainer = document.getElementById('visualizationContainer');
-            
-            if (statsContainer.style.display === 'none') {
-                statsContainer.style.display = 'grid';
-                vizContainer.style.display = 'grid';
-                updateStatistics();
-                createCharts();
-            } else {
-                statsContainer.style.display = 'none';
-                vizContainer.style.display = 'none';
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            populateTable();
-            updateKPI();
-        });
-    </script>
+    document.addEventListener("DOMContentLoaded", () => {
+      rows = quarterlyData.map(enrichData);
+      renderKpi();
+      renderTable();
+    });
+  </script>
 </body>
 </html>
