@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>План продаж 2026 — выполнение Q2</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>План продаж 2026</title>
   <style>
     :root {
       --bg: #f3f5f7;
@@ -13,17 +12,11 @@
       --muted: #667085;
       --line: #d0d5dd;
       --head: #14532d;
-      --head2: #166534;
       --green: #16a34a;
       --green-bg: #dcfce7;
-      --yellow: #f59e0b;
       --yellow-bg: #fef3c7;
-      --orange: #ea580c;
-      --orange-bg: #ffedd5;
-      --red: #dc2626;
       --red-bg: #fee2e2;
       --blue: #2563eb;
-      --blue-bg: #dbeafe;
       --dark: #0f172a;
     }
 
@@ -35,100 +28,87 @@
       font-family: Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.4;
+      line-height: 1.35;
     }
 
-    .page {
-      max-width: 1800px;
-      margin: 0 auto;
-    }
+    .page { max-width: 2200px; margin: 0 auto; }
 
     .hero {
       background: linear-gradient(135deg, #0f172a, #166534);
       color: white;
-      padding: 24px;
+      padding: 22px;
       border-radius: 18px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       box-shadow: 0 12px 30px rgba(15, 23, 42, .16);
     }
 
-    h1 {
-      margin: 0 0 8px;
-      font-size: 30px;
-    }
-
-    h2, h3 { margin: 0 0 12px; }
-
-    .subtitle {
-      margin: 0;
-      color: #d1fae5;
-      max-width: 1100px;
-    }
+    h1 { margin: 0; font-size: 30px; }
+    h2, h3 { margin: 0 0 10px; }
 
     .actions {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin: 18px 0;
+      margin: 14px 0 16px;
     }
 
-    button, .link-btn {
+    button {
       border: 0;
       border-radius: 10px;
-      padding: 11px 16px;
+      padding: 10px 14px;
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
+      background: white;
+      color: var(--head);
+      border: 1px solid var(--line);
     }
 
-    .btn-primary { background: var(--blue); color: white; }
-    .btn-green { background: var(--green); color: white; }
-    .btn-dark { background: var(--dark); color: white; }
-    .btn-light { background: white; color: var(--head); border: 1px solid var(--line); }
+    button.active { background: var(--blue); color: white; border-color: var(--blue); }
+    button.print { background: var(--dark); color: white; border-color: var(--dark); }
 
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-      margin-bottom: 18px;
+      gap: 12px;
+      margin-bottom: 16px;
     }
 
     .kpi-card {
       background: var(--card);
       border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 16px;
+      border-radius: 14px;
+      padding: 14px;
       box-shadow: 0 6px 18px rgba(15, 23, 42, .06);
     }
 
-    .kpi-title {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 8px;
+    .kpi-title { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+    .kpi-value { font-size: 23px; font-weight: 800; }
+
+    .report {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, .08);
     }
 
-    .kpi-value {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--text);
+    .report-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 12px;
     }
 
-    .kpi-note {
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 12px;
+    .report-box {
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      padding: 12px;
+      background: #f8fafc;
     }
 
-    .notice {
-      background: var(--blue-bg);
-      border: 1px solid #93c5fd;
-      border-radius: 14px;
-      padding: 14px 16px;
-      margin-bottom: 18px;
-      color: #1e3a8a;
-    }
+    .report-box ul { margin: 8px 0 0; padding-left: 18px; }
+    .report-box li { margin-bottom: 5px; }
 
     .table-wrap {
       background: var(--card);
@@ -141,15 +121,15 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 1600px;
+      min-width: 2600px;
       background: white;
     }
 
     th, td {
-      padding: 9px 10px;
+      padding: 8px 9px;
       border: 1px solid #d7dce3;
       text-align: right;
-      font-size: 13px;
+      font-size: 12px;
       white-space: nowrap;
     }
 
@@ -165,154 +145,58 @@
 
     tbody tr:nth-child(even) { background: #f9fafb; }
     tbody tr:hover { background: #eef6ff; }
-
     td.left, th.left { text-align: left; }
     td.center { text-align: center; }
+    .owner { font-weight: 800; color: #101828; }
+    .office { color: #344054; max-width: 320px; white-space: normal; line-height: 1.25; }
+    .plan { background: #f2f4f7; font-weight: 700; }
+    .total { font-weight: 800; background: #f8fafc; }
+    .ok { background: var(--green-bg) !important; color: #14532d; font-weight: 800; }
+    .warn { background: var(--yellow-bg) !important; color: #713f12; font-weight: 800; }
+    .bad { background: #ffedd5 !important; color: #7c2d12; font-weight: 800; }
+    .danger { background: var(--red-bg) !important; color: #7f1d1d; font-weight: 800; }
+    tfoot td { background: #111827; color: white; font-weight: 800; }
 
-    .owner {
-      font-weight: 800;
-      color: #101828;
-    }
+    body.view-q1 .q2, body.view-q1 .q3, body.view-q1 .q4, body.view-q1 .year { display: none; }
+    body.view-q2 .q1, body.view-q2 .q3, body.view-q2 .q4, body.view-q2 .year { display: none; }
+    body.view-q3 .q1, body.view-q3 .q2, body.view-q3 .q4, body.view-q3 .year { display: none; }
+    body.view-q4 .q1, body.view-q4 .q2, body.view-q4 .q3, body.view-q4 .year { display: none; }
+    body.view-year .q1, body.view-year .q2, body.view-year .q3, body.view-year .q4 { display: none; }
 
-    .office {
-      color: #344054;
-      max-width: 330px;
-      white-space: normal;
-      line-height: 1.25;
-    }
-
-    .money-plan { background: #f2f4f7; font-weight: 700; }
-    .sum { font-weight: 800; background: #f8fafc; }
-
-    .ok {
-      background: var(--green-bg) !important;
-      color: #14532d;
-      font-weight: 800;
-    }
-
-    .warn {
-      background: var(--yellow-bg) !important;
-      color: #713f12;
-      font-weight: 800;
-    }
-
-    .danger {
-      background: var(--red-bg) !important;
-      color: #7f1d1d;
-      font-weight: 800;
-    }
-
-    .bad {
-      background: var(--orange-bg) !important;
-      color: #7c2d12;
-      font-weight: 800;
-    }
-
-    .muted-cell {
-      color: var(--muted);
-      background: #f8fafc;
-    }
-
-    tfoot td {
-      background: #111827;
-      color: white;
-      font-weight: 800;
-      position: sticky;
-      bottom: 0;
-    }
-
-    .charts {
-      display: none;
-      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-      gap: 16px;
-      margin-top: 18px;
-    }
-
-    .chart-card {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 16px;
-      box-shadow: 0 8px 22px rgba(15, 23, 42, .08);
-      min-height: 360px;
-    }
-
-    .report {
-      display: none;
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 18px;
-      margin-top: 18px;
-      box-shadow: 0 8px 22px rgba(15, 23, 42, .08);
-    }
-
-    .report-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 14px;
-    }
-
-    .report-box {
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      padding: 14px;
-      background: #f8fafc;
-    }
-
-    .report-box ul {
-      margin: 8px 0 0;
-      padding-left: 18px;
-    }
-
-    .report-box li { margin-bottom: 5px; }
-
-    .tag {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .tag-ok { background: var(--green-bg); color: #14532d; }
-    .tag-warn { background: var(--yellow-bg); color: #713f12; }
-    .tag-danger { background: var(--red-bg); color: #7f1d1d; }
+    body.view-q1 table, body.view-q2 table, body.view-q3 table, body.view-q4 table { min-width: 1250px; }
+    body.view-year table { min-width: 950px; }
 
     @media print {
       body { background: white; padding: 0; }
-      .hero, .actions, .charts, .report, .notice { display: none !important; }
+      .hero { box-shadow: none; border-radius: 0; padding: 10px 0; background: white; color: black; }
+      .actions { display: none !important; }
+      .kpi-grid, .report { page-break-inside: avoid; }
       .table-wrap { box-shadow: none; border: 0; overflow: visible; }
-      table { min-width: 0; font-size: 8px; }
-      th, td { padding: 3px 4px; font-size: 8px; }
-      .office { max-width: 130px; }
-      @page { size: A4 landscape; margin: 7mm; }
+      table { min-width: 0 !important; width: 100%; }
+      th, td { padding: 3px 4px; font-size: 7px; }
+      .office { max-width: 120px; }
+      @page { size: A3 landscape; margin: 7mm; }
     }
   </style>
 </head>
-<body>
+<body class="view-all">
   <div class="page">
     <section class="hero">
-      <h1>План продаж 2026 — контроль выполнения</h1>
-      <p class="subtitle">
-        Период контроля: январь — июнь 2026. Q2 считается по апрелю и маю как текущий факт, июнь пока 0.
-        Основной управленческий показатель: выполнение апрель+май относительно плана за 2 месяца и остаток на июнь.
-      </p>
+      <h1>План продаж 2026</h1>
     </section>
 
     <div class="actions">
-      <button class="btn-primary" onclick="window.print()">🖨️ Печать</button>
-      <button class="btn-green" onclick="toggleCharts()">📊 Графики</button>
-      <button class="btn-dark" onclick="toggleReport()">📋 Краткий отчет</button>
-      <a class="link-btn btn-light" href="index.html">↩ Страница прошлого года</a>
-    </div>
-
-    <div class="notice">
-      <strong>Логика:</strong> план Q2 равен плану собственника на квартал. Для текущего контроля апрель+май сравниваются с 2/3 квартального плана.
-      Колонка «Нужно в июне» показывает сумму, которую нужно добрать до полного Q2.
+      <button id="btn-all" class="active" onclick="setView('all')">Все</button>
+      <button id="btn-q1" onclick="setView('q1')">1 квартал</button>
+      <button id="btn-q2" onclick="setView('q2')">2 квартал</button>
+      <button id="btn-q3" onclick="setView('q3')">3 квартал</button>
+      <button id="btn-q4" onclick="setView('q4')">4 квартал</button>
+      <button id="btn-year" onclick="setView('year')">Год</button>
+      <button class="print" onclick="window.print()">Печать</button>
     </div>
 
     <section class="kpi-grid" id="kpiGrid"></section>
+    <section class="report" id="report"></section>
 
     <section class="table-wrap">
       <table id="salesTable">
@@ -321,195 +205,567 @@
             <th rowspan="2">№</th>
             <th rowspan="2" class="left">Фамилия</th>
             <th rowspan="2" class="left">Офисы</th>
-            <th colspan="5">Q1 2026</th>
-            <th colspan="8">Q2 2026</th>
-            <th colspan="3">Итого 2026 YTD</th>
-            <th rowspan="2">Статус</th>
+            <th colspan="6" class="q1">1 квартал</th>
+            <th colspan="6" class="q2">2 квартал</th>
+            <th colspan="6" class="q3">3 квартал</th>
+            <th colspan="6" class="q4">4 квартал</th>
+            <th colspan="3" class="year">Год</th>
           </tr>
           <tr>
-            <th>План Q1</th>
-            <th>Январь</th>
-            <th>Февраль</th>
-            <th>Март</th>
-            <th>% Q1</th>
-            <th>План Q2</th>
-            <th>План 2 мес.</th>
-            <th>Апрель</th>
-            <th>Май</th>
-            <th>Июнь</th>
-            <th>Факт апр+май</th>
-            <th>% 2 мес.</th>
-            <th>Нужно в июне</th>
-            <th>План YTD</th>
-            <th>Факт YTD</th>
-            <th>% YTD</th>
+            <th class="q1">План</th><th class="q1">Январь</th><th class="q1">Февраль</th><th class="q1">Март</th><th class="q1">Итого</th><th class="q1">%</th>
+            <th class="q2">План</th><th class="q2">Апрель</th><th class="q2">Май</th><th class="q2">Июнь</th><th class="q2">Итого</th><th class="q2">%</th>
+            <th class="q3">План</th><th class="q3">Июль</th><th class="q3">Август</th><th class="q3">Сентябрь</th><th class="q3">Итого</th><th class="q3">%</th>
+            <th class="q4">План</th><th class="q4">Октябрь</th><th class="q4">Ноябрь</th><th class="q4">Декабрь</th><th class="q4">Итого</th><th class="q4">%</th>
+            <th class="year">План</th><th class="year">Факт</th><th class="year">%</th>
           </tr>
         </thead>
         <tbody></tbody>
         <tfoot></tfoot>
       </table>
     </section>
-
-    <section id="report" class="report"></section>
-
-    <section id="charts" class="charts">
-      <div class="chart-card">
-        <h3>ТОП-10 по выполнению Q2 за апрель+май</h3>
-        <canvas id="q2PercentChart"></canvas>
-      </div>
-      <div class="chart-card">
-        <h3>ТОП-10 по обороту апрель+май</h3>
-        <canvas id="q2TurnoverChart"></canvas>
-      </div>
-      <div class="chart-card">
-        <h3>Оборот сети по месяцам</h3>
-        <canvas id="monthlyChart"></canvas>
-      </div>
-      <div class="chart-card">
-        <h3>Статусы Q2</h3>
-        <canvas id="statusChart"></canvas>
-      </div>
-    </section>
   </div>
 
   <script>
-    const quarterlyData = [
-      { id: 1, name: "Панасенко", offices: "Премьер, Батайск 1, Западный 2", planQ1: 3802961, jan: 1602029, feb: 0, mar: 0, apr: 1785045, may: 0, jun: 0 },
-      { id: 2, name: "Кивва", offices: "Сев 3", planQ1: 1931271, jan: 803200, feb: 1580000, mar: 0, apr: 653000, may: 851000, jun: 0 },
-      { id: 3, name: "Чуносов", offices: "Зап 5", planQ1: 1100000, jan: 204000, feb: 575535, mar: 0, apr: 2537253, may: 478974, jun: 0 },
-      { id: 4, name: "Теркин", offices: "Западный Олимп, Волгодонск", planQ1: 9513574, jan: 1929617, feb: 4790009.90, mar: 0, apr: 3799419, may: 3734152, jun: 0 },
-      { id: 5, name: "Андреева", offices: "Домиан Комарова, Домиан Стачки", planQ1: 3321083, jan: 668000, feb: 480407, mar: 0, apr: 1403000, may: 0, jun: 0 },
-      { id: 6, name: "Яцык", offices: "Восточный", planQ1: 1100000, jan: 163000, feb: 283929, mar: 0, apr: 594000, may: 0, jun: 0 },
-      { id: 7, name: "Баранова", offices: "Шолохова", planQ1: 1115882, jan: 880833, feb: 254423.17, mar: 0, apr: 665600, may: 537677, jun: 0 },
-      { id: 8, name: "Гуков", offices: "Нариманова, Аксай Центральный", planQ1: 3712570, jan: 1195407, feb: 1506473, mar: 0, apr: 1396332, may: 740000, jun: 0 },
-      { id: 9, name: "Червоный", offices: "Соловушки", planQ1: 3001346, jan: 1610413, feb: 1547338, mar: 0, apr: 851500, may: 1969838, jun: 0 },
-      { id: 10, name: "Шиянова", offices: "Западный 11", planQ1: 1100000, jan: 0, feb: 0, mar: 0, apr: 100000, may: 230000, jun: 0 },
-      { id: 11, name: "Межов", offices: "Янтарный, Аксай, Ленинаван, Легеартис", planQ1: 1813233, jan: 354000, feb: 2445000, mar: 0, apr: 1056875, may: 1933508, jun: 0 },
-      { id: 12, name: "Чуприна", offices: "Горизонт", planQ1: 4489766, jan: 813022, feb: 1153820, mar: 0, apr: 1254407, may: 1189000, jun: 0 },
-      { id: 13, name: "Смехнова", offices: "Пушкинский", planQ1: 1864586, jan: 237500, feb: 593540, mar: 0, apr: 1258855, may: 710754, jun: 0 },
-      { id: 14, name: "Грибенюк С.", offices: "Гвардейский", planQ1: 1100000, jan: 0, feb: 0, mar: 0, apr: 977000, may: 0, jun: 0 },
-      { id: 15, name: "Лебедев", offices: "Новочеркасск-1, Новочеркасск Октябрьский", planQ1: 19017095, jan: 4280741, feb: 7759146.04, mar: 0, apr: 8819186, may: 11792894, jun: 0 },
-      { id: 16, name: "Зеленьков", offices: "Новочеркасск-2, Домиан Сельмаш", planQ1: 15073183, jan: 5065639, feb: 10113749, mar: 0, apr: 10494141.40, may: 7359762, jun: 0 },
-      { id: 17, name: "Залещенко", offices: "ВектоР Домиан", planQ1: 1748787, jan: 461000, feb: 290000, mar: 0, apr: 400000, may: 432000, jun: 0 },
-      { id: 18, name: "Брагин", offices: "Батайск-2", planQ1: 1465435, jan: 727685, feb: 567348, mar: 0, apr: 1031416, may: 651537, jun: 0 },
-      { id: 19, name: "Немченко", offices: "Азов Первый, Золотой Квадрат", planQ1: 1100000, jan: 995841, feb: 0, mar: 0, apr: 963363.88, may: 262016, jun: 0 },
-      { id: 20, name: "Князев", offices: "Суворовский-2", planQ1: 1465435, jan: 489130, feb: 378500, mar: 0, apr: 600167, may: 232000, jun: 0 },
-      { id: 21, name: "Данилова О.", offices: "офис Даниловых", planQ1: 3317457, jan: 130000, feb: 205000, mar: 0, apr: 111250, may: 0, jun: 0 },
-      { id: 22, name: "Козлова", offices: "ЛеМар Вересаево", planQ1: 1141974, jan: 743200, feb: 416400, mar: 0, apr: 2103444.44, may: 770360, jun: 0 },
-      { id: 23, name: "Кравцов", offices: "Рантье", planQ1: 2284480, jan: 118000, feb: 0, mar: 0, apr: 142320, may: 200000, jun: 0 },
-      { id: 24, name: "Молчанов", offices: "Риелт", planQ1: 1100000, jan: 319500, feb: 492000, mar: 0, apr: 526472, may: 754907, jun: 0 },
-      { id: 25, name: "Геворкян", offices: "Домиан Лайф", planQ1: 2000000, jan: 0, feb: 0, mar: 0, apr: 807403.76, may: 882870, jun: 0 }
-    ];
+    const owners = [
+      {
+            "id": 1,
+            "name": "Панасенко",
+            "offices": "Премьер, Батайск 1, Западный 2",
+            "plan": 3802961,
+            "jan": 1602029.0,
+            "feb": 0.0,
+            "mar": 0.0,
+            "apr": 1785045,
+            "may": 0,
+            "jun": 1358647,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 2,
+            "name": "Кивва",
+            "offices": "Сев 3",
+            "plan": 1931271,
+            "jan": 803200.0,
+            "feb": 1580000.0,
+            "mar": 0.0,
+            "apr": 653000,
+            "may": 851000,
+            "jun": 414000,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 3,
+            "name": "Чуносов",
+            "offices": "Зап 5",
+            "plan": 1100000,
+            "jan": 204000.0,
+            "feb": 575535.0,
+            "mar": 0.0,
+            "apr": 2537253,
+            "may": 478974,
+            "jun": 2171074,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 4,
+            "name": "Теркин",
+            "offices": "Западный Олимп, Волгодонск",
+            "plan": 9513574,
+            "jan": 1929617.0,
+            "feb": 4790009.9,
+            "mar": 0.0,
+            "apr": 3799419,
+            "may": 3734152,
+            "jun": 3572409,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 5,
+            "name": "Андреева",
+            "offices": "Домиан Комарова, Домиан Стачки",
+            "plan": 3321083,
+            "jan": 668000.0,
+            "feb": 480407.0,
+            "mar": 0.0,
+            "apr": 1403000,
+            "may": 0,
+            "jun": 804500,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 6,
+            "name": "Яцык",
+            "offices": "Восточный",
+            "plan": 1100000,
+            "jan": 163000.0,
+            "feb": 283929.0,
+            "mar": 0.0,
+            "apr": 594000,
+            "may": 0,
+            "jun": 879000,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 7,
+            "name": "Баранова",
+            "offices": "Шолохова",
+            "plan": 1115882,
+            "jan": 880833.0,
+            "feb": 254423.17,
+            "mar": 0.0,
+            "apr": 665600,
+            "may": 537677,
+            "jun": 384350,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 8,
+            "name": "Гуков",
+            "offices": "Нариманова, Аксай Центральный",
+            "plan": 3712570,
+            "jan": 1195407.0,
+            "feb": 1506473.0,
+            "mar": 0.0,
+            "apr": 1396332,
+            "may": 740000,
+            "jun": 2422936,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 9,
+            "name": "Червоный",
+            "offices": "Соловушки",
+            "plan": 3001346,
+            "jan": 1610413.0,
+            "feb": 1547338.0,
+            "mar": 0.0,
+            "apr": 851500,
+            "may": 1969838,
+            "jun": 1949486,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 10,
+            "name": "Шиянова",
+            "offices": "Западный 11",
+            "plan": 1100000,
+            "jan": 0.0,
+            "feb": 0.0,
+            "mar": 0.0,
+            "apr": 100000,
+            "may": 230000,
+            "jun": 0,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 11,
+            "name": "Межов",
+            "offices": "Янтарный, Аксай, Ленинаван, Легеартис",
+            "plan": 1813233,
+            "jan": 354000.0,
+            "feb": 2445000.0,
+            "mar": 0.0,
+            "apr": 1056875,
+            "may": 1933508,
+            "jun": 1480136,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 12,
+            "name": "Чуприна",
+            "offices": "Горизонт",
+            "plan": 4489766,
+            "jan": 813022.0,
+            "feb": 1153820.0,
+            "mar": 0.0,
+            "apr": 1254407,
+            "may": 1189000,
+            "jun": 5208431,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 13,
+            "name": "Смехнова",
+            "offices": "Пушкинский",
+            "plan": 1864586,
+            "jan": 237500.0,
+            "feb": 593540.0,
+            "mar": 0.0,
+            "apr": 1258855,
+            "may": 710754,
+            "jun": 1006023,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 14,
+            "name": "Грибенюк С.",
+            "offices": "Гвардейский",
+            "plan": 1100000,
+            "jan": 0.0,
+            "feb": 0.0,
+            "mar": 0.0,
+            "apr": 977000,
+            "may": 0,
+            "jun": 0,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 15,
+            "name": "Лебедев",
+            "offices": "Новочеркасск-1, Новочеркасск Октябрьский",
+            "plan": 19017095,
+            "jan": 4280741.0,
+            "feb": 7759146.04,
+            "mar": 0.0,
+            "apr": 8819186,
+            "may": 11792894,
+            "jun": 11880617,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 16,
+            "name": "Зеленьков",
+            "offices": "Новочеркасск-2, Домиан Сельмаш",
+            "plan": 15073183,
+            "jan": 5065639.0,
+            "feb": 10113749.0,
+            "mar": 0.0,
+            "apr": 10494141.4,
+            "may": 7359762,
+            "jun": 6377347,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 17,
+            "name": "Залещенко",
+            "offices": "ВектоР Домиан",
+            "plan": 1748787,
+            "jan": 461000.0,
+            "feb": 290000.0,
+            "mar": 0.0,
+            "apr": 400000,
+            "may": 432000,
+            "jun": 1198652,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 18,
+            "name": "Брагин",
+            "offices": "Батайск-2",
+            "plan": 1465435,
+            "jan": 727685.0,
+            "feb": 567348.0,
+            "mar": 0.0,
+            "apr": 1031416,
+            "may": 651537,
+            "jun": 1158952,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 19,
+            "name": "Немченко",
+            "offices": "Азов Первый, Золотой Квадрат",
+            "plan": 1100000,
+            "jan": 995841.0,
+            "feb": 0.0,
+            "mar": 0.0,
+            "apr": 963363.88,
+            "may": 262016,
+            "jun": 380000,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 20,
+            "name": "Князев",
+            "offices": "Суворовский-2",
+            "plan": 1465435,
+            "jan": 489130.0,
+            "feb": 378500.0,
+            "mar": 0.0,
+            "apr": 600167,
+            "may": 232000,
+            "jun": 392000,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 21,
+            "name": "Данилова О.",
+            "offices": "офис Даниловых",
+            "plan": 3317457,
+            "jan": 130000.0,
+            "feb": 205000.0,
+            "mar": 0.0,
+            "apr": 111250,
+            "may": 0,
+            "jun": 436000,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 22,
+            "name": "Козлова",
+            "offices": "ЛеМар Вересаево",
+            "plan": 1141974,
+            "jan": 743200.0,
+            "feb": 416400.0,
+            "mar": 0.0,
+            "apr": 2103444.44,
+            "may": 770360,
+            "jun": 394000,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 23,
+            "name": "Кравцов",
+            "offices": "Рантье",
+            "plan": 2284480,
+            "jan": 118000.0,
+            "feb": 0.0,
+            "mar": 0.0,
+            "apr": 142320,
+            "may": 200000,
+            "jun": 1468724,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 24,
+            "name": "Молчанов",
+            "offices": "Риелт",
+            "plan": 1100000,
+            "jan": 319500.0,
+            "feb": 492000.0,
+            "mar": 0.0,
+            "apr": 526472,
+            "may": 754907,
+            "jun": 212000,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 25,
+            "name": "Геворкян",
+            "offices": "Домиан Лайф",
+            "plan": 2000000,
+            "jan": 0.0,
+            "feb": 0.0,
+            "mar": 0.0,
+            "apr": 807403.76,
+            "may": 882870,
+            "jun": 343800,
+            "jul": 0,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      }
+];
 
     const money = new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 });
     const money2 = new Intl.NumberFormat("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
     let rows = [];
-    let chartsCreated = false;
 
-    function formatNumber(value) {
-      return money.format(Math.round(Number(value || 0)));
-    }
+    function formatNumber(value) { return money.format(Math.round(Number(value || 0))); }
+    function percent(actual, plan) { return plan ? Number(actual || 0) / Number(plan || 0) * 100 : 0; }
 
-    function percent(actual, plan) {
-      if (!plan) return 0;
-      return Number(actual || 0) / Number(plan || 0) * 100;
-    }
-
-    function cellClassByPercent(value) {
+    function percentClass(value) {
       if (value >= 100) return "ok";
       if (value >= 80) return "warn";
       if (value >= 60) return "bad";
       return "danger";
     }
 
-    function statusByQ2Elapsed(value) {
-      if (value >= 100) return { text: "В норме по апрелю-маю", cls: "ok" };
-      if (value >= 80) return { text: "Близко к плану", cls: "warn" };
-      if (value >= 60) return { text: "Риск невыполнения", cls: "bad" };
-      return { text: "Критический риск", cls: "danger" };
-    }
-
-    function enrichData(item) {
-      const planQ1 = item.planQ1;
-      const planQ2 = item.planQ1;
-      const planTwoMonthsQ2 = planQ2 * 2 / 3;
-
-      const factQ1 = item.jan + item.feb + item.mar;
-      const factQ2Elapsed = item.apr + item.may;
-      const factQ2 = factQ2Elapsed + item.jun;
-      const needJune = Math.max(0, planQ2 - factQ2Elapsed);
-
-      const planYtd = planQ1 + planTwoMonthsQ2;
-      const factYtd = factQ1 + factQ2Elapsed;
-
-      const q1Percent = percent(factQ1, planQ1);
-      const q2ElapsedPercent = percent(factQ2Elapsed, planTwoMonthsQ2);
-      const q2FullPercent = percent(factQ2, planQ2);
-      const ytdPercent = percent(factYtd, planYtd);
-      const status = statusByQ2Elapsed(q2ElapsedPercent);
+    function enrich(row) {
+      const q1Total = row.jan + row.feb + row.mar;
+      const q2Total = row.apr + row.may + row.jun;
+      const q3Total = row.jul + row.aug + row.sep;
+      const q4Total = row.oct + row.nov + row.dec;
+      const yearPlan = row.plan * 4;
+      const yearTotal = q1Total + q2Total + q3Total + q4Total;
 
       return {
-        ...item,
-        planQ1,
-        planQ2,
-        planTwoMonthsQ2,
-        factQ1,
-        factQ2Elapsed,
-        factQ2,
-        needJune,
-        planYtd,
-        factYtd,
-        q1Percent,
-        q2ElapsedPercent,
-        q2FullPercent,
-        ytdPercent,
-        status
+        ...row,
+        q1Total,
+        q2Total,
+        q3Total,
+        q4Total,
+        q1Percent: percent(q1Total, row.plan),
+        q2Percent: percent(q2Total, row.plan),
+        q3Percent: percent(q3Total, row.plan),
+        q4Percent: percent(q4Total, row.plan),
+        yearPlan,
+        yearTotal,
+        yearPercent: percent(yearTotal, yearPlan),
+        q2Left: Math.max(0, row.plan - q2Total),
+        q2Over: Math.max(0, q2Total - row.plan)
       };
     }
 
+    function sum(field) { return rows.reduce((s, r) => s + Number(r[field] || 0), 0); }
+
     function renderKpi() {
-      const totalPlanQ2 = rows.reduce((s, r) => s + r.planQ2, 0);
-      const totalPlanTwoMonths = rows.reduce((s, r) => s + r.planTwoMonthsQ2, 0);
-      const totalApr = rows.reduce((s, r) => s + r.apr, 0);
-      const totalMay = rows.reduce((s, r) => s + r.may, 0);
-      const totalFactTwoMonths = rows.reduce((s, r) => s + r.factQ2Elapsed, 0);
-      const totalNeedJune = rows.reduce((s, r) => s + r.needJune, 0);
-      const elapsedPercent = percent(totalFactTwoMonths, totalPlanTwoMonths);
-      const fullQ2Percent = percent(totalFactTwoMonths, totalPlanQ2);
-      const completedElapsed = rows.filter(r => r.q2ElapsedPercent >= 100).length;
-      const critical = rows.filter(r => r.q2ElapsedPercent < 60).length;
+      const plan = sum("plan");
+      const q1 = sum("q1Total");
+      const q2 = sum("q2Total");
+      const q3 = sum("q3Total");
+      const q4 = sum("q4Total");
+      const yearPlan = sum("yearPlan");
+      const yearTotal = sum("yearTotal");
 
       document.getElementById("kpiGrid").innerHTML = `
-        <div class="kpi-card">
-          <div class="kpi-title">План Q2 сети</div>
-          <div class="kpi-value">${formatNumber(totalPlanQ2)} ₽</div>
-          <div class="kpi-note">Полный квартальный план</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-title">Факт апрель + май</div>
-          <div class="kpi-value">${formatNumber(totalFactTwoMonths)} ₽</div>
-          <div class="kpi-note">Апрель: ${formatNumber(totalApr)} ₽ · Май: ${formatNumber(totalMay)} ₽</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-title">% от плана за 2 месяца</div>
-          <div class="kpi-value">${money2.format(elapsedPercent)}%</div>
-          <div class="kpi-note">План 2 месяцев: ${formatNumber(totalPlanTwoMonths)} ₽</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-title">% от полного Q2</div>
-          <div class="kpi-value">${money2.format(fullQ2Percent)}%</div>
-          <div class="kpi-note">Июнь пока не внесен</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-title">Нужно добрать в июне</div>
-          <div class="kpi-value">${formatNumber(totalNeedJune)} ₽</div>
-          <div class="kpi-note">До полного плана Q2</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-title">Состояние офисов</div>
-          <div class="kpi-value">${completedElapsed} / ${rows.length}</div>
-          <div class="kpi-note">В норме по апрелю-маю · критичных: ${critical}</div>
+        <div class="kpi-card"><div class="kpi-title">План на квартал</div><div class="kpi-value">${formatNumber(plan)} ₽</div></div>
+        <div class="kpi-card"><div class="kpi-title">1 квартал</div><div class="kpi-value">${formatNumber(q1)} ₽</div></div>
+        <div class="kpi-card"><div class="kpi-title">2 квартал</div><div class="kpi-value">${formatNumber(q2)} ₽</div></div>
+        <div class="kpi-card"><div class="kpi-title">3 квартал</div><div class="kpi-value">${formatNumber(q3)} ₽</div></div>
+        <div class="kpi-card"><div class="kpi-title">4 квартал</div><div class="kpi-value">${formatNumber(q4)} ₽</div></div>
+        <div class="kpi-card"><div class="kpi-title">Год</div><div class="kpi-value">${formatNumber(yearTotal)} ₽</div></div>
+      `;
+    }
+
+    function renderReport() {
+      const closed = rows.filter(r => r.q2Total >= r.plan).sort((a, b) => b.q2Percent - a.q2Percent);
+      const notClosed = rows.filter(r => r.q2Total < r.plan).sort((a, b) => b.q2Left - a.q2Left);
+      const over = sum("q2Over");
+      const left = sum("q2Left");
+
+      const notClosedList = notClosed.map(r => `<li><strong>${r.name}</strong>: остаток ${formatNumber(r.q2Left)} ₽ · ${money2.format(r.q2Percent)}%</li>`).join("");
+      const closedList = closed.map(r => `<li><strong>${r.name}</strong>: ${formatNumber(r.q2Total)} ₽ · ${money2.format(r.q2Percent)}%</li>`).join("");
+
+      document.getElementById("report").innerHTML = `
+        <h2>Итог 2 квартала</h2>
+        <div class="report-grid">
+          <div class="report-box">
+            <h3>Не закрыли 2 квартал: ${notClosed.length}</h3>
+            <ul>${notClosedList}</ul>
+          </div>
+          <div class="report-box">
+            <h3>Закрыли 2 квартал: ${closed.length}</h3>
+            <p>Перевыполнение сети: <strong>${formatNumber(over)} ₽</strong></p>
+            <p>Остаток по отстающим: <strong>${formatNumber(left)} ₽</strong></p>
+          </div>
+          <div class="report-box">
+            <h3>Закрыли 2 квартал</h3>
+            <ul>${closedList}</ul>
+          </div>
         </div>
       `;
     }
@@ -525,208 +781,53 @@
           <td class="center">${r.id}</td>
           <td class="left owner">${r.name}</td>
           <td class="left office">${r.offices}</td>
-          <td class="money-plan">${formatNumber(r.planQ1)}</td>
-          <td>${formatNumber(r.jan)}</td>
-          <td>${formatNumber(r.feb)}</td>
-          <td>${formatNumber(r.mar)}</td>
-          <td class="${cellClassByPercent(r.q1Percent)}">${money2.format(r.q1Percent)}%</td>
-          <td class="money-plan">${formatNumber(r.planQ2)}</td>
-          <td class="money-plan">${formatNumber(r.planTwoMonthsQ2)}</td>
-          <td>${formatNumber(r.apr)}</td>
-          <td>${formatNumber(r.may)}</td>
-          <td class="muted-cell">${formatNumber(r.jun)}</td>
-          <td class="sum">${formatNumber(r.factQ2Elapsed)}</td>
-          <td class="${cellClassByPercent(r.q2ElapsedPercent)}">${money2.format(r.q2ElapsedPercent)}%</td>
-          <td class="${r.needJune === 0 ? "ok" : ""}">${formatNumber(r.needJune)}</td>
-          <td class="money-plan">${formatNumber(r.planYtd)}</td>
-          <td class="sum">${formatNumber(r.factYtd)}</td>
-          <td class="${cellClassByPercent(r.ytdPercent)}">${money2.format(r.ytdPercent)}%</td>
-          <td class="${r.status.cls}">${r.status.text}</td>
+          <td class="q1 plan">${formatNumber(r.plan)}</td><td class="q1">${formatNumber(r.jan)}</td><td class="q1">${formatNumber(r.feb)}</td><td class="q1">${formatNumber(r.mar)}</td><td class="q1 total">${formatNumber(r.q1Total)}</td><td class="q1 ${percentClass(r.q1Percent)}">${money2.format(r.q1Percent)}%</td>
+          <td class="q2 plan">${formatNumber(r.plan)}</td><td class="q2">${formatNumber(r.apr)}</td><td class="q2">${formatNumber(r.may)}</td><td class="q2">${formatNumber(r.jun)}</td><td class="q2 total">${formatNumber(r.q2Total)}</td><td class="q2 ${percentClass(r.q2Percent)}">${money2.format(r.q2Percent)}%</td>
+          <td class="q3 plan">${formatNumber(r.plan)}</td><td class="q3">${formatNumber(r.jul)}</td><td class="q3">${formatNumber(r.aug)}</td><td class="q3">${formatNumber(r.sep)}</td><td class="q3 total">${formatNumber(r.q3Total)}</td><td class="q3 ${percentClass(r.q3Percent)}">${money2.format(r.q3Percent)}%</td>
+          <td class="q4 plan">${formatNumber(r.plan)}</td><td class="q4">${formatNumber(r.oct)}</td><td class="q4">${formatNumber(r.nov)}</td><td class="q4">${formatNumber(r.dec)}</td><td class="q4 total">${formatNumber(r.q4Total)}</td><td class="q4 ${percentClass(r.q4Percent)}">${money2.format(r.q4Percent)}%</td>
+          <td class="year plan">${formatNumber(r.yearPlan)}</td><td class="year total">${formatNumber(r.yearTotal)}</td><td class="year ${percentClass(r.yearPercent)}">${money2.format(r.yearPercent)}%</td>
         `;
         tbody.appendChild(tr);
       });
 
-      const totals = rows.reduce((acc, r) => {
-        acc.planQ1 += r.planQ1;
-        acc.jan += r.jan;
-        acc.feb += r.feb;
-        acc.mar += r.mar;
-        acc.planQ2 += r.planQ2;
-        acc.planTwoMonthsQ2 += r.planTwoMonthsQ2;
-        acc.apr += r.apr;
-        acc.may += r.may;
-        acc.jun += r.jun;
-        acc.factQ2Elapsed += r.factQ2Elapsed;
-        acc.needJune += r.needJune;
-        acc.planYtd += r.planYtd;
-        acc.factYtd += r.factYtd;
-        return acc;
-      }, {
-        planQ1: 0, jan: 0, feb: 0, mar: 0,
-        planQ2: 0, planTwoMonthsQ2: 0, apr: 0, may: 0, jun: 0,
-        factQ2Elapsed: 0, needJune: 0, planYtd: 0, factYtd: 0
-      });
+      const totals = {
+        plan: sum("plan"),
+        jan: sum("jan"), feb: sum("feb"), mar: sum("mar"), q1Total: sum("q1Total"),
+        apr: sum("apr"), may: sum("may"), jun: sum("jun"), q2Total: sum("q2Total"),
+        jul: sum("jul"), aug: sum("aug"), sep: sum("sep"), q3Total: sum("q3Total"),
+        oct: sum("oct"), nov: sum("nov"), dec: sum("dec"), q4Total: sum("q4Total"),
+        yearPlan: sum("yearPlan"), yearTotal: sum("yearTotal")
+      };
 
-      const q1PercentTotal = percent(totals.jan + totals.feb + totals.mar, totals.planQ1);
-      const q2ElapsedPercentTotal = percent(totals.factQ2Elapsed, totals.planTwoMonthsQ2);
-      const ytdPercentTotal = percent(totals.factYtd, totals.planYtd);
+      const q1Percent = percent(totals.q1Total, totals.plan);
+      const q2Percent = percent(totals.q2Total, totals.plan);
+      const q3Percent = percent(totals.q3Total, totals.plan);
+      const q4Percent = percent(totals.q4Total, totals.plan);
+      const yearPercent = percent(totals.yearTotal, totals.yearPlan);
 
       tfoot.innerHTML = `
         <tr>
           <td colspan="3" class="left">ИТОГО</td>
-          <td>${formatNumber(totals.planQ1)}</td>
-          <td>${formatNumber(totals.jan)}</td>
-          <td>${formatNumber(totals.feb)}</td>
-          <td>${formatNumber(totals.mar)}</td>
-          <td>${money2.format(q1PercentTotal)}%</td>
-          <td>${formatNumber(totals.planQ2)}</td>
-          <td>${formatNumber(totals.planTwoMonthsQ2)}</td>
-          <td>${formatNumber(totals.apr)}</td>
-          <td>${formatNumber(totals.may)}</td>
-          <td>${formatNumber(totals.jun)}</td>
-          <td>${formatNumber(totals.factQ2Elapsed)}</td>
-          <td>${money2.format(q2ElapsedPercentTotal)}%</td>
-          <td>${formatNumber(totals.needJune)}</td>
-          <td>${formatNumber(totals.planYtd)}</td>
-          <td>${formatNumber(totals.factYtd)}</td>
-          <td>${money2.format(ytdPercentTotal)}%</td>
-          <td></td>
+          <td class="q1">${formatNumber(totals.plan)}</td><td class="q1">${formatNumber(totals.jan)}</td><td class="q1">${formatNumber(totals.feb)}</td><td class="q1">${formatNumber(totals.mar)}</td><td class="q1">${formatNumber(totals.q1Total)}</td><td class="q1">${money2.format(q1Percent)}%</td>
+          <td class="q2">${formatNumber(totals.plan)}</td><td class="q2">${formatNumber(totals.apr)}</td><td class="q2">${formatNumber(totals.may)}</td><td class="q2">${formatNumber(totals.jun)}</td><td class="q2">${formatNumber(totals.q2Total)}</td><td class="q2">${money2.format(q2Percent)}%</td>
+          <td class="q3">${formatNumber(totals.plan)}</td><td class="q3">${formatNumber(totals.jul)}</td><td class="q3">${formatNumber(totals.aug)}</td><td class="q3">${formatNumber(totals.sep)}</td><td class="q3">${formatNumber(totals.q3Total)}</td><td class="q3">${money2.format(q3Percent)}%</td>
+          <td class="q4">${formatNumber(totals.plan)}</td><td class="q4">${formatNumber(totals.oct)}</td><td class="q4">${formatNumber(totals.nov)}</td><td class="q4">${formatNumber(totals.dec)}</td><td class="q4">${formatNumber(totals.q4Total)}</td><td class="q4">${money2.format(q4Percent)}%</td>
+          <td class="year">${formatNumber(totals.yearPlan)}</td><td class="year">${formatNumber(totals.yearTotal)}</td><td class="year">${money2.format(yearPercent)}%</td>
         </tr>
       `;
     }
 
-    function renderReport() {
-      const report = document.getElementById("report");
-      const good = rows.filter(r => r.q2ElapsedPercent >= 100).sort((a, b) => b.q2ElapsedPercent - a.q2ElapsedPercent);
-      const risk = rows.filter(r => r.q2ElapsedPercent < 80).sort((a, b) => a.q2ElapsedPercent - b.q2ElapsedPercent);
-      const needTop = [...rows].sort((a, b) => b.needJune - a.needJune).slice(0, 10);
-      const top = [...rows].sort((a, b) => b.factQ2Elapsed - a.factQ2Elapsed).slice(0, 10);
-
-      function list(items, mapper) {
-        return items.length
-          ? `<ul>${items.map(mapper).join("")}</ul>`
-          : `<p>Нет данных.</p>`;
-      }
-
-      report.innerHTML = `
-        <h2>Краткий отчет по Q2</h2>
-        <div class="report-grid">
-          <div class="report-box">
-            <h3>В норме по апрелю-маю <span class="tag tag-ok">${good.length}</span></h3>
-            ${list(good, r => `<li><strong>${r.name}</strong>: ${formatNumber(r.factQ2Elapsed)} ₽ · ${money2.format(r.q2ElapsedPercent)}%</li>`)}
-          </div>
-          <div class="report-box">
-            <h3>Риск ниже 80% <span class="tag tag-danger">${risk.length}</span></h3>
-            ${list(risk, r => `<li><strong>${r.name}</strong>: ${money2.format(r.q2ElapsedPercent)}% · нужно в июне ${formatNumber(r.needJune)} ₽</li>`)}
-          </div>
-          <div class="report-box">
-            <h3>Крупнейший остаток на июнь</h3>
-            ${list(needTop, r => `<li><strong>${r.name}</strong>: ${formatNumber(r.needJune)} ₽</li>`)}
-          </div>
-          <div class="report-box">
-            <h3>ТОП по факту апрель+май</h3>
-            ${list(top, r => `<li><strong>${r.name}</strong>: ${formatNumber(r.factQ2Elapsed)} ₽</li>`)}
-          </div>
-        </div>
-      `;
-    }
-
-    function toggleReport() {
-      const report = document.getElementById("report");
-      if (report.style.display === "block") {
-        report.style.display = "none";
-      } else {
-        renderReport();
-        report.style.display = "block";
-        report.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
-
-    function toggleCharts() {
-      const charts = document.getElementById("charts");
-      if (charts.style.display === "grid") {
-        charts.style.display = "none";
-        return;
-      }
-      charts.style.display = "grid";
-      if (!chartsCreated) {
-        createCharts();
-        chartsCreated = true;
-      }
-      charts.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-
-    function createCharts() {
-      const topPercent = [...rows].sort((a, b) => b.q2ElapsedPercent - a.q2ElapsedPercent).slice(0, 10);
-      const topTurnover = [...rows].sort((a, b) => b.factQ2Elapsed - a.factQ2Elapsed).slice(0, 10);
-
-      const monthlyTotals = {
-        "Янв": rows.reduce((s, r) => s + r.jan, 0),
-        "Фев": rows.reduce((s, r) => s + r.feb, 0),
-        "Мар": rows.reduce((s, r) => s + r.mar, 0),
-        "Апр": rows.reduce((s, r) => s + r.apr, 0),
-        "Май": rows.reduce((s, r) => s + r.may, 0),
-        "Июн": rows.reduce((s, r) => s + r.jun, 0)
-      };
-
-      const statuses = {
-        "В норме": rows.filter(r => r.q2ElapsedPercent >= 100).length,
-        "80-99%": rows.filter(r => r.q2ElapsedPercent >= 80 && r.q2ElapsedPercent < 100).length,
-        "60-79%": rows.filter(r => r.q2ElapsedPercent >= 60 && r.q2ElapsedPercent < 80).length,
-        "до 60%": rows.filter(r => r.q2ElapsedPercent < 60).length
-      };
-
-      new Chart(document.getElementById("q2PercentChart"), {
-        type: "bar",
-        data: {
-          labels: topPercent.map(r => r.name),
-          datasets: [{
-            label: "% выполнения плана 2 месяцев",
-            data: topPercent.map(r => r.q2ElapsedPercent)
-          }]
-        },
-        options: { responsive: true, indexAxis: "y", scales: { x: { beginAtZero: true } } }
-      });
-
-      new Chart(document.getElementById("q2TurnoverChart"), {
-        type: "bar",
-        data: {
-          labels: topTurnover.map(r => r.name),
-          datasets: [{
-            label: "Факт апрель+май, ₽",
-            data: topTurnover.map(r => r.factQ2Elapsed)
-          }]
-        },
-        options: { responsive: true, indexAxis: "y", scales: { x: { beginAtZero: true } } }
-      });
-
-      new Chart(document.getElementById("monthlyChart"), {
-        type: "line",
-        data: {
-          labels: Object.keys(monthlyTotals),
-          datasets: [{
-            label: "Оборот сети, ₽",
-            data: Object.values(monthlyTotals),
-            fill: true,
-            tension: 0.3
-          }]
-        },
-        options: { responsive: true, scales: { y: { beginAtZero: true } } }
-      });
-
-      new Chart(document.getElementById("statusChart"), {
-        type: "doughnut",
-        data: {
-          labels: Object.keys(statuses),
-          datasets: [{ data: Object.values(statuses) }]
-        },
-        options: { responsive: true }
-      });
+    function setView(view) {
+      document.body.className = `view-${view}`;
+      document.querySelectorAll(".actions button").forEach(btn => btn.classList.remove("active"));
+      const button = document.getElementById(`btn-${view}`);
+      if (button) button.classList.add("active");
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      rows = quarterlyData.map(enrichData);
+      rows = owners.map(enrich);
       renderKpi();
+      renderReport();
       renderTable();
     });
   </script>
