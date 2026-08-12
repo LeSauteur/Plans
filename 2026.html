@@ -150,6 +150,7 @@
     .owner { font-weight: 800; color: #101828; }
     .office { color: #344054; max-width: 320px; white-space: normal; line-height: 1.25; }
     .plan { background: #f2f4f7; font-weight: 700; }
+    .pending { background: var(--yellow-bg) !important; color: #713f12; font-weight: 800; }
     .total { font-weight: 800; background: #f8fafc; }
     .ok { background: var(--green-bg) !important; color: #14532d; font-weight: 800; }
     .warn { background: var(--yellow-bg) !important; color: #713f12; font-weight: 800; }
@@ -179,17 +180,17 @@
     }
   </style>
 </head>
-<body class="view-all">
+<body class="view-q3">
   <div class="page">
     <section class="hero">
       <h1>План продаж 2026</h1>
     </section>
 
     <div class="actions">
-      <button id="btn-all" class="active" onclick="setView('all')">Все</button>
+      <button id="btn-all" onclick="setView('all')">Все</button>
       <button id="btn-q1" onclick="setView('q1')">1 квартал</button>
       <button id="btn-q2" onclick="setView('q2')">2 квартал</button>
-      <button id="btn-q3" onclick="setView('q3')">3 квартал</button>
+      <button id="btn-q3" class="active" onclick="setView('q3')">3 квартал</button>
       <button id="btn-q4" onclick="setView('q4')">4 квартал</button>
       <button id="btn-year" onclick="setView('year')">Год</button>
       <button class="print" onclick="window.print()">Печать</button>
@@ -232,13 +233,15 @@
             "name": "Панасенко",
             "offices": "Премьер, Батайск 1, Западный 2",
             "plan": 3802961,
+            "q3Plan": null,
+            "q3PlanNote": "Требуется установление плана. План подлежит уменьшению.",
             "jan": 1602029.0,
             "feb": 0.0,
             "mar": 424421,
             "apr": 1785045,
             "may": 0,
             "jun": 1358647,
-            "jul": 0,
+            "jul": 892587,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -256,7 +259,7 @@
             "apr": 653000,
             "may": 851000,
             "jun": 414000,
-            "jul": 0,
+            "jul": 1238000,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -274,7 +277,7 @@
             "apr": 2537253,
             "may": 478974,
             "jun": 2171074,
-            "jul": 0,
+            "jul": 899315,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -292,7 +295,7 @@
             "apr": 3799419,
             "may": 3734152,
             "jun": 3572409,
-            "jul": 0,
+            "jul": 4375924,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -310,7 +313,7 @@
             "apr": 1403000,
             "may": 0,
             "jun": 804500,
-            "jul": 0,
+            "jul": 609000,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -328,7 +331,7 @@
             "apr": 594000,
             "may": 0,
             "jun": 879000,
-            "jul": 0,
+            "jul": 829500,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -346,7 +349,7 @@
             "apr": 665600,
             "may": 537677,
             "jun": 384350,
-            "jul": 0,
+            "jul": 728988,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -364,7 +367,7 @@
             "apr": 1396332,
             "may": 740000,
             "jun": 2422936,
-            "jul": 0,
+            "jul": 1089400,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -382,7 +385,7 @@
             "apr": 851500,
             "may": 1969838,
             "jun": 1949486,
-            "jul": 0,
+            "jul": 2167984,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -400,7 +403,7 @@
             "apr": 100000,
             "may": 230000,
             "jun": 0,
-            "jul": 0,
+            "jul": 135000,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -418,7 +421,7 @@
             "apr": 1056875,
             "may": 1933508,
             "jun": 1480136,
-            "jul": 0,
+            "jul": 350500,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -436,7 +439,7 @@
             "apr": 1254407,
             "may": 1189000,
             "jun": 5208431,
-            "jul": 0,
+            "jul": 3156825,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -454,7 +457,7 @@
             "apr": 1258855,
             "may": 710754,
             "jun": 1006023,
-            "jul": 0,
+            "jul": 538400,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -472,7 +475,7 @@
             "apr": 977000,
             "may": 0,
             "jun": 0,
-            "jul": 0,
+            "jul": 116000,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -490,7 +493,7 @@
             "apr": 8819186,
             "may": 11792894,
             "jun": 11880617,
-            "jul": 0,
+            "jul": 8415761,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -508,7 +511,7 @@
             "apr": 10494141.4,
             "may": 7359762,
             "jun": 6377347,
-            "jul": 0,
+            "jul": 7455900,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -526,7 +529,7 @@
             "apr": 400000,
             "may": 432000,
             "jun": 1198652,
-            "jul": 0,
+            "jul": 661000,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -544,7 +547,7 @@
             "apr": 1031416,
             "may": 651537,
             "jun": 1158952,
-            "jul": 0,
+            "jul": 1244500,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -562,7 +565,7 @@
             "apr": 963363.88,
             "may": 262016,
             "jun": 380000,
-            "jul": 0,
+            "jul": 256500,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -580,7 +583,7 @@
             "apr": 600167,
             "may": 232000,
             "jun": 392000,
-            "jul": 0,
+            "jul": 323000,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -598,7 +601,7 @@
             "apr": 111250,
             "may": 0,
             "jun": 436000,
-            "jul": 0,
+            "jul": 150000,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -610,13 +613,15 @@
             "name": "Козлова",
             "offices": "ЛеМар Вересаево",
             "plan": 1141974,
+            "q3Plan": null,
+            "q3PlanNote": "Требуется установление плана. План подлежит увеличению.",
             "jan": 743200.0,
             "feb": 416400.0,
             "mar": 1645394,
             "apr": 2103444.44,
             "may": 770360,
             "jun": 394000,
-            "jul": 0,
+            "jul": 494000,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -652,7 +657,7 @@
             "apr": 526472,
             "may": 754907,
             "jun": 212000,
-            "jul": 0,
+            "jul": 321000,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -670,7 +675,30 @@
             "apr": 807403.76,
             "may": 882870,
             "jun": 343800,
-            "jul": 0,
+            "jul": 2087033,
+            "aug": 0,
+            "sep": 0,
+            "oct": 0,
+            "nov": 0,
+            "dec": 0
+      },
+      {
+            "id": 26,
+            "name": "Обдул",
+            "offices": "Домиан Капитал",
+            "plan": null,
+            "q1Plan": null,
+            "q2Plan": null,
+            "q3Plan": 1000000,
+            "q4Plan": 1000000,
+            "q3PlanNote": "План III квартала: 1 000 000 ₽.",
+            "jan": 0,
+            "feb": 0,
+            "mar": 0,
+            "apr": 0,
+            "may": 0,
+            "jun": 0,
+            "jul": 100000,
             "aug": 0,
             "sep": 0,
             "oct": 0,
@@ -685,9 +713,16 @@
     let rows = [];
 
     function formatNumber(value) { return money.format(Math.round(Number(value || 0))); }
-    function percent(actual, plan) { return plan ? Number(actual || 0) / Number(plan || 0) * 100 : 0; }
+    function hasPlan(value) { return Number.isFinite(Number(value)) && Number(value) > 0; }
+    function quarterPlan(row, field) {
+      return Object.prototype.hasOwnProperty.call(row, field) ? row[field] : row.plan;
+    }
+    function formatPlan(value) { return hasPlan(value) ? formatNumber(value) : "Не установлен"; }
+    function percent(actual, plan) { return hasPlan(plan) ? Number(actual || 0) / Number(plan) * 100 : null; }
+    function formatPercent(value) { return Number.isFinite(value) ? `${money2.format(value)}%` : "—"; }
 
     function percentClass(value) {
+      if (!Number.isFinite(value)) return "pending";
       if (value >= 100) return "ok";
       if (value >= 80) return "warn";
       if (value >= 60) return "bad";
@@ -695,35 +730,47 @@
     }
 
     function enrich(row) {
+      const q1Plan = quarterPlan(row, "q1Plan");
+      const q2Plan = quarterPlan(row, "q2Plan");
+      const q3Plan = quarterPlan(row, "q3Plan");
+      const q4Plan = quarterPlan(row, "q4Plan");
       const q1Total = row.jan + row.feb + row.mar;
       const q2Total = row.apr + row.may + row.jun;
       const q3Total = row.jul + row.aug + row.sep;
       const q4Total = row.oct + row.nov + row.dec;
-      const yearPlan = row.plan * 4;
+      const yearPlan = [q1Plan, q2Plan, q3Plan, q4Plan]
+        .filter(hasPlan)
+        .reduce((sum, value) => sum + Number(value), 0);
       const yearTotal = q1Total + q2Total + q3Total + q4Total;
 
       return {
         ...row,
+        q1Plan,
+        q2Plan,
+        q3Plan,
+        q4Plan,
         q1Total,
         q2Total,
         q3Total,
         q4Total,
-        q1Percent: percent(q1Total, row.plan),
-        q2Percent: percent(q2Total, row.plan),
-        q3Percent: percent(q3Total, row.plan),
-        q4Percent: percent(q4Total, row.plan),
+        q1Percent: percent(q1Total, q1Plan),
+        q2Percent: percent(q2Total, q2Plan),
+        q3Percent: percent(q3Total, q3Plan),
+        q4Percent: percent(q4Total, q4Plan),
         yearPlan,
         yearTotal,
         yearPercent: percent(yearTotal, yearPlan),
-        q2Left: Math.max(0, row.plan - q2Total),
-        q2Over: Math.max(0, q2Total - row.plan)
+        q2Left: hasPlan(q2Plan) ? Math.max(0, q2Plan - q2Total) : 0,
+        q2Over: hasPlan(q2Plan) ? Math.max(0, q2Total - q2Plan) : 0,
+        q3Left: hasPlan(q3Plan) ? Math.max(0, q3Plan - q3Total) : 0,
+        q3Over: hasPlan(q3Plan) ? Math.max(0, q3Total - q3Plan) : 0
       };
     }
 
     function sum(field) { return rows.reduce((s, r) => s + Number(r[field] || 0), 0); }
 
     function renderKpi() {
-      const plan = sum("plan");
+      const plan = sum("q3Plan");
       const q1 = sum("q1Total");
       const q2 = sum("q2Total");
       const q3 = sum("q3Total");
@@ -732,7 +779,7 @@
       const yearTotal = sum("yearTotal");
 
       document.getElementById("kpiGrid").innerHTML = `
-        <div class="kpi-card"><div class="kpi-title">План на квартал</div><div class="kpi-value">${formatNumber(plan)} ₽</div></div>
+        <div class="kpi-card"><div class="kpi-title">Подтверждённый план III квартала</div><div class="kpi-value">${formatNumber(plan)} ₽</div></div>
         <div class="kpi-card"><div class="kpi-title">1 квартал</div><div class="kpi-value">${formatNumber(q1)} ₽</div></div>
         <div class="kpi-card"><div class="kpi-title">2 квартал</div><div class="kpi-value">${formatNumber(q2)} ₽</div></div>
         <div class="kpi-card"><div class="kpi-title">3 квартал</div><div class="kpi-value">${formatNumber(q3)} ₽</div></div>
@@ -742,29 +789,37 @@
     }
 
     function renderReport() {
-      const closed = rows.filter(r => r.q2Total >= r.plan).sort((a, b) => b.q2Percent - a.q2Percent);
-      const notClosed = rows.filter(r => r.q2Total < r.plan).sort((a, b) => b.q2Left - a.q2Left);
-      const over = sum("q2Over");
-      const left = sum("q2Left");
+      const withPlan = rows.filter(r => hasPlan(r.q3Plan));
+      const missingPlan = rows.filter(r => !hasPlan(r.q3Plan));
+      const closed = withPlan.filter(r => r.q3Total >= r.q3Plan).sort((a, b) => b.q3Percent - a.q3Percent);
+      const inProgress = withPlan.filter(r => r.q3Total < r.q3Plan).sort((a, b) => b.q3Percent - a.q3Percent);
+      const left = withPlan.reduce((sum, r) => sum + r.q3Left, 0);
 
-      const notClosedList = notClosed.map(r => `<li><strong>${r.name}</strong>: остаток ${formatNumber(r.q2Left)} ₽ · ${money2.format(r.q2Percent)}%</li>`).join("");
-      const closedList = closed.map(r => `<li><strong>${r.name}</strong>: ${formatNumber(r.q2Total)} ₽ · ${money2.format(r.q2Percent)}%</li>`).join("");
+      const progressList = inProgress
+        .map(r => `<li><strong>${r.name}</strong>: июль ${formatNumber(r.jul)} ₽ · ${formatPercent(r.q3Percent)} · осталось ${formatNumber(r.q3Left)} ₽</li>`)
+        .join("");
+      const closedList = closed
+        .map(r => `<li><strong>${r.name}</strong>: июль ${formatNumber(r.jul)} ₽ · ${formatPercent(r.q3Percent)}</li>`)
+        .join("");
+      const missingList = missingPlan
+        .map(r => `<li><strong>${r.name}</strong>: ${r.q3PlanNote || "требуется установить план"}</li>`)
+        .join("");
 
       document.getElementById("report").innerHTML = `
-        <h2>Итог 2 квартала</h2>
+        <h2>Выполнение плана III квартала после июля</h2>
         <div class="report-grid">
           <div class="report-box">
-            <h3>Не закрыли 2 квартал: ${notClosed.length}</h3>
-            <ul>${notClosedList}</ul>
+            <h3>В процессе: ${inProgress.length}</h3>
+            <p>Осталось до подтверждённых квартальных планов: <strong>${formatNumber(left)} ₽</strong></p>
+            <ul>${progressList}</ul>
           </div>
           <div class="report-box">
-            <h3>Закрыли 2 квартал: ${closed.length}</h3>
-            <p>Перевыполнение сети: <strong>${formatNumber(over)} ₽</strong></p>
-            <p>Остаток по отстающим: <strong>${formatNumber(left)} ₽</strong></p>
+            <h3>План уже выполнен: ${closed.length}</h3>
+            <ul>${closedList || "<li>Пока нет</li>"}</ul>
           </div>
           <div class="report-box">
-            <h3>Закрыли 2 квартал</h3>
-            <ul>${closedList}</ul>
+            <h3>План не установлен: ${missingPlan.length}</h3>
+            <ul>${missingList || "<li>Нет</li>"}</ul>
           </div>
         </div>
       `;
@@ -781,17 +836,17 @@
           <td class="center">${r.id}</td>
           <td class="left owner">${r.name}</td>
           <td class="left office">${r.offices}</td>
-          <td class="q1 plan">${formatNumber(r.plan)}</td><td class="q1">${formatNumber(r.jan)}</td><td class="q1">${formatNumber(r.feb)}</td><td class="q1">${formatNumber(r.mar)}</td><td class="q1 total">${formatNumber(r.q1Total)}</td><td class="q1 ${percentClass(r.q1Percent)}">${money2.format(r.q1Percent)}%</td>
-          <td class="q2 plan">${formatNumber(r.plan)}</td><td class="q2">${formatNumber(r.apr)}</td><td class="q2">${formatNumber(r.may)}</td><td class="q2">${formatNumber(r.jun)}</td><td class="q2 total">${formatNumber(r.q2Total)}</td><td class="q2 ${percentClass(r.q2Percent)}">${money2.format(r.q2Percent)}%</td>
-          <td class="q3 plan">${formatNumber(r.plan)}</td><td class="q3">${formatNumber(r.jul)}</td><td class="q3">${formatNumber(r.aug)}</td><td class="q3">${formatNumber(r.sep)}</td><td class="q3 total">${formatNumber(r.q3Total)}</td><td class="q3 ${percentClass(r.q3Percent)}">${money2.format(r.q3Percent)}%</td>
-          <td class="q4 plan">${formatNumber(r.plan)}</td><td class="q4">${formatNumber(r.oct)}</td><td class="q4">${formatNumber(r.nov)}</td><td class="q4">${formatNumber(r.dec)}</td><td class="q4 total">${formatNumber(r.q4Total)}</td><td class="q4 ${percentClass(r.q4Percent)}">${money2.format(r.q4Percent)}%</td>
-          <td class="year plan">${formatNumber(r.yearPlan)}</td><td class="year total">${formatNumber(r.yearTotal)}</td><td class="year ${percentClass(r.yearPercent)}">${money2.format(r.yearPercent)}%</td>
+          <td class="q1 plan ${hasPlan(r.q1Plan) ? "" : "pending"}">${formatPlan(r.q1Plan)}</td><td class="q1">${formatNumber(r.jan)}</td><td class="q1">${formatNumber(r.feb)}</td><td class="q1">${formatNumber(r.mar)}</td><td class="q1 total">${formatNumber(r.q1Total)}</td><td class="q1 ${percentClass(r.q1Percent)}">${formatPercent(r.q1Percent)}</td>
+          <td class="q2 plan ${hasPlan(r.q2Plan) ? "" : "pending"}">${formatPlan(r.q2Plan)}</td><td class="q2">${formatNumber(r.apr)}</td><td class="q2">${formatNumber(r.may)}</td><td class="q2">${formatNumber(r.jun)}</td><td class="q2 total">${formatNumber(r.q2Total)}</td><td class="q2 ${percentClass(r.q2Percent)}">${formatPercent(r.q2Percent)}</td>
+          <td class="q3 plan ${hasPlan(r.q3Plan) ? "" : "pending"}" title="${r.q3PlanNote || ""}">${formatPlan(r.q3Plan)}</td><td class="q3">${formatNumber(r.jul)}</td><td class="q3">${formatNumber(r.aug)}</td><td class="q3">${formatNumber(r.sep)}</td><td class="q3 total">${formatNumber(r.q3Total)}</td><td class="q3 ${percentClass(r.q3Percent)}">${formatPercent(r.q3Percent)}</td>
+          <td class="q4 plan ${hasPlan(r.q4Plan) ? "" : "pending"}">${formatPlan(r.q4Plan)}</td><td class="q4">${formatNumber(r.oct)}</td><td class="q4">${formatNumber(r.nov)}</td><td class="q4">${formatNumber(r.dec)}</td><td class="q4 total">${formatNumber(r.q4Total)}</td><td class="q4 ${percentClass(r.q4Percent)}">${formatPercent(r.q4Percent)}</td>
+          <td class="year plan">${formatNumber(r.yearPlan)}</td><td class="year total">${formatNumber(r.yearTotal)}</td><td class="year ${percentClass(r.yearPercent)}">${formatPercent(r.yearPercent)}</td>
         `;
         tbody.appendChild(tr);
       });
 
       const totals = {
-        plan: sum("plan"),
+        q1Plan: sum("q1Plan"), q2Plan: sum("q2Plan"), q3Plan: sum("q3Plan"), q4Plan: sum("q4Plan"),
         jan: sum("jan"), feb: sum("feb"), mar: sum("mar"), q1Total: sum("q1Total"),
         apr: sum("apr"), may: sum("may"), jun: sum("jun"), q2Total: sum("q2Total"),
         jul: sum("jul"), aug: sum("aug"), sep: sum("sep"), q3Total: sum("q3Total"),
@@ -799,20 +854,20 @@
         yearPlan: sum("yearPlan"), yearTotal: sum("yearTotal")
       };
 
-      const q1Percent = percent(totals.q1Total, totals.plan);
-      const q2Percent = percent(totals.q2Total, totals.plan);
-      const q3Percent = percent(totals.q3Total, totals.plan);
-      const q4Percent = percent(totals.q4Total, totals.plan);
+      const q1Percent = percent(totals.q1Total, totals.q1Plan);
+      const q2Percent = percent(totals.q2Total, totals.q2Plan);
+      const q3Percent = percent(totals.q3Total, totals.q3Plan);
+      const q4Percent = percent(totals.q4Total, totals.q4Plan);
       const yearPercent = percent(totals.yearTotal, totals.yearPlan);
 
       tfoot.innerHTML = `
         <tr>
           <td colspan="3" class="left">ИТОГО</td>
-          <td class="q1">${formatNumber(totals.plan)}</td><td class="q1">${formatNumber(totals.jan)}</td><td class="q1">${formatNumber(totals.feb)}</td><td class="q1">${formatNumber(totals.mar)}</td><td class="q1">${formatNumber(totals.q1Total)}</td><td class="q1">${money2.format(q1Percent)}%</td>
-          <td class="q2">${formatNumber(totals.plan)}</td><td class="q2">${formatNumber(totals.apr)}</td><td class="q2">${formatNumber(totals.may)}</td><td class="q2">${formatNumber(totals.jun)}</td><td class="q2">${formatNumber(totals.q2Total)}</td><td class="q2">${money2.format(q2Percent)}%</td>
-          <td class="q3">${formatNumber(totals.plan)}</td><td class="q3">${formatNumber(totals.jul)}</td><td class="q3">${formatNumber(totals.aug)}</td><td class="q3">${formatNumber(totals.sep)}</td><td class="q3">${formatNumber(totals.q3Total)}</td><td class="q3">${money2.format(q3Percent)}%</td>
-          <td class="q4">${formatNumber(totals.plan)}</td><td class="q4">${formatNumber(totals.oct)}</td><td class="q4">${formatNumber(totals.nov)}</td><td class="q4">${formatNumber(totals.dec)}</td><td class="q4">${formatNumber(totals.q4Total)}</td><td class="q4">${money2.format(q4Percent)}%</td>
-          <td class="year">${formatNumber(totals.yearPlan)}</td><td class="year">${formatNumber(totals.yearTotal)}</td><td class="year">${money2.format(yearPercent)}%</td>
+          <td class="q1">${formatNumber(totals.q1Plan)}</td><td class="q1">${formatNumber(totals.jan)}</td><td class="q1">${formatNumber(totals.feb)}</td><td class="q1">${formatNumber(totals.mar)}</td><td class="q1">${formatNumber(totals.q1Total)}</td><td class="q1">${formatPercent(q1Percent)}</td>
+          <td class="q2">${formatNumber(totals.q2Plan)}</td><td class="q2">${formatNumber(totals.apr)}</td><td class="q2">${formatNumber(totals.may)}</td><td class="q2">${formatNumber(totals.jun)}</td><td class="q2">${formatNumber(totals.q2Total)}</td><td class="q2">${formatPercent(q2Percent)}</td>
+          <td class="q3">${formatNumber(totals.q3Plan)}</td><td class="q3">${formatNumber(totals.jul)}</td><td class="q3">${formatNumber(totals.aug)}</td><td class="q3">${formatNumber(totals.sep)}</td><td class="q3">${formatNumber(totals.q3Total)}</td><td class="q3">${formatPercent(q3Percent)}</td>
+          <td class="q4">${formatNumber(totals.q4Plan)}</td><td class="q4">${formatNumber(totals.oct)}</td><td class="q4">${formatNumber(totals.nov)}</td><td class="q4">${formatNumber(totals.dec)}</td><td class="q4">${formatNumber(totals.q4Total)}</td><td class="q4">${formatPercent(q4Percent)}</td>
+          <td class="year">${formatNumber(totals.yearPlan)}</td><td class="year">${formatNumber(totals.yearTotal)}</td><td class="year">${formatPercent(yearPercent)}</td>
         </tr>
       `;
     }
@@ -833,4 +888,3 @@
   </script>
 </body>
 </html>
-
